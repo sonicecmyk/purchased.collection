@@ -113,6 +113,7 @@ label{font-size:12px;font-weight:800;color:#475569;display:block;margin:10px 0 6
 
 <script>
 const KEY='paperBooksV2';
+function uid(){return (crypto.randomUUID?uid():'id-'+Date.now().toString(36)+'-'+Math.random().toString(36).slice(2))}
 let db=JSON.parse(localStorage.getItem(KEY)||'null')||{
   series:[], share:{enabled:false,slug:'',showPrices:false}, friends:[]
 };
@@ -183,7 +184,7 @@ function normalizeBook(x){
  return {title:v.title||'',subtitle:v.subtitle||'',authors:v.authors||[],publisher:v.publisher||'',language:v.language||'',category:(v.categories||[]).join(', '),publishedDate:v.publishedDate||'',isbn13:p,isbn10:i10,cover:(v.imageLinks?.thumbnail||v.imageLinks?.smallThumbnail||'').replace('http:','https:'),pageCount:v.pageCount||'',description:v.description||'',listPrice:(x.saleInfo?.listPrice?.amount??x.saleInfo?.retailPrice?.amount??'')};
 }
 function openEditor(b){
- let id=b.id||crypto.randomUUID();
+ let id=b.id||uid();
  showModal(`<h2>${b.title?'確認書目':'手動新增作品'}</h2>
  <div class="formgrid">
  <div class="full"><label>系列／作品名稱</label><input id="fTitle" value="${esc(b.title||'')}"></div>
@@ -206,8 +207,8 @@ function openEditor(b){
  <button class="btn purple" style="width:100%;margin-top:14px" onclick='createSeries(${JSON.stringify(b)})'>建立作品＋第一集</button>`)
 }
 function createSeries(b){
- let s={id:crypto.randomUUID(),title:document.getElementById('fTitle').value.trim(),authors:document.getElementById('fAuthor').value.split(/[,、]/).map(x=>x.trim()).filter(Boolean),publisher:document.getElementById('fPublisher').value.trim(),language:document.getElementById('fLang').value.trim(),category:document.getElementById('fCat').value.trim(),cover:document.getElementById('fCover').value.trim(),pages:document.getElementById('fPages').value,createdAt:new Date().toISOString(),volumes:[]};
- let v={id:crypto.randomUUID(),volumeNo:document.getElementById('fVol').value.trim(),title:b.subtitle||'',isbn13:document.getElementById('fISBN13').value.trim(),isbn10:document.getElementById('fISBN10').value.trim(),publishedDate:document.getElementById('fDate').value.trim(),cover:document.getElementById('fCover').value.trim(),language:document.getElementById('fLang').value.trim(),listPrice:document.getElementById('fList').value,purchasePrice:document.getElementById('fBuy').value,discount:document.getElementById('fDiscount').value,owned:document.getElementById('fOwned').checked,sell:document.getElementById('fSell').checked,purchaseDate:new Date().toISOString().slice(0,10)};
+ let s={id:uid(),title:document.getElementById('fTitle').value.trim(),authors:document.getElementById('fAuthor').value.split(/[,、]/).map(x=>x.trim()).filter(Boolean),publisher:document.getElementById('fPublisher').value.trim(),language:document.getElementById('fLang').value.trim(),category:document.getElementById('fCat').value.trim(),cover:document.getElementById('fCover').value.trim(),pages:document.getElementById('fPages').value,createdAt:new Date().toISOString(),volumes:[]};
+ let v={id:uid(),volumeNo:document.getElementById('fVol').value.trim(),title:b.subtitle||'',isbn13:document.getElementById('fISBN13').value.trim(),isbn10:document.getElementById('fISBN10').value.trim(),publishedDate:document.getElementById('fDate').value.trim(),cover:document.getElementById('fCover').value.trim(),language:document.getElementById('fLang').value.trim(),listPrice:document.getElementById('fList').value,purchasePrice:document.getElementById('fBuy').value,discount:document.getElementById('fDiscount').value,owned:document.getElementById('fOwned').checked,sell:document.getElementById('fSell').checked,purchaseDate:new Date().toISOString().slice(0,10)};
  if(!s.title){toast('請輸入作品名稱');return}s.volumes.push(v);db.series.unshift(s);save();closeModal();toast('已加入書櫃')}
 function openSeries(id){
  let s=db.series.find(x=>x.id===id);if(!s)return;
@@ -222,7 +223,7 @@ function addVolume(sid){let s=db.series.find(x=>x.id===sid);showModal(`<h2>新�
 <div class="full"><label>封面 URL</label><input id="nvCover" value="${esc(s.cover||'')}"></div></div>
 <div class="switch"><span>已購入</span><input id="nvOwned" type="checkbox"></div>
 <button class="btn purple" style="width:100%;margin-top:12px" onclick="saveNewVolume('${sid}')">加入單集</button>`) }
-function saveNewVolume(sid){let s=db.series.find(x=>x.id===sid);s.volumes.push({id:crypto.randomUUID(),volumeNo:document.getElementById('nvNo').value.trim(),isbn13:document.getElementById('nvISBN').value.trim(),publishedDate:document.getElementById('nvDate').value.trim(),listPrice:document.getElementById('nvList').value,purchasePrice:document.getElementById('nvBuy').value,discount:document.getElementById('nvDisc').value,cover:document.getElementById('nvCover').value,owned:document.getElementById('nvOwned').checked,sell:false,purchaseDate:new Date().toISOString().slice(0,10)});save();openSeries(sid)}
+function saveNewVolume(sid){let s=db.series.find(x=>x.id===sid);s.volumes.push({id:uid(),volumeNo:document.getElementById('nvNo').value.trim(),isbn13:document.getElementById('nvISBN').value.trim(),publishedDate:document.getElementById('nvDate').value.trim(),listPrice:document.getElementById('nvList').value,purchasePrice:document.getElementById('nvBuy').value,discount:document.getElementById('nvDisc').value,cover:document.getElementById('nvCover').value,owned:document.getElementById('nvOwned').checked,sell:false,purchaseDate:new Date().toISOString().slice(0,10)});save();openSeries(sid)}
 function editVolume(sid,vid){let s=db.series.find(x=>x.id===sid),v=s.volumes.find(x=>x.id===vid);showModal(`<h2>編輯第 ${esc(v.volumeNo)} 集</h2><div class="formgrid">
 <div><label>參考／原價</label><input id="evList" type="number" step="0.01" value="${esc(v.listPrice||'')}"></div><div><label>實際購入價</label><input id="evBuy" type="number" step="0.01" value="${esc(v.purchasePrice||'')}"></div>
 <div><label>折扣</label><input id="evDisc" type="number" step="0.01" value="${esc(v.discount||'')}"></div><div><label>購入日期</label><input id="evDate" type="date" value="${esc(v.purchaseDate||'')}"></div>
@@ -248,7 +249,7 @@ function startScanner(){
 }
 async function scanLoop(video){if(!window.scanStream)return;try{let codes=await window.detector.detect(video);if(codes.length){let raw=codes[0].rawValue;stopScanner();document.getElementById('apiQ').value='isbn:'+raw;apiSearch();return}}catch(e){}requestAnimationFrame(()=>scanLoop(video))}
 function stopScanner(){if(window.scanStream){window.scanStream.getTracks().forEach(t=>t.stop());window.scanStream=null}}
-function manualISBN(){document.getElementById('scanArea').innerHTML='<label>輸入 ISBN</label><div class="searchbar"><input id="manualIsbn"><button class="btn purple" onclick="document.getElementById(\\'apiQ\\').value=\\'isbn:\\'+document.getElementById(\\'manualIsbn\\').value;apiSearch()">查詢</button></div>'}
+function manualISBN(){document.getElementById('scanArea').innerHTML=`<label>輸入 ISBN</label><div class="searchbar"><input id="manualIsbn"><button class="btn purple" onclick="document.getElementById('apiQ').value='isbn:'+document.getElementById('manualIsbn').value;apiSearch()">查詢</button></div>`}
 function exportData(){let blob=new Blob([JSON.stringify(db,null,2)],{type:'application/json'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='我的紙本書櫃_backup.json';a.click()}
 renderAll();
 </script>
