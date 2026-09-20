@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#111827">
-<title>我的紙本書櫃 V2</title>
+<title>我的收藏櫃</title>
 <style>
 :root{
   --bg:#f5f7fb;--card:#fff;--text:#172033;--muted:#6b7280;--line:#e5e7eb;
@@ -59,7 +59,7 @@ label{font-size:12px;font-weight:800;color:#475569;display:block;margin:10px 0 6
 
 <main>
 <section id="home" class="page active">
-  <div class="hero"><h1>把每一本紙本書，收進自己的書櫃。</h1><p>搜尋書名／作者、掃 ISBN、記錄每一集的價格與收藏狀態。</p></div>
+  <div class="hero"><h1>記錄你每一個收藏</h1><p>搜尋書名／作者、掃 ISBN、記錄每一集的價格與收藏狀態。</p></div>
   <div class="grid">
     <div class="stat"><b id="sBooks">0</b><span>已收藏本數</span></div>
     <div class="stat"><b id="sSeries">0</b><span>收藏系列</span></div>
@@ -163,7 +163,7 @@ function renderStats(){
 function openAdd(mode='search'){
  showModal(`<h2>新增作品</h2>
  <div class="notice">可用書名、作者或 ISBN 搜尋網路書目。搜尋到後會自動帶入標題、作者、出版社、語言、ISBN、出版日、分類、封面、頁數與可取得的參考價格；最後仍建議你確認「台灣紙本版本」是否正確。</div>
- <label>搜尋書名／作者／ISBN</label><div class="searchbar"><input id="apiQ" placeholder="例如：進擊的巨人／村上春樹／978..." onkeydown="if(event.key==='Enter')apiSearch()"><button class="btn purple" onclick="apiSearch()">搜尋</button></div>
+ <label>搜尋書名／作者／ISBN</label><div class="searchbar"><input id="apiQ" placeholder="例如：相反的你和我／阿賀沢紅茶／9786264342674" onkeydown="if(event.key==='Enter')apiSearch()"><button class="btn purple" onclick="apiSearch()">搜尋</button></div>
  <div id="scanArea" style="display:${mode==='isbn'?'block':'none'};margin-top:12px"></div>
  <div id="apiResults" style="margin-top:10px"></div>
  <div class="card" style="margin-top:14px;background:#fafafa"><h3>或直接手動建立</h3><button class="btn" onclick="openEditor({})">手動新增</button></div>`)
