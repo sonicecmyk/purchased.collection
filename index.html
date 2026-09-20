@@ -116,7 +116,8 @@ label{font-size:12px;font-weight:800;color:#475569;display:block;margin:10px 0 6
 </nav>
 </div>
 
-<div id="modal" class="modal" onclick="if(event.target===this)closeModal()"><div class="sheet">
+<div id="modal" class="modal"><div class="sheet" style="position:relative">
+  <button class="iconbtn" style="position:absolute;top:14px;right:14px;width:34px;height:34px;font-size:15px;z-index:5" onclick="confirmCloseModal()">✕</button>
   <div class="handle"></div><div id="modalBody"></div>
 </div></div>
 <div id="toast" class="toast"></div>
@@ -130,6 +131,18 @@ let db=JSON.parse(localStorage.getItem(KEY)||'null')||{
 };
 function save(){localStorage.setItem(KEY,JSON.stringify(db));renderAll()}
 function esc(s=''){return String(s).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]))}
+function parseVolumeTokens(input){
+ let out=[];
+ (input||'').split(/[,，、]/).map(t=>t.trim()).filter(Boolean).forEach(t=>{
+  let m=t.match(/^(\d+)\s*[-~到至]\s*(\d+)$/);
+  if(m){
+   let a=parseInt(m[1],10),b=parseInt(m[2],10);
+   if(!isNaN(a)&&!isNaN(b)&&a<=b&&(b-a)<=300){for(let i=a;i<=b;i++)out.push(String(i))}
+   else out.push(t)
+  } else out.push(t)
+ });
+ return out.length?out:['']
+}
 function money(v){if(v===null||v===undefined||v==='')return '—';return '$'+Number(v).toLocaleString('zh-TW',{maximumFractionDigits:2})}
 function resizeImageFile(file,maxW=500,quality=0.82){
  return new Promise((resolve,reject)=>{
@@ -159,6 +172,12 @@ async function handleCoverFile(inputEl,targetId){
 function toast(s){let t=document.getElementById('toast');t.textContent=s;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),1800)}
 function go(p){document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));document.getElementById(p).classList.add('active');document.querySelectorAll('.nav').forEach(x=>x.classList.toggle('active',x.dataset.page===p));renderAll()}
 function closeModal(){document.getElementById('modal').classList.remove('show')}
+function confirmCloseModal(){
+ let body=document.getElementById('modalBody');
+ let hasInput=Array.from(body.querySelectorAll('input[type="text"],input:not([type]),input[type="number"],input[type="date"],textarea')).some(el=>el.value && String(el.value).trim()!=='');
+ if(hasInput && !confirm('要放棄目前輸入的內容嗎？'))return;
+ closeModal()
+}
 function showModal(html){document.getElementById('modalBody').innerHTML=html;document.getElementById('modal').classList.add('show')}
 
 function renderAll(){renderHome();renderBooks();renderWant();renderStats()}
@@ -215,6 +234,7 @@ function renderStats(){
 function openAdd(mode='search'){
  showModal(`<h2>新增作品</h2>
  <div class="notice">可用書名、作者或 ISBN 搜尋網路書目。搜尋到後會自動帶入標題、作者、出版社、語言、ISBN、出版日、分類、封面、頁數與可取得的參考價格；最後仍建議你確認「台灣紙本版本」是否正確。</div>
+ ${location.protocol==='file:'?'<div class="notice" style="background:#fff7ed;color:#9a3412;margin-top:8px">⚠️ 這個頁面目前是用本機檔案（file://）打開的。部分瀏覽器會限制本機檔案對外連線，如果搜尋一直失敗，可以試試把這個檔案放到雲端硬碟／簡易網頁空間後用網址開啟，或直接使用「手動新增」。</div>':''}
  <label>搜尋書名／作者／ISBN</label><div class="searchbar"><input id="apiQ" placeholder="例如：相反的你和我／阿賀沢紅茶／9786264342674" oninput="debouncedApiSearch()" onkeydown="if(event.key==='Enter'){clearTimeout(apiTimer);apiSearch()}"><button class="btn purple" onclick="clearTimeout(apiTimer);apiSearch()">搜尋</button></div>
  <div id="scanArea" style="display:${mode==='isbn'?'block':'none'};margin-top:12px"></div>
  <div id="apiResults" style="margin-top:10px"></div>
@@ -229,17 +249,40 @@ function debouncedApiSearch(){
  apiTimer=setTimeout(apiSearch,450)
 }
 async function fetchBooks(q){
- let url='https://www.googleapis.com/books/v1/volumes?q='+encodeURIComponent(q)+'&maxResults=20&printType=books&orderBy=relevance&country=TW';
- let r=await fetch(url);let data=await r.json();
- return (data.items||[]).map(x=>normalizeBook(x))
+ let ctrl=new AbortController(),timer=setTimeout(()=>ctrl.abort(),9000);
+ try{
+  let url='https://www.googleapis.com/books/v1/volumes?q='+encodeURIComponent(q)+'&maxResults=20&printType=books&orderBy=relevance&country=TW';
+  let r=await fetch(url,{signal:ctrl.signal});
+  if(!r.ok)throw new Error('Google Books HTTP '+r.status);
+  let data=await r.json();
+  return (data.items||[]).map(x=>normalizeBook(x))
+ } finally { clearTimeout(timer) }
+}
+async function fetchFromOpenLibrary(q){
+ let ctrl=new AbortController(),timer=setTimeout(()=>ctrl.abort(),9000);
+ try{
+  let url='https://openlibrary.org/search.json?q='+encodeURIComponent(q)+'&limit=20';
+  let r=await fetch(url,{signal:ctrl.signal});
+  if(!r.ok)throw new Error('Open Library HTTP '+r.status);
+  let data=await r.json();
+  return (data.docs||[]).map(d=>({
+   title:d.title||'',subtitle:'',authors:d.author_name||[],publisher:(d.publisher||[])[0]||'',
+   language:(d.language||[])[0]||'',category:(d.subject||[]).slice(0,3).join(', '),
+   publishedDate:d.first_publish_year?String(d.first_publish_year):'',
+   isbn13:(d.isbn||[]).find(x=>x.length===13)||'',isbn10:(d.isbn||[]).find(x=>x.length===10)||'',
+   cover:d.cover_i?`https://covers.openlibrary.org/b/id/${d.cover_i}-M.jpg`:'',
+   pageCount:'',description:'',listPrice:''
+  }))
+ } finally { clearTimeout(timer) }
 }
 async function apiSearch(){
  let raw=document.getElementById('apiQ').value.trim();if(!raw)return;
  let mySeq=++apiSeq;
  document.getElementById('apiResults').innerHTML='<div class="empty">搜尋中…</div>';
+ let q=raw.replace(/[\u3000]/g,' ').trim();
+ let items=[],lastErr=null;
  try{
-  let q=raw.replace(/[\u3000]/g,' ').trim();
-  let items=await fetchBooks(q);
+  items=await fetchBooks(q);
   if(!items.length && !/^isbn:/i.test(q)){
    // 沒有結果時，自動放寬查詢：拿掉全形符號／分隔字元、只留第一段關鍵字再試一次
    let loose=q.replace(/[《》「」【】〈〉（）()／\/,，、\-–—]/g,' ').replace(/\s+/g,' ').trim();
@@ -249,9 +292,20 @@ async function apiSearch(){
     if(firstTerm && firstTerm.length>=2 && firstTerm!==loose) items=await fetchBooks(firstTerm);
    }
   }
-  if(mySeq!==apiSeq)return; // 有更新的搜尋已經送出，捨棄這次較舊的結果
-  document.getElementById('apiResults').innerHTML=items.length?items.map((b,i)=>`<div class="result"><img class="cover" src="${esc(b.cover)}" onerror="this.style.visibility='hidden'"><div class="meta"><div class="title">${esc(b.title)}</div><div class="muted">${esc(b.authors.join('、'))}</div><div class="muted">${esc(b.publisher||'出版社未提供')} · ${esc(b.publishedDate||'出版日未提供')} · ${esc(b.language||'語言未提供')}</div><div class="muted">ISBN：${esc(b.isbn13||b.isbn10||'未提供')} · ${b.pageCount||'—'} 頁</div><div><span class="tag purple">${esc(b.category||'未分類')}</span>${b.listPrice!==''?`<span class="tag">參考價 ${money(b.listPrice)}</span>`:''}</div><button class="btn small purple" style="margin-top:7px" onclick='openEditor(${JSON.stringify(b)})'>使用這筆資料</button></div></div>`).join(''):'<div class="empty">查不到結果。可以換作者名、ISBN，或手動新增。</div>'
- }catch(e){if(mySeq===apiSeq)document.getElementById('apiResults').innerHTML='<div class="empty">網路搜尋失敗。請確認網路連線，或改用手動新增。</div>'}
+ }catch(e){lastErr=e}
+ if(!items.length){
+  try{items=await fetchFromOpenLibrary(q.replace(/^isbn:/i,''))}
+  catch(e2){if(!lastErr)lastErr=e2}
+ }
+ if(mySeq!==apiSeq)return; // 有更新的搜尋已經送出，捨棄這次較舊的結果
+ if(items.length){
+  document.getElementById('apiResults').innerHTML=items.map((b,i)=>`<div class="result"><img class="cover" src="${esc(b.cover)}" onerror="this.style.visibility='hidden'"><div class="meta"><div class="title">${esc(b.title)}</div><div class="muted">${esc(b.authors.join('、'))}</div><div class="muted">${esc(b.publisher||'出版社未提供')} · ${esc(b.publishedDate||'出版日未提供')} · ${esc(b.language||'語言未提供')}</div><div class="muted">ISBN：${esc(b.isbn13||b.isbn10||'未提供')} · ${b.pageCount||'—'} 頁</div><div><span class="tag purple">${esc(b.category||'未分類')}</span>${b.listPrice!==''?`<span class="tag">參考價 ${money(b.listPrice)}</span>`:''}</div><button class="btn small purple" style="margin-top:7px" onclick='openEditor(${JSON.stringify(b)})'>使用這筆資料</button></div></div>`).join('')
+ } else if(lastErr){
+  let hint=lastErr.name==='AbortError'?'搜尋逾時，請確認網路連線':esc(lastErr.message||String(lastErr));
+  document.getElementById('apiResults').innerHTML=`<div class="empty">網路搜尋失敗（${hint}）。請確認網路連線，或改用手動新增。</div>`
+ } else {
+  document.getElementById('apiResults').innerHTML='<div class="empty">查不到結果。可以換作者名、ISBN，或手動新增。</div>'
+ }
 }
 function normalizeBook(x){
  let v=x.volumeInfo||{},ids=v.industryIdentifiers||[],p=ids.find(i=>i.type==='ISBN_13')?.identifier||'',i10=ids.find(i=>i.type==='ISBN_10')?.identifier||'';
@@ -286,7 +340,7 @@ function openEditor(b){
  <div><label>頁數</label><input id="fPages" type="number" value="${esc(b.pageCount||'')}"></div>
  <div class="full"><label>封面 URL 或從相簿上傳</label><input id="fCover" value="${esc(b.cover||'')}">
  <input type="file" accept="image/*" style="margin-top:8px" onchange="handleCoverFile(this,'fCover')"></div>
- <div class="full"><label>第一個單集／卷次（可輸入 25.5、特別篇等）</label><input id="fVol" value="1"></div>
+ <div class="full"><label>第一批要建立的單集／卷次（可輸入範圍，如 1-12；可輸入 25.5、特別篇等）</label><input id="fVol" value="1"></div>
  <div><label>參考／原價</label><input id="fList" type="number" step="0.01" value="${esc(b.listPrice??'')}"></div>
  <div><label>實際購入價</label><input id="fBuy" type="number" step="0.01" value=""></div>
  <div><label>折扣</label><input id="fDiscount" type="number" step="0.01" placeholder="例如 0.8 或 20"></div>
@@ -299,32 +353,53 @@ function openEditor(b){
 }
 function createSeries(b){
  let s={id:uid(),title:document.getElementById('fTitle').value.trim(),authors:document.getElementById('fAuthor').value.split(/[,、]/).map(x=>x.trim()).filter(Boolean),publisher:document.getElementById('fPublisher').value.trim(),language:document.getElementById('fLang').value.trim(),category:document.getElementById('fCat').value.trim(),cover:document.getElementById('fCover').value.trim(),pages:document.getElementById('fPages').value,createdAt:new Date().toISOString(),volumes:[]};
- let v={id:uid(),volumeNo:document.getElementById('fVol').value.trim(),title:b.subtitle||'',isbn13:document.getElementById('fISBN13').value.trim(),isbn10:document.getElementById('fISBN10').value.trim(),publishedDate:document.getElementById('fDate').value.trim(),cover:document.getElementById('fCover').value.trim(),language:document.getElementById('fLang').value.trim(),listPrice:document.getElementById('fList').value,purchasePrice:document.getElementById('fBuy').value,discount:document.getElementById('fDiscount').value,priority:document.getElementById('fPriority').value,notes:document.getElementById('fNotes').value.trim(),owned:document.getElementById('fOwned').checked,sell:document.getElementById('fSell').checked,purchaseDate:new Date().toISOString().slice(0,10)};
- if(!s.title){toast('請輸入作品名稱');return}s.volumes.push(v);db.series.unshift(s);save();closeModal();toast('已加入書櫃')}
+ if(!s.title){toast('請輸入作品名稱');return}
+ let tokens=parseVolumeTokens(document.getElementById('fVol').value.trim()||'1');
+ let owned=document.getElementById('fOwned').checked,sell=document.getElementById('fSell').checked,today=new Date().toISOString().slice(0,10);
+ let listPrice=document.getElementById('fList').value,purchasePrice=document.getElementById('fBuy').value,discount=document.getElementById('fDiscount').value,priority=document.getElementById('fPriority').value,notes=document.getElementById('fNotes').value.trim(),cover=document.getElementById('fCover').value.trim(),language=document.getElementById('fLang').value.trim(),isbn13=document.getElementById('fISBN13').value.trim(),isbn10=document.getElementById('fISBN10').value.trim(),publishedDate=document.getElementById('fDate').value.trim();
+ tokens.forEach((no,i)=>{
+  s.volumes.push({id:uid(),volumeNo:no,title:tokens.length===1?(b.subtitle||''):'',isbn13:tokens.length===1?isbn13:'',isbn10:tokens.length===1?isbn10:'',publishedDate:tokens.length===1?publishedDate:'',cover,language,listPrice,purchasePrice,discount,priority,notes,owned,sell,purchaseDate:owned?today:''})
+ });
+ db.series.unshift(s);save();closeModal();toast(tokens.length>1?`已加入書櫃，共建立 ${tokens.length} 集`:'已加入書櫃')}
 function openSeries(id){
  let s=db.series.find(x=>x.id===id);if(!s)return;
  showModal(`<div class="row"><img class="cover big" src="${esc(s.cover||'')}" onerror="this.style.visibility='hidden'"><div class="meta"><h2>${esc(s.title)}</h2><div class="muted">${esc((s.authors||[]).join('、'))}</div><div class="muted">${esc(s.publisher||'')} · ${esc(s.language||'')} · ${esc(s.category||'未分類')}</div></div></div>
  <div class="row wrap" style="margin:15px 0"><button class="btn purple" onclick="addVolume('${s.id}')">＋ 新增單集</button><button class="btn" onclick="shareSeries('${s.id}')">分享這個系列</button></div>
  <div class="list">${(s.volumes||[]).map(v=>`<div class="card"><div class="row"><img class="cover" src="${esc(v.cover||s.cover||'')}" onerror="this.style.visibility='hidden'"><div class="meta"><div class="title">第 ${esc(v.volumeNo||'—')} 集 ${v.title?'· '+esc(v.title):''}</div><div class="muted">ISBN：${esc(v.isbn13||v.isbn10||'—')} · ${esc(v.publishedDate||'出版日未填')}</div><div class="muted">參考價 ${money(v.listPrice)} · 實付 ${money(v.purchasePrice)} · 折扣 ${esc(v.discount||'—')}</div>${v.notes?`<div class="muted">備註：${esc(v.notes)}</div>`:''}${!v.owned?`<span class="tag">優先：${esc(v.priority||'中')}</span>`:''}</div></div><div class="row wrap" style="margin-top:10px"><button class="btn small ${v.owned?'green':'purple'}" onclick="toggleOwned('${s.id}','${v.id}')">${v.owned?'已購入':'標記購入'}</button><button class="btn small" onclick="editVolume('${s.id}','${v.id}')">編輯價格</button><button class="btn small red" onclick="deleteVolume('${s.id}','${v.id}')">刪除</button></div></div>`).join('')}</div>`)
 }
-function addVolume(sid){let s=db.series.find(x=>x.id===sid);showModal(`<h2>新增單集</h2><div class="formgrid">
-<div><label>卷次／單集</label><input id="nvNo" placeholder="例如 2、25.5、特別篇"></div><div><label>ISBN-13</label><input id="nvISBN"></div>
-<div><label>出版日</label><input id="nvDate"></div><div><label>參考／原價</label><input id="nvList" type="number" step="0.01"></div>
-<div><label>實際購入價</label><input id="nvBuy" type="number" step="0.01"></div><div><label>折扣</label><input id="nvDisc" type="number" step="0.01"></div>
+function addVolume(sid){let s=db.series.find(x=>x.id===sid);showModal(`<h2>新增單集</h2>
+<div class="notice">卷次／單集可以一次輸入多集，例如「1-12」代表第 1 到 12 集，或「1,3,5-8」混合輸入。其餘欄位（價格、封面、優先順序等）會套用到每一集，之後可再個別調整；ISBN 與出版日只有輸入單一集數時才會用到。</div>
+<div class="formgrid">
+<div class="full"><label>卷次／單集（可輸入範圍，如 1-12）</label><input id="nvNo" placeholder="例如 2、25.5、特別篇，或 1-12"></div>
+<div><label>ISBN-13（僅單一集數時使用）</label><input id="nvISBN"></div>
+<div><label>出版日（僅單一集數時使用）</label><input id="nvDate"></div>
+<div><label>參考／原價（套用到每一集）</label><input id="nvList" type="number" step="0.01"></div>
+<div><label>實際購入價（套用到每一集）</label><input id="nvBuy" type="number" step="0.01"></div>
+<div><label>折扣</label><input id="nvDisc" type="number" step="0.01"></div>
 <div><label>優先順序（想買清單用）</label><select id="nvPriority"><option value="中">中</option><option value="高">高</option><option value="低">低</option></select></div>
-<div class="full"><label>備註</label><input id="nvNotes" placeholder="例如：簽名版、特典附錄"></div>
-<div class="full"><label>封面 URL 或從相簿上傳</label><input id="nvCover" value="${esc(s.cover||'')}">
+<div class="full"><label>備註（套用到每一集）</label><input id="nvNotes" placeholder="例如：簽名版、特典附錄"></div>
+<div class="full"><label>封面 URL 或從相簿上傳（套用到每一集）</label><input id="nvCover" value="${esc(s.cover||'')}">
 <input type="file" accept="image/*" style="margin-top:8px" onchange="handleCoverFile(this,'nvCover')"></div></div>
-<div class="switch"><span>已購入</span><input id="nvOwned" type="checkbox"></div>
+<div class="switch"><span>已購入（套用到每一集）</span><input id="nvOwned" type="checkbox"></div>
 <button class="btn purple" style="width:100%;margin-top:12px" onclick="saveNewVolume('${sid}')">加入單集</button>`) }
-function saveNewVolume(sid){let s=db.series.find(x=>x.id===sid);s.volumes.push({id:uid(),volumeNo:document.getElementById('nvNo').value.trim(),isbn13:document.getElementById('nvISBN').value.trim(),publishedDate:document.getElementById('nvDate').value.trim(),listPrice:document.getElementById('nvList').value,purchasePrice:document.getElementById('nvBuy').value,discount:document.getElementById('nvDisc').value,priority:document.getElementById('nvPriority').value,notes:document.getElementById('nvNotes').value.trim(),cover:document.getElementById('nvCover').value,owned:document.getElementById('nvOwned').checked,sell:false,purchaseDate:new Date().toISOString().slice(0,10)});save();openSeries(sid)}
+function saveNewVolume(sid){
+ let s=db.series.find(x=>x.id===sid);
+ let tokens=parseVolumeTokens(document.getElementById('nvNo').value.trim());
+ let owned=document.getElementById('nvOwned').checked,today=new Date().toISOString().slice(0,10);
+ let listPrice=document.getElementById('nvList').value,purchasePrice=document.getElementById('nvBuy').value,discount=document.getElementById('nvDisc').value,priority=document.getElementById('nvPriority').value,notes=document.getElementById('nvNotes').value.trim(),cover=document.getElementById('nvCover').value,isbn13=document.getElementById('nvISBN').value.trim(),publishedDate=document.getElementById('nvDate').value.trim();
+ tokens.forEach((no,i)=>{
+  s.volumes.push({id:uid(),volumeNo:no,isbn13:tokens.length===1?isbn13:'',publishedDate:tokens.length===1?publishedDate:'',listPrice,purchasePrice,discount,priority,notes,cover,owned,sell:false,purchaseDate:owned?today:''})
+ });
+ save();openSeries(sid);toast(tokens.length>1?`已新增 ${tokens.length} 集`:'已加入單集')
+}
 function editVolume(sid,vid){let s=db.series.find(x=>x.id===sid),v=s.volumes.find(x=>x.id===vid);showModal(`<h2>編輯第 ${esc(v.volumeNo)} 集</h2><div class="formgrid">
+<div><label>ISBN-13</label><input id="evISBN" value="${esc(v.isbn13||'')}"></div><div><label>出版日</label><input id="evDate2" value="${esc(v.publishedDate||'')}"></div>
 <div><label>參考／原價</label><input id="evList" type="number" step="0.01" value="${esc(v.listPrice||'')}"></div><div><label>實際購入價</label><input id="evBuy" type="number" step="0.01" value="${esc(v.purchasePrice||'')}"></div>
 <div><label>折扣</label><input id="evDisc" type="number" step="0.01" value="${esc(v.discount||'')}"></div><div><label>購入日期</label><input id="evDate" type="date" value="${esc(v.purchaseDate||'')}"></div>
 <div><label>優先順序（想買清單用）</label><select id="evPriority"><option value="中" ${!v.priority||v.priority==='中'?'selected':''}>中</option><option value="高" ${v.priority==='高'?'selected':''}>高</option><option value="低" ${v.priority==='低'?'selected':''}>低</option></select></div>
 <div class="full"><label>備註</label><input id="evNotes" value="${esc(v.notes||'')}"></div>
 </div><div class="switch"><span>待出售</span><input id="evSell" type="checkbox" ${v.sell?'checked':''}></div><button class="btn purple" style="width:100%;margin-top:12px" onclick="saveEdit('${sid}','${vid}')">儲存</button>`) }
-function saveEdit(sid,vid){let v=db.series.find(s=>s.id===sid).volumes.find(v=>v.id===vid);v.listPrice=document.getElementById('evList').value;v.purchasePrice=document.getElementById('evBuy').value;v.discount=document.getElementById('evDisc').value;v.purchaseDate=document.getElementById('evDate').value;v.priority=document.getElementById('evPriority').value;v.notes=document.getElementById('evNotes').value.trim();v.sell=document.getElementById('evSell').checked;save();openSeries(sid)}
+function saveEdit(sid,vid){let v=db.series.find(s=>s.id===sid).volumes.find(v=>v.id===vid);v.isbn13=document.getElementById('evISBN').value.trim();v.publishedDate=document.getElementById('evDate2').value.trim();v.listPrice=document.getElementById('evList').value;v.purchasePrice=document.getElementById('evBuy').value;v.discount=document.getElementById('evDisc').value;v.purchaseDate=document.getElementById('evDate').value;v.priority=document.getElementById('evPriority').value;v.notes=document.getElementById('evNotes').value.trim();v.sell=document.getElementById('evSell').checked;save();openSeries(sid)}
 function toggleOwned(sid,vid){let v=db.series.find(s=>s.id===sid).volumes.find(v=>v.id===vid);v.owned=!v.owned;if(v.owned&&!v.purchaseDate)v.purchaseDate=new Date().toISOString().slice(0,10);save();openSeries(sid)}
 function buyVolume(sid,vid){let v=db.series.find(s=>s.id===sid).volumes.find(v=>v.id===vid);v.owned=true;showModal(`<h2>記錄購入價格</h2><label>實際購入價（可輸入小數）</label><input id="quickBuy" type="number" step="0.01" placeholder="例如 25.5"><label>折扣</label><input id="quickDisc" type="number" step="0.01"><button class="btn purple" style="width:100%;margin-top:12px" onclick="finishBuy('${sid}','${vid}')">完成</button>`)}
 function finishBuy(sid,vid){let v=db.series.find(s=>s.id===sid).volumes.find(v=>v.id===vid);v.purchasePrice=document.getElementById('quickBuy').value;v.discount=document.getElementById('quickDisc').value;v.purchaseDate=new Date().toISOString().slice(0,10);save();closeModal();toast('已更新購入紀錄')}
