@@ -39,7 +39,7 @@ label{font-size:12px;font-weight:800;color:#475569;display:block;margin:10px 0 6
 .cover{width:62px;height:86px;object-fit:cover;border-radius:9px;background:#e5e7eb;flex:none}.cover.big{width:90px;height:126px}
 .meta{min-width:0;flex:1}.title{font-weight:900;line-height:1.35}.muted{color:var(--muted);font-size:12px;line-height:1.5}.tag{display:inline-block;background:#f1f5f9;border-radius:999px;padding:4px 8px;font-size:11px;margin:3px 3px 0 0}.tag.purple{background:var(--accent2);color:#5b21b6}
 .empty{text-align:center;color:var(--muted);padding:28px 10px}.list{display:flex;flex-direction:column;gap:10px}
-.bookrow{display:flex;gap:12px;align-items:center;background:#fff;border:1px solid var(--line);padding:12px;border-radius:18px}.bookrow .cover{width:50px;height:70px}
+.bookrow{display:flex;gap:12px;align-items:center;background:#fff;border:1px solid var(--line);padding:10px 12px;border-radius:16px}.bookrow .cover{width:44px;height:62px}.bookrow .title{font-size:14px}
 .progress{height:8px;background:#eef2f7;border-radius:99px;overflow:hidden}.progress i{display:block;height:100%;background:var(--accent);border-radius:99px}
 .bottom{position:fixed;z-index:30;bottom:0;left:50%;transform:translateX(-50%);width:min(760px,100%);height:76px;background:rgba(255,255,255,.96);backdrop-filter:blur(18px);border-top:1px solid var(--line);display:grid;grid-template-columns:1fr 1fr 1fr 1fr 1fr;align-items:center;padding:6px 8px calc(6px + env(safe-area-inset-bottom))}
 .nav{background:transparent;color:#64748b;font-size:11px;font-weight:800;height:60px}.nav span{display:block;font-size:21px;margin-bottom:3px}.nav.active{color:#111827}
@@ -84,7 +84,7 @@ label{font-size:12px;font-weight:800;color:#475569;display:block;margin:10px 0 6
 </section>
 
 <section id="books" class="page">
-  <div class="row between"><div><h2>我的書櫃</h2><div class="muted">每一集都可以有自己的價格、折扣與購買狀態。</div></div></div>
+  <div class="row between"><div><h2>我的書櫃</h2><div class="muted">依作品分組顯示，點一下看每一集的價格與狀態。</div></div></div>
   <div class="card">
     <div class="searchbar"><input id="localSearch" placeholder="搜尋我的書櫃：書名／作者／ISBN" oninput="renderBooks()"><button class="btn" onclick="renderBooks()">搜尋</button></div>
     <div class="formgrid" style="margin-top:10px">
@@ -196,23 +196,29 @@ function renderBooks(){
  let q=(document.getElementById('localSearch')?.value||'').toLowerCase();
  let filter=document.getElementById('bookFilter')?.value||'all';
  let sortBy=document.getElementById('bookSort')?.value||'default';
- let rows=[];
- db.series.forEach(s=>(s.volumes||[]).forEach(v=>{let hay=[s.title,...(s.authors||[]),v.title,v.isbn13,v.isbn10].join(' ').toLowerCase();if(!q||hay.includes(q))rows.push({s,v})}));
- if(filter==='owned')rows=rows.filter(({v})=>v.owned);
- else if(filter==='unowned')rows=rows.filter(({v})=>!v.owned);
- else if(filter==='sell')rows=rows.filter(({v})=>v.sell);
- let priceOf=v=>Number(v.purchasePrice||v.listPrice||0);
- if(sortBy==='dateDesc')rows.sort((a,b)=>(b.v.purchaseDate||'').localeCompare(a.v.purchaseDate||''));
- else if(sortBy==='dateAsc')rows.sort((a,b)=>(a.v.purchaseDate||'').localeCompare(b.v.purchaseDate||''));
- else if(sortBy==='priceDesc')rows.sort((a,b)=>priceOf(b.v)-priceOf(a.v));
- else if(sortBy==='priceAsc')rows.sort((a,b)=>priceOf(a.v)-priceOf(b.v));
- else if(sortBy==='unownedFirst')rows.sort((a,b)=>(a.v.owned===b.v.owned)?0:(a.v.owned?1:-1));
- document.getElementById('bookList').innerHTML=rows.length?rows.map(({s,v})=>`<div class="bookrow" onclick="openSeries('${s.id}')">
- <img class="cover" src="${esc(v.cover||s.cover||'')}" onerror="this.style.visibility='hidden'">
- <div class="meta"><div class="title">${esc(s.title)} ${v.volumeNo?`· 第 ${esc(v.volumeNo)} 集`:''}</div>
- <div class="muted">${esc((s.authors||[]).join('、'))} · ${esc(s.publisher||'出版社未填')} · ${esc(v.language||s.language||'')}</div>
- ${v.notes?`<div class="muted">備註：${esc(v.notes)}</div>`:''}
- <div><span class="tag">${v.owned?'已收藏':'待購入'}</span>${v.sell?'<span class="tag">待出售</span>':''}<span class="tag">${money(v.purchasePrice)}</span></div></div></div>`).join(''):'<div class="empty">找不到符合的書。</div>'
+ let rows=db.series.filter(s=>{
+  if(q){
+   let hitSeries=[s.title,...(s.authors||[])].join(' ').toLowerCase().includes(q);
+   let hitVol=(s.volumes||[]).some(v=>[v.title,v.isbn13,v.isbn10].join(' ').toLowerCase().includes(q));
+   if(!hitSeries && !hitVol)return false
+  }
+  if(filter==='owned')return (s.volumes||[]).some(v=>v.owned);
+  if(filter==='unowned')return (s.volumes||[]).some(v=>!v.owned);
+  if(filter==='sell')return (s.volumes||[]).some(v=>v.sell);
+  return true
+ });
+ let spendOf=s=>(s.volumes||[]).reduce((a,v)=>a+Number(v.purchasePrice||v.listPrice||0),0);
+ let lastDateOf=s=>(s.volumes||[]).map(v=>v.purchaseDate||'').sort().slice(-1)[0]||'';
+ let ratioOf=s=>{let t=(s.volumes||[]).length,o=(s.volumes||[]).filter(v=>v.owned).length;return t?o/t:1};
+ if(sortBy==='dateDesc')rows.sort((a,b)=>lastDateOf(b).localeCompare(lastDateOf(a)));
+ else if(sortBy==='dateAsc')rows.sort((a,b)=>lastDateOf(a).localeCompare(lastDateOf(b)));
+ else if(sortBy==='priceDesc')rows.sort((a,b)=>spendOf(b)-spendOf(a));
+ else if(sortBy==='priceAsc')rows.sort((a,b)=>spendOf(a)-spendOf(b));
+ else if(sortBy==='unownedFirst')rows.sort((a,b)=>ratioOf(a)-ratioOf(b));
+ document.getElementById('bookList').innerHTML=rows.length?rows.map(s=>{
+  let total=(s.volumes||[]).length,owned=(s.volumes||[]).filter(v=>v.owned).length,sell=(s.volumes||[]).filter(v=>v.sell).length,pct=total?Math.round(owned/total*100):0;
+  return `<div class="bookrow" onclick="openSeries('${s.id}')"><img class="cover" src="${esc(s.cover||'')}" onerror="this.style.visibility='hidden'"><div class="meta"><div class="title">${esc(s.title)}</div><div class="muted">${esc((s.authors||[]).join('、'))} · ${owned}/${total} 本${sell?` · ${sell} 本待出售`:''}</div><div class="progress"><i style="width:${pct}%"></i></div></div><b>${pct}%</b></div>`
+ }).join(''):'<div class="empty">找不到符合的作品。</div>'
 }
 function renderWant(){
  let rows=[];db.series.forEach(s=>(s.volumes||[]).filter(v=>!v.owned).forEach(v=>rows.push({s,v})));
@@ -248,10 +254,10 @@ function debouncedApiSearch(){
  if(q.length<2){document.getElementById('apiResults').innerHTML='';return}
  apiTimer=setTimeout(apiSearch,450)
 }
-async function fetchBooks(q){
+async function fetchBooks(q,restrictTW=true){
  let ctrl=new AbortController(),timer=setTimeout(()=>ctrl.abort(),9000);
  try{
-  let url='https://www.googleapis.com/books/v1/volumes?q='+encodeURIComponent(q)+'&maxResults=20&printType=books&orderBy=relevance&country=TW';
+  let url='https://www.googleapis.com/books/v1/volumes?q='+encodeURIComponent(q)+'&maxResults=20&printType=books&orderBy=relevance'+(restrictTW?'&country=TW':'');
   let r=await fetch(url,{signal:ctrl.signal});
   if(!r.ok)throw new Error('Google Books HTTP '+r.status);
   let data=await r.json();
@@ -284,12 +290,27 @@ async function apiSearch(){
  try{
   items=await fetchBooks(q);
   if(!items.length && !/^isbn:/i.test(q)){
-   // 沒有結果時，自動放寬查詢：拿掉全形符號／分隔字元、只留第一段關鍵字再試一次
+   // 沒有結果時，逐步放寬查詢
    let loose=q.replace(/[《》「」【】〈〉（）()／\/,，、\-–—]/g,' ').replace(/\s+/g,' ').trim();
    if(loose && loose!==q) items=await fetchBooks(loose);
+   if(!items.length && loose) items=await fetchBooks(loose,false); // 拿掉台灣地區限制再試一次
    if(!items.length){
-    let firstTerm=loose.split(' ')[0];
-    if(firstTerm && firstTerm.length>=2 && firstTerm!==loose) items=await fetchBooks(firstTerm);
+    // 中日韓文字通常沒有空白可斷詞，改成逐步縮短開頭幾個字再試
+    let cjk=loose.replace(/\s+/g,'');
+    if(/[\u3400-\u9fff]/.test(cjk)){
+     let tried=new Set();
+     for(let len of [6,4,3,2]){
+      if(items.length)break;
+      if(len>=cjk.length)continue;
+      let piece=cjk.slice(0,len);
+      if(piece.length<2||tried.has(piece))continue;
+      tried.add(piece);
+      items=await fetchBooks(piece,false)
+     }
+    } else {
+     let firstTerm=loose.split(' ')[0];
+     if(firstTerm && firstTerm.length>=2 && firstTerm!==loose) items=await fetchBooks(firstTerm,false);
+    }
    }
   }
  }catch(e){lastErr=e}
