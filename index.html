@@ -79,9 +79,8 @@ label{font-size:12px;font-weight:800;color:#475569;display:block;margin:10px 0 6
     <div class="stat"><b id="sWant">0</b><span>待購入</span></div>
   </div>
   <div class="card">
-    <div class="row between"><h2>快速開始</h2><button class="btn purple" onclick="openAdd()">＋ 新增作品</button></div>
+    <div class="row between"><h2>快速開始</h2><button class="btn purple" onclick="openEditor()">＋ 新增作品</button></div>
     <div class="row wrap">
-      <button class="btn" onclick="openAdd('isbn')">▣ 掃 ISBN</button>
       <button class="btn" onclick="go('want')">想買清單</button>
       <button class="btn" onclick="go('stats')">看作者統計</button>
     </div>
@@ -90,10 +89,11 @@ label{font-size:12px;font-weight:800;color:#475569;display:block;margin:10px 0 6
 </section>
 
 <section id="books" class="page">
-  <div class="row between"><div><h2>我的書櫃</h2><div class="muted">依作品分組顯示，點一下看每一集的價格與狀態。</div></div></div>
+  <div class="row between"><div><h2>我的收藏</h2><div class="muted">依作品分組顯示，點一下看每一項的價格與狀態。</div></div></div>
   <div class="card">
-    <div class="searchbar"><input id="localSearch" placeholder="搜尋我的書櫃：書名／作者／ISBN" oninput="renderBooks()"><button class="btn" onclick="renderBooks()">搜尋</button></div>
+    <div class="searchbar"><input id="localSearch" placeholder="搜尋：書名／作者品牌／ISBN" oninput="renderBooks()"><button class="btn" onclick="renderBooks()">搜尋</button></div>
     <div class="formgrid" style="margin-top:10px">
+      <div><label>類型</label><select id="bookType" onchange="renderBooks()"><option value="all">全部類型</option><option value="書籍">書籍</option><option value="專輯與周邊">專輯與周邊</option><option value="IP公仔／娃娃">IP公仔／娃娃</option><option value="其他收藏">其他收藏</option></select></div>
       <div><label>篩選</label><select id="bookFilter" onchange="renderBooks()"><option value="all">全部</option><option value="owned">已收藏</option><option value="unowned">待購入</option><option value="sell">待出售</option><option value="ongoing">連載中（要追新集）</option></select></div>
       <div><label>排序</label><select id="bookSort" onchange="renderBooks()"><option value="default">新增順序</option><option value="dateDesc">購入日期：新到舊</option><option value="dateAsc">購入日期：舊到新</option><option value="priceDesc">價格：高到低</option><option value="priceAsc">價格：低到高</option><option value="unownedFirst">未收藏優先</option></select></div>
     </div>
@@ -115,8 +115,8 @@ label{font-size:12px;font-weight:800;color:#475569;display:block;margin:10px 0 6
 
 <nav class="bottom">
   <button class="nav active" data-page="home" onclick="go('home')"><span>⌂</span>首頁</button>
-  <button class="nav" data-page="books" onclick="go('books')"><span>▣</span>書櫃</button>
-  <button class="nav addnav" onclick="openAdd()"><div class="plus">＋</div><em>新增</em></button>
+  <button class="nav" data-page="books" onclick="go('books')"><span>▣</span>收藏櫃</button>
+  <button class="nav addnav" onclick="openEditor()"><div class="plus">＋</div><em>新增</em></button>
   <button class="nav" data-page="want" onclick="go('want')"><span>♡</span>想買</button>
   <button class="nav" data-page="stats" onclick="go('stats')"><span>◔</span>統計</button>
 </nav>
@@ -151,6 +151,25 @@ function editionSelectHtml(id,current){
  return `<select id="${id}" onchange="document.getElementById('${id}Other').style.display=this.value==='其他'?'block':'none'">${[...known,'其他'].map(o=>`<option value="${o}" ${val===o?'selected':''}>${o}</option>`).join('')}</select><input id="${id}Other" placeholder="請輸入版本" value="${esc(otherVal)}" style="margin-top:6px;display:${val==='其他'?'block':'none'}">`
 }
 function readEdition(id){let sel=document.getElementById(id).value;return sel==='其他'?(document.getElementById(id+'Other').value.trim()||'其他'):sel}
+const COLLECTION_TYPES=['書籍','專輯與周邊','IP公仔／娃娃','其他收藏'];
+const CATEGORY_PRESETS={
+ '書籍':['漫畫','小說','輕小說','工具書','雜誌','寫真集','畫冊'],
+ '專輯與周邊':['專輯','海報','吊飾','珍藏卡','應援小物','服飾'],
+ 'IP公仔／娃娃':['公仔','黏土人','景品／Scale Figure','絨毛娃娃','吊飾'],
+ '其他收藏':[]
+};
+function typeSelectHtml(id,current,onchangeExtra){
+ let val=COLLECTION_TYPES.includes(current)?current:'書籍';
+ return `<select id="${id}" onchange="${onchangeExtra||''}">${COLLECTION_TYPES.map(o=>`<option value="${o}" ${val===o?'selected':''}>${o}</option>`).join('')}</select>`
+}
+function categorySelectHtml(id,type,current){
+ let known=CATEGORY_PRESETS[type]||[];
+ let val=current&&known.includes(current)?current:(current?'其他':(known[0]||'其他'));
+ let otherVal=(current&&!known.includes(current))?current:'';
+ let opts=[...known,'其他'];
+ return `<select id="${id}" onchange="document.getElementById('${id}Other').style.display=this.value==='其他'?'block':'none'">${opts.map(o=>`<option value="${o}" ${val===o?'selected':''}>${o}</option>`).join('')}</select><input id="${id}Other" placeholder="請輸入分類" value="${esc(otherVal)}" style="margin-top:6px;display:${val==='其他'?'block':'none'}">`
+}
+function readCategory(id){let sel=document.getElementById(id).value;return sel==='其他'?(document.getElementById(id+'Other').value.trim()||'其他'):sel}
 function parseVolumeTokens(input){
  let out=[];
  (input||'').split(/[,，、]/).map(t=>t.trim()).filter(Boolean).forEach(t=>{
@@ -214,9 +233,11 @@ function renderHome(){
 }
 function renderBooks(){
  let q=(document.getElementById('localSearch')?.value||'').toLowerCase();
+ let typeFilter=document.getElementById('bookType')?.value||'all';
  let filter=document.getElementById('bookFilter')?.value||'all';
  let sortBy=document.getElementById('bookSort')?.value||'default';
  let rows=db.series.filter(s=>{
+  if(typeFilter!=='all' && (s.type||'書籍')!==typeFilter)return false;
   if(q){
    let hitSeries=[s.title,...(s.authors||[])].join(' ').toLowerCase().includes(q);
    let hitVol=(s.volumes||[]).some(v=>[v.title,v.isbn13,v.isbn10].join(' ').toLowerCase().includes(q));
@@ -238,8 +259,10 @@ function renderBooks(){
  else if(sortBy==='unownedFirst')rows.sort((a,b)=>ratioOf(a)-ratioOf(b));
  document.getElementById('bookList').innerHTML=rows.length?rows.map(s=>{
   let total=(s.volumes||[]).length,owned=(s.volumes||[]).filter(v=>v.owned).length,sell=(s.volumes||[]).filter(v=>v.sell).length,pct=total?Math.round(owned/total*100):0;
+  let unit=(s.type==='書籍'||!s.type)?'本':'件';
   let statusTag=s.status==='已完結'?'<span class="tag green" style="margin:0 6px 2px 0;vertical-align:middle">已完結</span>':(s.status==='連載中'?'<span class="tag purple" style="margin:0 6px 2px 0;vertical-align:middle">連載中</span>':'');
-  return `<div class="bookrow" onclick="openSeries('${s.id}')"><img class="cover" src="${esc(s.cover||'')}" onerror="this.style.visibility='hidden'"><div class="meta"><div class="title">${statusTag}${esc(s.title)}</div><div class="muted">${esc((s.authors||[]).join('、'))} · ${owned}/${total} 本${sell?` · ${sell} 本待出售`:''}</div><div class="progress"><i style="width:${pct}%"></i></div></div><b>${pct}%</b></div>`
+  let typeTag=typeFilter==='all'?`<span class="tag" style="margin:0 6px 2px 0;vertical-align:middle">${esc(s.type||'書籍')}</span>`:'';
+  return `<div class="bookrow" onclick="openSeries('${s.id}')"><img class="cover" src="${esc(s.cover||'')}" onerror="this.style.visibility='hidden'"><div class="meta"><div class="title">${statusTag}${typeTag}${esc(s.title)}</div><div class="muted">${esc((s.authors||[]).join('、'))} · ${owned}/${total} ${unit}${sell?` · ${sell} ${unit}待出售`:''}</div><div class="progress"><i style="width:${pct}%"></i></div></div><b>${pct}%</b></div>`
  }).join(''):'<div class="empty">找不到符合的作品。</div>'
 }
 function renderWant(){
@@ -259,161 +282,25 @@ function renderStats(){
  document.getElementById('catStats').innerHTML=Object.entries(cmap).sort((a,b)=>b[1]-a[1]).map(([c,n])=>`<div class="switch"><span>${esc(c)}</span><b>${n} 本</b></div>`).join('')||'<div class="empty">還沒有分類資料。</div>'
 }
 
-function openAdd(mode='search'){
- showModal(`<h2>新增作品</h2>
- <div class="notice">可用書名、作者或 ISBN 搜尋網路書目，打完關鍵字後按 Enter 或「搜尋」鍵查詢（沒有做邊打字邊搜尋，是為了避免太快用完查詢額度而被拒絕）。搜尋到後會自動帶入標題、作者、出版社、語言、ISBN、出版日、分類、封面、頁數與可取得的參考價格；最後仍建議你確認「台灣紙本版本」是否正確。找不到的話，也可以用下方的 Google 搜尋連結手動確認書目後再手動新增。</div>
- ${location.protocol==='file:'?'<div class="notice" style="background:#fff7ed;color:#9a3412;margin-top:8px">⚠️ 這個頁面目前是用本機檔案（file://）打開的。部分瀏覽器會限制本機檔案對外連線，如果搜尋一直失敗，可以試試把這個檔案放到雲端硬碟／簡易網頁空間後用網址開啟，或直接使用「手動新增」。</div>':''}
- <label>搜尋書名／作者／ISBN</label><div class="searchbar"><input id="apiQ" placeholder="例如：相反的你和我／阿賀沢紅茶／9786264342674" onkeydown="if(event.key==='Enter')apiSearch(true)"><button id="apiSearchBtn" class="btn purple" onclick="apiSearch(true)">搜尋</button></div>
- <div id="scanArea" style="display:${mode==='isbn'?'block':'none'};margin-top:12px"></div>
- <div id="apiResults" style="margin-top:10px"></div>
- <div class="card" style="margin-top:14px;background:#fafafa"><h3>或直接手動建立</h3><button class="btn" onclick="openEditor({})">手動新增</button></div>`)
- if(mode==='isbn')startScanner()
-}
-let apiSeq=0,apiCache=new Map(),apiAbort=null,lastApiCallAt=0,apiBusy=false;
-function googleLinkHtml(raw){return `<div style="margin-top:10px"><a href="https://www.google.com/search?q=${encodeURIComponent(raw+' 書 ISBN')}" target="_blank" rel="noopener" class="btn small" style="display:inline-block;text-decoration:none">在 Google 搜尋「${esc(raw)}」↗</a></div>`}
-async function throttleGate(){
- let wait=1300-(Date.now()-lastApiCallAt);
- if(wait>0) await new Promise(r=>setTimeout(r,wait));
- lastApiCallAt=Date.now()
-}
-async function fetchBooks(q,restrictTW=true){
- let cacheKey=(restrictTW?'tw:':'all:')+q;
- if(apiCache.has(cacheKey))return apiCache.get(cacheKey);
- if(apiAbort)apiAbort.abort();
- let ctrl=new AbortController();apiAbort=ctrl;
- await throttleGate();
- let timer=setTimeout(()=>ctrl.abort(),9000);
- try{
-  let url='https://www.googleapis.com/books/v1/volumes?q='+encodeURIComponent(q)+'&maxResults=20&printType=books&orderBy=relevance'+(restrictTW?'&country=TW':'');
-  let r=await fetch(url,{signal:ctrl.signal});
-  if(!r.ok)throw new Error(r.status===429?'Google 這幾分鐘查太多次了（HTTP 429），請稍等 1-2 分鐘再查，或改用下面的 Google 搜尋連結':'Google Books HTTP '+r.status);
-  let data=await r.json();
-  let items=(data.items||[]).map(x=>normalizeBook(x));
-  apiCache.set(cacheKey,items);
-  return items
- } finally { clearTimeout(timer) }
-}
-async function fetchFromOpenLibrary(q){
- let ctrl=new AbortController(),timer=setTimeout(()=>ctrl.abort(),9000);
- try{
-  let url='https://openlibrary.org/search.json?q='+encodeURIComponent(q)+'&limit=20';
-  let r=await fetch(url,{signal:ctrl.signal});
-  if(!r.ok)throw new Error('Open Library HTTP '+r.status);
-  let data=await r.json();
-  return (data.docs||[]).map(d=>({
-   title:d.title||'',subtitle:'',authors:d.author_name||[],publisher:(d.publisher||[])[0]||'',
-   language:(d.language||[])[0]||'',category:(d.subject||[]).slice(0,3).join(', '),
-   publishedDate:d.first_publish_year?String(d.first_publish_year):'',
-   isbn13:(d.isbn||[]).find(x=>x.length===13)||'',isbn10:(d.isbn||[]).find(x=>x.length===10)||'',
-   cover:d.cover_i?`https://covers.openlibrary.org/b/id/${d.cover_i}-M.jpg`:'',
-   pageCount:'',description:'',listPrice:''
-  }))
- } finally { clearTimeout(timer) }
-}
-function renderApiResults(items){
- return items.map((b)=>`<div class="result"><img class="cover" src="${esc(b.cover)}" onerror="this.style.visibility='hidden'"><div class="meta"><div class="title">${esc(b.title)}</div><div class="muted">${esc(b.authors.join('、'))}</div><div class="muted">${esc(b.publisher||'出版社未提供')} · ${esc(b.publishedDate||'出版日未提供')} · ${esc(b.language||'語言未提供')}</div><div class="muted">ISBN：${esc(b.isbn13||b.isbn10||'未提供')} · ${b.pageCount||'—'} 頁</div><div><span class="tag purple">${esc(b.category||'未分類')}</span>${b.listPrice!==''?`<span class="tag">參考價 ${money(b.listPrice)}</span>`:''}</div><button class="btn small purple" style="margin-top:7px" onclick='openEditor(${JSON.stringify(b)})'>使用這筆資料</button></div></div>`).join('')
-}
-async function searchOpenLibrary(){
- let raw=document.getElementById('apiQ').value.trim();if(!raw)return;
- document.getElementById('apiResults').innerHTML='<div class="empty">查詢英文／國際書目中…</div>';
- try{
-  let items=await fetchFromOpenLibrary(raw.replace(/^isbn:/i,''));
-  document.getElementById('apiResults').innerHTML=items.length?renderApiResults(items)+googleLinkHtml(raw):'<div class="empty">英文／國際書目也查不到。</div>'+googleLinkHtml(raw)
- }catch(e){document.getElementById('apiResults').innerHTML='<div class="empty">查詢失敗。</div>'+googleLinkHtml(raw)}
-}
-async function apiSearch(full=true){
- let raw=document.getElementById('apiQ').value.trim();if(!raw)return;
- if(apiBusy)return;
- apiBusy=true;
- let btn=document.getElementById('apiSearchBtn');if(btn){btn.disabled=true;btn.style.opacity='.6'}
- let mySeq=++apiSeq;
- document.getElementById('apiResults').innerHTML='<div class="empty">搜尋中…</div>';
- let q=raw.replace(/[\u3000]/g,' ').trim();
- let items=[],lastErr=null;
- try{
-  items=await fetchBooks(q);
-  if(full && !items.length && !/^isbn:/i.test(q)){
-   // 沒有結果時，逐步放寬查詢（只在使用者主動按搜尋／Enter 時才做，減少查詢次數）
-   let loose=q.replace(/[《》「」【】〈〉（）()／\/,，、\-–—]/g,' ').replace(/\s+/g,' ').trim();
-   if(loose && loose!==q) items=await fetchBooks(loose);
-   if(!items.length && loose) items=await fetchBooks(loose,false); // 拿掉台灣地區限制再試一次
-   if(!items.length){
-    // 中日韓文字通常沒有空白可斷詞，改成逐步縮短開頭幾個字再試
-    let cjk=loose.replace(/\s+/g,'');
-    if(/[\u3400-\u9fff]/.test(cjk)){
-     let tried=new Set();
-     for(let len of [4,2]){
-      if(items.length)break;
-      if(len>=cjk.length)continue;
-      let piece=cjk.slice(0,len);
-      if(piece.length<2||tried.has(piece))continue;
-      tried.add(piece);
-      items=await fetchBooks(piece,false)
-     }
-    } else {
-     let firstTerm=loose.split(' ')[0];
-     if(firstTerm && firstTerm.length>=2 && firstTerm!==loose) items=await fetchBooks(firstTerm,false);
-    }
-   }
-  }
- }catch(e){lastErr=e}
- finally{apiBusy=false;if(btn){btn.disabled=false;btn.style.opacity='1'}}
- if(mySeq!==apiSeq)return; // 有更新的搜尋已經送出，捨棄這次較舊的結果（包含被取代而中止的請求）
- if(items.length){
-  document.getElementById('apiResults').innerHTML=renderApiResults(items)+(full?googleLinkHtml(raw):'')
- } else if(lastErr && lastErr.name!=='AbortError'){
-  document.getElementById('apiResults').innerHTML=`<div class="empty">網路搜尋失敗（${esc(lastErr.message||String(lastErr))}）。請確認網路連線，或改用手動新增。</div>${googleLinkHtml(raw)}`
- } else if(full){
-  let isCJK=/[\u3400-\u9fff]/.test(q);
-  document.getElementById('apiResults').innerHTML=`<div class="empty">查不到結果。可以換關鍵字、用 ISBN，或直接用下面的 Google 搜尋確認書名後手動新增。</div>${googleLinkHtml(raw)}${isCJK?'<div style="margin-top:8px"><button class="btn small" onclick="searchOpenLibrary()">改查英文／國際書目資料庫</button></div>':''}`
- }
-}
-function normalizeLangLabel(code){
- let c=(code||'').toLowerCase();
- if(!c)return '繁體中文';
- if(c.startsWith('zh'))return '繁體中文';
- if(c.startsWith('ja'))return '日文';
- if(c.startsWith('en'))return '英文';
- if(c.startsWith('ko'))return '韓文';
- return code
-}
-function normalizeBook(x){
- let v=x.volumeInfo||{},ids=v.industryIdentifiers||[],p=ids.find(i=>i.type==='ISBN_13')?.identifier||'',i10=ids.find(i=>i.type==='ISBN_10')?.identifier||'';
- return {title:v.title||'',subtitle:v.subtitle||'',authors:v.authors||[],publisher:v.publisher||'',language:normalizeLangLabel(v.language),category:(v.categories||[]).join(', '),publishedDate:v.publishedDate||'',isbn13:p,isbn10:i10,cover:(v.imageLinks?.thumbnail||v.imageLinks?.smallThumbnail||'').replace('http:','https:'),pageCount:v.pageCount||'',description:v.description||'',listPrice:(x.saleInfo?.listPrice?.amount??x.saleInfo?.retailPrice?.amount??'')};
-}
-function findDuplicate(b){
- let isbn=(b.isbn13||b.isbn10||'').trim();
- let title=(b.title||'').trim().toLowerCase();
- for(let s of db.series){
-  if(isbn){
-   let hit=(s.volumes||[]).find(v=>(v.isbn13&&v.isbn13===isbn)||(v.isbn10&&v.isbn10===isbn));
-   if(hit)return s
-  }
-  if(title && (s.title||'').trim().toLowerCase()===title)return s
- }
- return null
-}
-function openEditor(b){
+function openEditor(b={}){
  let id=b.id||uid();
- let dup=b.title?findDuplicate(b):null;
- let isManual=!b.title;
- showModal(`<h2>${b.title?'確認書目':'手動新增作品'}</h2>
- ${dup?`<div class="notice" style="background:#fff7ed;color:#9a3412;margin-bottom:10px">⚠️ 書櫃裡似乎已經有「${esc(dup.title)}」了（書名或 ISBN 相符）。<br><button class="btn small" style="margin-top:8px" onclick="closeModal();openSeries('${dup.id}')">查看該系列</button></div>`:''}
+ showModal(`<h2>手動新增作品</h2>
  <div class="formgrid">
  <div class="full"><label>系列／作品名稱</label><input id="fTitle" value="${esc(b.title||'')}"></div>
- <div><label>作者</label><input id="fAuthor" value="${esc((b.authors||[]).join('、'))}"></div>
+ <div><label>收藏類型</label>${typeSelectHtml('fType','書籍',"document.getElementById('fCatWrap').innerHTML=categorySelectHtml('fCat',this.value,'')")}</div>
+ <div><label>作者／品牌／歌手</label><input id="fAuthor" value="${esc((b.authors||[]).join('、'))}"></div>
  <div><label>語言</label>${langSelectHtml('fLang',b.language||'')}</div>
- <div class="full"><label>第一批要建立的單集／卷次（可輸入範圍，如 1-12）</label><input id="fVol" value="1"></div>
+ <div><label>分類</label><div id="fCatWrap">${categorySelectHtml('fCat','書籍','')}</div></div>
+ <div class="full"><label>第一批要建立的項目／集數（可輸入範圍，如 1-12，或直接輸入名稱）</label><input id="fVol" value="1"></div>
  <div><label>版本</label>${editionSelectHtml('fEdition','')}</div>
  <div><label>參考／原價</label><input id="fList" type="number" step="0.01" value="${esc(b.listPrice??'')}"></div>
  <div class="full"><label>封面 URL 或從相簿上傳</label><input id="fCover" value="${esc(b.cover||'')}">
  <input type="file" accept="image/*" style="margin-top:8px" onchange="handleCoverFile(this,'fCover')"></div>
  </div>
  <div class="switch"><span>這一集已購入</span><input id="fOwned" type="checkbox" checked></div>
- <details ${isManual?'':'open'} style="margin-top:12px"><summary style="cursor:pointer;font-weight:800;color:var(--muted)">更多欄位（出版社、分類、ISBN、價格細節⋯）</summary>
+ <details style="margin-top:12px"><summary style="cursor:pointer;font-weight:800;color:var(--muted)">更多欄位（出版社、狀態、ISBN、價格細節⋯）</summary>
  <div class="formgrid" style="margin-top:10px">
- <div><label>出版社</label><input id="fPublisher" value="${esc(b.publisher||'')}"></div>
- <div><label>分類／類型</label><input id="fCat" value="${esc(b.category||'')}"></div>
+ <div><label>出版社／廠商</label><input id="fPublisher" value="${esc(b.publisher||'')}"></div>
  <div><label>連載狀態</label><select id="fStatus"><option value="未知">未知</option><option value="連載中">連載中（還會繼續出）</option><option value="已完結">已完結（不用再追）</option></select></div>
  <div><label>ISBN-13</label><input id="fISBN13" value="${esc(b.isbn13||'')}"></div>
  <div><label>ISBN-10</label><input id="fISBN10" value="${esc(b.isbn10||'')}"></div>
@@ -426,10 +313,10 @@ function openEditor(b){
  </div>
  <div class="switch"><span>標記為待出售</span><input id="fSell" type="checkbox"></div>
  </details>
- <button class="btn purple" style="width:100%;margin-top:14px" onclick='createSeries(${JSON.stringify(b)})'>建立作品＋第一集</button>`)
+ <button class="btn purple" style="width:100%;margin-top:14px" onclick='createSeries(${JSON.stringify(b)})'>建立作品＋第一項</button>`)
 }
 function createSeries(b){
- let s={id:uid(),title:document.getElementById('fTitle').value.trim(),authors:document.getElementById('fAuthor').value.split(/[,、]/).map(x=>x.trim()).filter(Boolean),publisher:document.getElementById('fPublisher').value.trim(),language:readLang('fLang'),category:document.getElementById('fCat').value.trim(),status:document.getElementById('fStatus').value,cover:document.getElementById('fCover').value.trim(),pages:document.getElementById('fPages').value,createdAt:new Date().toISOString(),volumes:[]};
+ let s={id:uid(),title:document.getElementById('fTitle').value.trim(),type:document.getElementById('fType').value,authors:document.getElementById('fAuthor').value.split(/[,、]/).map(x=>x.trim()).filter(Boolean),publisher:document.getElementById('fPublisher').value.trim(),language:readLang('fLang'),category:readCategory('fCat'),status:document.getElementById('fStatus').value,cover:document.getElementById('fCover').value.trim(),pages:document.getElementById('fPages').value,createdAt:new Date().toISOString(),volumes:[]};
  if(!s.title){toast('請輸入作品名稱');return}
  let tokens=parseVolumeTokens(document.getElementById('fVol').value.trim()||'1');
  let owned=document.getElementById('fOwned').checked,sell=document.getElementById('fSell').checked,today=new Date().toISOString().slice(0,10);
@@ -448,10 +335,10 @@ function openSeries(id){
  let chipsHtml=sorted.length?sorted.map(v=>batchMode
   ?`<button class="voltile ${v.owned?'owned':''} ${v.sell?'sell':''} ${batchSelected.has(v.id)?'selected':''}" onclick="toggleBatchSelect('${s.id}','${v.id}')">${esc(v.volumeNo||'—')}${editionBadge(v)}</button>`
   :`<button class="voltile ${v.owned?'owned':''} ${v.sell?'sell':''}" onpointerdown="volPointerDown(this,'${s.id}','${v.id}')" onpointerup="volPointerUp(this,'${s.id}','${v.id}')" onpointercancel="volPointerCancel(this)" onpointerleave="volPointerCancel(this)">${esc(v.volumeNo||'—')}${editionBadge(v)}</button>`
- ).join(''):'<div class="empty">還沒有集數，按上面「＋ 新增單集」開始。</div>';
+ ).join(''):'<div class="empty">還沒有項目，按上面「＋ 新增項目」開始。</div>';
  showModal(`<div class="row"><img class="cover big" src="${esc(s.cover||'')}" onerror="this.style.visibility='hidden'"><div class="meta"><h2>${esc(s.title)}</h2><div class="muted">${esc((s.authors||[]).join('、'))}</div><div class="muted">${esc(s.publisher||'')} · ${esc(s.language||'')} · ${esc(s.category||'未分類')}</div>
- <div style="margin-top:6px"><span class="tag ${statusClass}">${esc(s.status||'未知')}</span><span class="tag">已收藏 ${owned}/${total}</span>${sell?`<span class="tag">${sell} 本待出售</span>`:''}</div></div></div>
- <div class="row wrap" style="margin:15px 0"><button class="btn purple" onclick="addVolume('${s.id}')">＋ 新增單集</button><button class="btn" onclick="editSeriesInfo('${s.id}')">編輯作品資訊</button><button class="btn ${batchMode?'purple':''}" onclick="toggleBatchMode('${s.id}')">${batchMode?'結束批次':'批次修改'}</button><button class="btn" onclick="shareSeries('${s.id}')">分享</button></div>
+ <div style="margin-top:6px"><span class="tag">${esc(s.type||'書籍')}</span><span class="tag ${statusClass}">${esc(s.status||'未知')}</span><span class="tag">已收藏 ${owned}/${total}</span>${sell?`<span class="tag">${sell} 項待出售</span>`:''}</div></div></div>
+ <div class="row wrap" style="margin:15px 0"><button class="btn purple" onclick="addVolume('${s.id}')">＋ 新增項目</button><button class="btn" onclick="editSeriesInfo('${s.id}')">編輯作品資訊</button><button class="btn ${batchMode?'purple':''}" onclick="toggleBatchMode('${s.id}')">${batchMode?'結束批次':'批次修改'}</button><button class="btn" onclick="shareSeries('${s.id}')">分享</button></div>
  ${batchMode?`<div class="notice" style="background:#eef2ff;color:#3730a3;margin-bottom:12px"><div style="margin-bottom:8px">批次模式：點集數選取，已選 ${batchSelected.size} 集</div><div class="row wrap"><button class="btn small" onclick="batchSelectAll('${s.id}')">全選</button><button class="btn small" onclick="batchClearSel('${s.id}')">取消全選</button><button class="btn small green" onclick="batchApply('${s.id}',true)">標記已購入</button><button class="btn small" onclick="batchApply('${s.id}',false)">標記待購入</button></div></div>`:''}
  <div class="volgrid">${chipsHtml}</div>
  <div class="notice" style="margin-top:12px">${batchMode?'點集數多選，再用上面按鈕批次套用購買狀態。':'點一下切換已購入／待購入；按住不放可開啟詳細編輯（價格、ISBN、版本、備註）。'}<span style="color:#166534">■</span> 已收藏　<span style="color:#475569">■</span> 待購入　右上紅點代表待出售、左下字母代表版本。${s.status==='連載中'?'這部還在連載中，記得留意有沒有新集數。':(s.status==='已完結'?'這部已經完結了，收齊就不用再追新集數。':'')}</div>`)
@@ -481,7 +368,7 @@ function quickToggleOwned(sid,vid){
  v.owned=!v.owned;if(v.owned&&!v.purchaseDate)v.purchaseDate=new Date().toISOString().slice(0,10);
  save();openSeries(sid)
 }
-function addVolume(sid){let s=db.series.find(x=>x.id===sid);showModal(`<h2>新增單集</h2>
+function addVolume(sid){let s=db.series.find(x=>x.id===sid);showModal(`<h2>新增項目</h2>
 <div class="notice">卷次／單集可以一次輸入多集，例如「1-12」代表第 1 到 12 集，或「1,3,5-8」混合輸入。其餘欄位會套用到每一集，之後可再個別調整。</div>
 <div class="formgrid">
 <div class="full"><label>卷次／單集（可輸入範圍，如 1-12）</label><input id="nvNo" placeholder="例如 2、25.5、特別篇，或 1-12"></div>
@@ -510,7 +397,7 @@ function saveNewVolume(sid){
  });
  save();openSeries(sid);toast(tokens.length>1?`已新增 ${tokens.length} 集`:'已加入單集')
 }
-function editVolume(sid,vid){let s=db.series.find(x=>x.id===sid),v=s.volumes.find(x=>x.id===vid);showModal(`<h2>第 ${esc(v.volumeNo)} 集</h2><div class="formgrid">
+function editVolume(sid,vid){let s=db.series.find(x=>x.id===sid),v=s.volumes.find(x=>x.id===vid);showModal(`<h2>${esc(v.volumeNo)}</h2><div class="formgrid">
 <div><label>卷次／單集</label><input id="evNo" value="${esc(v.volumeNo||'')}"></div><div><label>ISBN-13</label><input id="evISBN" value="${esc(v.isbn13||'')}"></div>
 <div><label>出版日</label><input id="evDate2" value="${esc(v.publishedDate||'')}"></div><div><label>購入日期</label><input id="evDate" type="date" value="${esc(v.purchaseDate||'')}"></div>
 <div><label>參考／原價</label><input id="evList" type="number" step="0.01" value="${esc(v.listPrice||'')}"></div><div><label>實際購入價</label><input id="evBuy" type="number" step="0.01" value="${esc(v.purchasePrice||'')}"></div>
@@ -529,12 +416,14 @@ function deleteVolume(sid,vid){if(!confirm('確定刪除這一集？'))return;le
 function deleteSeries(sid){if(!confirm('確定要刪除整個作品（含所有集數）嗎？此動作無法復原。'))return;db.series=db.series.filter(x=>x.id!==sid);save();closeModal();toast('已刪除作品')}
 function editSeriesInfo(sid){
  let s=db.series.find(x=>x.id===sid);if(!s)return;
+ let curType=s.type||'書籍';
  showModal(`<h2>編輯作品資訊</h2><div class="formgrid">
  <div class="full"><label>系列／作品名稱</label><input id="esTitle" value="${esc(s.title)}"></div>
- <div><label>作者</label><input id="esAuthor" value="${esc((s.authors||[]).join('、'))}"></div>
- <div><label>出版社</label><input id="esPublisher" value="${esc(s.publisher||'')}"></div>
+ <div><label>收藏類型</label>${typeSelectHtml('esType',curType,"document.getElementById('esCatWrap').innerHTML=categorySelectHtml('esCat',this.value,'')")}</div>
+ <div><label>作者／品牌／歌手</label><input id="esAuthor" value="${esc((s.authors||[]).join('、'))}"></div>
+ <div><label>出版社／廠商</label><input id="esPublisher" value="${esc(s.publisher||'')}"></div>
  <div><label>語言</label>${langSelectHtml('esLang',s.language||'')}</div>
- <div><label>分類／類型</label><input id="esCat" value="${esc(s.category||'')}"></div>
+ <div><label>分類</label><div id="esCatWrap">${categorySelectHtml('esCat',curType,s.category||'')}</div></div>
  <div><label>連載狀態</label><select id="esStatus"><option value="未知" ${!s.status||s.status==='未知'?'selected':''}>未知</option><option value="連載中" ${s.status==='連載中'?'selected':''}>連載中（還會繼續出）</option><option value="已完結" ${s.status==='已完結'?'selected':''}>已完結（不用再追）</option></select></div>
  <div class="full"><label>封面 URL 或從相簿上傳</label><input id="esCover" value="${esc(s.cover||'')}">
  <input type="file" accept="image/*" style="margin-top:8px" onchange="handleCoverFile(this,'esCover')"></div>
@@ -545,10 +434,11 @@ function editSeriesInfo(sid){
 function saveSeriesInfo(sid){
  let s=db.series.find(x=>x.id===sid);if(!s)return;
  s.title=document.getElementById('esTitle').value.trim()||s.title;
+ s.type=document.getElementById('esType').value;
  s.authors=document.getElementById('esAuthor').value.split(/[,、]/).map(x=>x.trim()).filter(Boolean);
  s.publisher=document.getElementById('esPublisher').value.trim();
  s.language=readLang('esLang');
- s.category=document.getElementById('esCat').value.trim();
+ s.category=readCategory('esCat');
  s.status=document.getElementById('esStatus').value;
  s.cover=document.getElementById('esCover').value.trim();
  save();openSeries(sid)
@@ -580,38 +470,6 @@ function importData(inputEl){
  reader.readAsText(f);
  inputEl.value=''
 }
-function loadScript(src){
- return new Promise((resolve,reject)=>{
-  if(document.querySelector(`script[data-src="${src}"]`)){resolve();return}
-  let s=document.createElement('script');s.src=src;s.dataset.src=src;
-  s.onload=()=>resolve();s.onerror=()=>reject(new Error('load failed'));
-  document.head.appendChild(s)
- })
-}
-function startScanner(){
- let area=document.getElementById('scanArea');if(!area)return;
- if('BarcodeDetector' in window){
-  area.innerHTML='<div class="camera"><b>ISBN 掃描</b><p class="muted">將 ISBN-13 條碼放進框內。掃到後會自動查詢書目。</p><video id="scanVideo" playsinline autoplay muted style="width:100%;border-radius:14px;background:#111"></video><br><button class="btn" onclick="stopScanner()">停止掃描</button></div>';
-  navigator.mediaDevices.getUserMedia({video:{facingMode:{ideal:'environment'}}}).then(stream=>{window.scanStream=stream;let v=document.getElementById('scanVideo');v.srcObject=stream;window.detector=new BarcodeDetector({formats:['ean_13','code_128']});scanLoop(v)}).catch(()=>manualISBN());
-  return
- }
- // 這個瀏覽器沒有原生條碼掃描 API，改用 ZXing 函式庫掃描
- area.innerHTML='<div class="camera">正在載入掃描元件…</div>';
- loadScript('https://cdn.jsdelivr.net/npm/@zxing/library@0.21.3/umd/index.min.js').then(()=>{
-  area.innerHTML='<div class="camera"><b>ISBN 掃描</b><p class="muted">將 ISBN-13 條碼放進框內。掃到後會自動查詢書目。</p><video id="scanVideo" playsinline autoplay muted style="width:100%;border-radius:14px;background:#111"></video><br><button class="btn" onclick="stopScanner()">停止掃描</button></div>';
-  let reader=new ZXing.BrowserMultiFormatReader();
-  window.zxingReader=reader;
-  reader.decodeFromVideoDevice(null,'scanVideo',(result,err)=>{
-   if(result){let raw=result.getText();stopScanner();document.getElementById('apiQ').value='isbn:'+raw;apiSearch()}
-  }).catch(()=>manualISBN())
- }).catch(()=>{area.innerHTML='<div class="camera">你的瀏覽器不支援條碼掃描，且掃描元件載入失敗（可能沒有網路）。<br><br><button class="btn" onclick="manualISBN()">改用 ISBN 手動輸入</button></div>'})
-}
-async function scanLoop(video){if(!window.scanStream)return;try{let codes=await window.detector.detect(video);if(codes.length){let raw=codes[0].rawValue;stopScanner();document.getElementById('apiQ').value='isbn:'+raw;apiSearch();return}}catch(e){}requestAnimationFrame(()=>scanLoop(video))}
-function stopScanner(){
- if(window.scanStream){window.scanStream.getTracks().forEach(t=>t.stop());window.scanStream=null}
- if(window.zxingReader){try{window.zxingReader.reset()}catch(e){}window.zxingReader=null}
-}
-function manualISBN(){document.getElementById('scanArea').innerHTML=`<label>輸入 ISBN</label><div class="searchbar"><input id="manualIsbn"><button class="btn purple" onclick="document.getElementById('apiQ').value='isbn:'+document.getElementById('manualIsbn').value;apiSearch()">查詢</button></div>`}
 function exportData(){let blob=new Blob([JSON.stringify(db,null,2)],{type:'application/json'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='我的紙本書櫃_backup.json';a.click()}
 renderAll();
 </script>
