@@ -284,7 +284,7 @@ function renderStats(){
 
 function openEditor(b={}){
  let id=b.id||uid();
- showModal(`<h2>手動新增作品</h2>
+ showModal(`<h2>新增作品</h2>
  <div class="formgrid">
  <div class="full"><label>系列／作品名稱</label><input id="fTitle" value="${esc(b.title||'')}"></div>
  <div><label>收藏類型</label>${typeSelectHtml('fType','書籍',"document.getElementById('fCatWrap').innerHTML=categorySelectHtml('fCat',this.value,'')")}</div>
