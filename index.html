@@ -31,14 +31,14 @@ main{padding:18px}
 .grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}.stat{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:16px}.stat b{font-size:25px;display:block}.stat span{font-size:12px;color:var(--muted)}
 .card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:16px;margin-bottom:14px;box-shadow:0 6px 20px rgba(15,23,42,.04)}
 .card h2,.card h3{margin:0 0 12px}.row{display:flex;gap:10px;align-items:center}.between{justify-content:space-between}.wrap{flex-wrap:wrap}
-.btn{padding:11px 15px;border-radius:14px;background:#eef2f7;color:var(--text);font-weight:700}.btn.primary{background:var(--primary);color:#fff}.btn.purple{background:var(--accent);color:#fff}.btn.green{background:var(--greenbg);color:var(--greentext)}.btn.red{background:#fee2e2;color:#991b1b}.btn.small{padding:8px 11px;font-size:12px}
-input,select,textarea{width:100%;border:1px solid var(--line);background:#fff;border-radius:14px;padding:12px 13px;outline:none}input:focus,select:focus,textarea:focus{border-color:#a78bfa;box-shadow:0 0 0 3px #ede9fe}
-label{font-size:12px;font-weight:800;color:#475569;display:block;margin:10px 0 6px}
+.btn{padding:11px 15px;border-radius:14px;background:var(--line);color:var(--text);font-weight:700}.btn.primary{background:var(--primary);color:var(--bg)}.btn.purple{background:var(--accent);color:#fff}.btn.green{background:var(--greenbg);color:var(--greentext)}.btn.red{background:#fee2e2;color:#991b1b}.btn.small{padding:8px 11px;font-size:12px}
+input,select,textarea{width:100%;border:1px solid var(--line);background:var(--card);color:var(--text);border-radius:14px;padding:12px 13px;outline:none}input:focus,select:focus,textarea:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent2)}
+label{font-size:12px;font-weight:800;color:var(--muted);display:block;margin:10px 0 6px}
 .formgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.full{grid-column:1/-1}
 .searchbar{display:flex;gap:8px}.searchbar input{flex:1}.searchbar .btn{white-space:nowrap}
 .result{display:flex;gap:12px;padding:12px 0;border-bottom:1px solid var(--line)}.result:last-child{border-bottom:0}
 .cover{width:62px;height:86px;object-fit:cover;border-radius:9px;background:#e5e7eb;flex:none}.cover.big{width:90px;height:126px}
-.meta{min-width:0;flex:1}.title{font-weight:900;line-height:1.35}.muted{color:var(--muted);font-size:12px;line-height:1.5}.tag{display:inline-block;background:#f1f5f9;border-radius:999px;padding:4px 8px;font-size:11px;margin:3px 3px 0 0}.tag.purple{background:var(--accent2);color:#5b21b6}.tag.green{background:var(--greenbg);color:var(--greentext)}
+.meta{min-width:0;flex:1}.title{font-weight:900;line-height:1.35}.muted{color:var(--muted);font-size:12px;line-height:1.5}.tag{display:inline-block;background:var(--line);color:var(--text);border-radius:999px;padding:4px 8px;font-size:11px;margin:3px 3px 0 0}.tag.purple{background:var(--accent2);color:var(--accent)}.tag.green{background:var(--greenbg);color:var(--greentext)}
 .volgrid{display:flex;flex-wrap:wrap;gap:8px}
 .voltile{position:relative;min-width:46px;height:46px;padding:0 6px;border-radius:12px;background:var(--line);color:var(--muted);font-weight:800;font-size:13px}
 .voltile.owned{background:var(--ownedbg);color:var(--ownedtext)}
@@ -59,18 +59,17 @@ label{font-size:12px;font-weight:800;color:#475569;display:block;margin:10px 0 6
 .levelbadge{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.16);border-radius:999px;padding:8px 14px;margin-top:10px;font-weight:800;font-size:14px}
 .levelbadge .emoji{font-size:20px}
 .empty{text-align:center;color:var(--muted);padding:28px 10px}.list{display:flex;flex-direction:column;gap:10px}
-.bookrow{display:flex;gap:12px;align-items:center;background:#fff;border:1px solid var(--line);padding:10px 12px;border-radius:16px}.bookrow .cover{width:44px;height:62px}.bookrow .title{font-size:14px}
-.progress{height:8px;background:#eef2f7;border-radius:99px;overflow:hidden}.progress i{display:block;height:100%;background:var(--accent);border-radius:99px}
-.bottom{position:fixed;z-index:30;bottom:0;left:50%;transform:translateX(-50%);width:min(760px,100%);height:76px;background:rgba(255,255,255,.96);backdrop-filter:blur(18px);border-top:1px solid var(--line);display:grid;grid-template-columns:1fr 1fr 1fr 1fr 1fr;align-items:center;padding:6px 8px calc(6px + env(safe-area-inset-bottom))}
-.nav{background:transparent;color:#64748b;font-size:11px;font-weight:800;height:60px}.nav span{display:block;font-size:21px;margin-bottom:3px}.nav.active{color:#111827}
+.bookrow{display:flex;gap:12px;align-items:center;background:var(--card);border:1px solid var(--line);padding:10px 12px;border-radius:16px}.bookrow .cover{width:44px;height:62px}.bookrow .title{font-size:14px}
+.progress{height:8px;background:var(--line);border-radius:99px;overflow:hidden}.progress i{display:block;height:100%;background:var(--accent);border-radius:99px}
+.bottom{position:fixed;z-index:30;bottom:0;left:50%;transform:translateX(-50%);width:min(760px,100%);height:76px;background:var(--card);backdrop-filter:blur(18px);border-top:1px solid var(--line);display:grid;grid-template-columns:1fr 1fr 1fr 1fr 1fr;align-items:center;padding:6px 8px calc(6px + env(safe-area-inset-bottom))}
+.nav{background:transparent;color:var(--muted);font-size:11px;font-weight:800;height:60px}.nav span{display:block;font-size:21px;margin-bottom:3px}.nav.active{color:var(--accent)}
 .addnav{position:relative}.addnav .plus{position:absolute;left:50%;top:-30px;transform:translateX(-50%);width:62px;height:62px;border-radius:22px;background:var(--accent);color:#fff;font-size:30px;box-shadow:0 14px 30px rgba(0,0,0,.28);border:5px solid var(--bg)}
 .addnav em{font-style:normal;position:relative;top:27px}
-.modal{position:fixed;inset:0;background:rgba(15,23,42,.48);z-index:50;display:none;align-items:flex-end}.modal.show{display:flex}.sheet{background:#fff;width:100%;max-width:760px;margin:auto;border-radius:28px 28px 0 0;max-height:92vh;overflow:auto;padding:18px 18px 30px}
-.handle{width:42px;height:5px;background:#d1d5db;border-radius:9px;margin:0 auto 15px}
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:50;display:none;align-items:flex-end}.modal.show{display:flex}.sheet{background:var(--card);color:var(--text);width:100%;max-width:760px;margin:auto;border-radius:28px 28px 0 0;max-height:92vh;overflow:auto;padding:18px 18px 30px}
+.handle{width:42px;height:5px;background:var(--line);border-radius:9px;margin:0 auto 15px}
 .toast{position:fixed;left:50%;bottom:90px;transform:translateX(-50%);background:#111827;color:#fff;padding:11px 15px;border-radius:999px;font-size:13px;z-index:100;display:none}.toast.show{display:block}
 .switch{display:flex;align-items:center;justify-content:space-between;padding:11px 0;border-bottom:1px solid var(--line)}.switch input{width:auto}
-.camera{border:2px dashed #c4b5fd;background:#faf5ff;border-radius:18px;padding:18px;text-align:center}
-.notice{font-size:12px;background:#f8fafc;border-radius:15px;padding:12px;color:#475569;line-height:1.6}
+.notice{font-size:12px;background:var(--accent2);border-radius:15px;padding:12px;color:var(--text);line-height:1.6}
 @media(min-width:700px){.grid{grid-template-columns:repeat(4,1fr)}.sheet{border-radius:28px;margin-bottom:20px}.modal{align-items:center}.formgrid.three{grid-template-columns:repeat(3,1fr)}}
 </style>
 </head>
@@ -109,12 +108,13 @@ label{font-size:12px;font-weight:800;color:#475569;display:block;margin:10px 0 6
 <section id="books" class="page">
   <div class="row between"><div><h2>我的收藏</h2><div class="muted">依作品分組顯示，點一下看每一項的價格與狀態。</div></div></div>
   <div class="card">
-    <div class="searchbar"><input id="localSearch" placeholder="搜尋：書名／作者品牌／ISBN" oninput="renderBooks()"><button class="btn" onclick="renderBooks()">搜尋</button></div>
+    <div class="searchbar"><input id="localSearch" placeholder="搜尋：書名／作者品牌／ISBN" oninput="onBooksFilterInput()"><button class="btn" onclick="onBooksFilterInput()">搜尋</button></div>
     <div class="formgrid" style="margin-top:10px">
-      <div><label>類型</label><select id="bookType" onchange="renderBooks()"><option value="all">全部類型</option><option value="書籍">書籍</option><option value="專輯與周邊">專輯與周邊</option><option value="IP公仔／娃娃">IP公仔／娃娃</option><option value="其他收藏">其他收藏</option></select></div>
-      <div><label>篩選</label><select id="bookFilter" onchange="renderBooks()"><option value="all">全部</option><option value="owned">已收藏</option><option value="unowned">待購入</option><option value="sell">待出售</option><option value="ongoing">連載中（要追新集）</option><option value="oop">已絕版</option></select></div>
-      <div><label>排序</label><select id="bookSort" onchange="renderBooks()"><option value="default">新增順序</option><option value="dateDesc">購入日期：新到舊</option><option value="dateAsc">購入日期：舊到新</option><option value="priceDesc">價格：高到低</option><option value="priceAsc">價格：低到高</option><option value="unownedFirst">未收藏優先</option><option value="ratingDesc">評分：高到低</option></select></div>
+      <div><label>類型</label><select id="bookType" onchange="onBooksFilterInput()"><option value="all">全部類型</option><option value="書籍">書籍</option><option value="專輯與周邊">專輯與周邊</option><option value="IP公仔／娃娃">IP公仔／娃娃</option><option value="其他收藏">其他收藏</option></select></div>
+      <div><label>篩選</label><select id="bookFilter" onchange="onBooksFilterInput()"><option value="all">全部</option><option value="owned">已收藏</option><option value="unowned">待購入</option><option value="sell">待出售</option><option value="ongoing">連載中（要追新集）</option><option value="oop">已絕版</option></select></div>
+      <div><label>排序</label><select id="bookSort" onchange="onBooksSortChange()"><option value="default">自訂順序（可手動調整）</option><option value="dateDesc">購入日期：新到舊</option><option value="dateAsc">購入日期：舊到新</option><option value="priceDesc">價格：高到低</option><option value="priceAsc">價格：低到高</option><option value="unownedFirst">未收藏優先</option><option value="ratingDesc">評分：高到低</option></select></div>
     </div>
+    <div class="row" style="margin-top:10px"><button class="btn small" id="reorderBtn" onclick="toggleReorderMode()">調整順序</button></div>
   </div>
   <div id="bookList" class="shelfgrid"></div>
 </section>
@@ -347,7 +347,26 @@ function renderHome(){
   return `<div class="shelfcard" onclick="openSeries('${s.id}')"><div class="cwrap"><img src="${esc(s.cover||'')}" onerror="this.style.visibility='hidden'"><span class="pctdot">${pct}%</span></div><div class="info"><div class="title">${esc(s.title)}</div></div></div>`
  }).join(''):'<div class="empty">還沒有收藏。按底部中央「＋ 新增」開始吧。</div>'
 }
+let reorderMode=false;
+function onBooksFilterInput(){reorderMode=false;renderBooks()}
+function onBooksSortChange(){if(document.getElementById('bookSort').value!=='default')reorderMode=false;renderBooks()}
+function toggleReorderMode(){reorderMode=!reorderMode;if(reorderMode)document.getElementById('bookSort').value='default';renderBooks()}
+function moveSeries(id,dir){
+ let idx=db.series.findIndex(s=>s.id===id);if(idx<0)return;
+ let newIdx=idx+dir;if(newIdx<0||newIdx>=db.series.length)return;
+ let tmp=db.series[idx];db.series[idx]=db.series[newIdx];db.series[newIdx]=tmp;
+ save()
+}
 function renderBooks(){
+ let btn=document.getElementById('reorderBtn');
+ if(btn){btn.textContent=reorderMode?'完成排序':'調整順序';btn.className='btn small'+(reorderMode?' purple':'')}
+ let list=document.getElementById('bookList');
+ if(reorderMode){
+  list.className='list';
+  list.innerHTML=db.series.length?db.series.map((s,i)=>`<div class="bookrow"><img class="cover" src="${esc(s.cover||'')}" onerror="this.style.visibility='hidden'"><div class="meta"><div class="title">${esc(s.title)}</div><div class="muted">${esc(s.type||'書籍')}</div></div><div class="row" style="gap:4px"><button class="btn small" style="${i===0?'opacity:.3':''}" onclick="moveSeries('${s.id}',-1)">▲</button><button class="btn small" style="${i===db.series.length-1?'opacity:.3':''}" onclick="moveSeries('${s.id}',1)">▼</button></div></div>`).join(''):'<div class="empty">還沒有作品可以排序。</div>';
+  return
+ }
+ list.className='shelfgrid';
  let q=(document.getElementById('localSearch')?.value||'').toLowerCase();
  let typeFilter=document.getElementById('bookType')?.value||'all';
  let filter=document.getElementById('bookFilter')?.value||'all';
@@ -375,7 +394,7 @@ function renderBooks(){
  else if(sortBy==='priceAsc')rows.sort((a,b)=>spendOf(a)-spendOf(b));
  else if(sortBy==='unownedFirst')rows.sort((a,b)=>ratioOf(a)-ratioOf(b));
  else if(sortBy==='ratingDesc')rows.sort((a,b)=>(b.rating||0)-(a.rating||0));
- document.getElementById('bookList').innerHTML=rows.length?rows.map(s=>{
+ list.innerHTML=rows.length?rows.map(s=>{
   let total=(s.volumes||[]).length,owned=(s.volumes||[]).filter(v=>v.owned).length,pct=total?Math.round(owned/total*100):0;
   let ratingBadge=s.rating?`<span class="pctdot" style="left:6px;right:auto">★${s.rating}</span>`:'';
   return `<div class="shelfcard" onclick="openSeries('${s.id}')"><div class="cwrap"><img src="${esc(s.cover||'')}" onerror="this.style.visibility='hidden'"><span class="pctdot">${pct}%</span>${ratingBadge}</div><div class="info"><div class="title">${esc(s.title)}</div></div></div>`
@@ -742,6 +761,7 @@ function downloadShareCard(title){
  },'image/png')
 }
 function cardFont(){return '-apple-system,BlinkMacSystemFont,"PingFang TC","Noto Sans TC",sans-serif'}
+let profileCardPicks=new Set(),lastProfileRatio='16:9';
 async function drawProfileShareCard(canvas,ratio){
  let w=ratio==='16:9'?1200:675, h=ratio==='16:9'?675:1200;
  canvas.width=w;canvas.height=h;
@@ -759,9 +779,14 @@ async function drawProfileShareCard(canvas,ratio){
  let lv=getCollectorLevel(owned.length);
  let byType={};
  db.series.forEach(s=>{let t=s.type||'書籍';let c=(s.volumes||[]).filter(v=>v.owned).length;if(c)byType[t]=(byType[t]||0)+c});
- let pad=w*0.08,landscape=ratio==='16:9';
- let badgeSize=landscape?h-pad*2:w-pad*2*1.3;
- let badgeX=landscape?pad:(w-badgeSize)/2, badgeY=landscape?pad:pad;
+ let picks=[...profileCardPicks].map(id=>db.series.find(s=>s.id===id)).filter(Boolean).slice(0,3);
+ let pad=w*0.07,landscape=ratio==='16:9';
+ let picksAreaH=picks.length?(landscape?h*0.32:w*0.46):0;
+ let topAvailH=h-pad*2-(picksAreaH?picksAreaH+pad*0.7:0);
+ let badgeSize=landscape?Math.min(topAvailH,h*0.6):Math.min(w-pad*2,topAvailH*0.62);
+ let badgeX,badgeY,textX,textY,textW;
+ if(landscape){badgeX=pad;badgeY=pad;textX=badgeX+badgeSize+pad*0.9;textY=pad;textW=w-textX-pad}
+ else{badgeX=(w-badgeSize)/2;badgeY=pad;textX=pad;textY=badgeY+badgeSize+pad*0.6;textW=w-pad*2}
  ctx.save();roundRectPath(ctx,badgeX,badgeY,badgeSize,badgeSize,32);ctx.fillStyle=cardbg;ctx.fill();ctx.restore();
  ctx.textAlign='center';ctx.textBaseline='middle';
  ctx.font=`${badgeSize*0.4}px ${cardFont()}`;ctx.fillStyle=text;
@@ -770,34 +795,68 @@ async function drawProfileShareCard(canvas,ratio){
  ctx.fillText(lv.level?`Lv.${lv.level}`:'',badgeX+badgeSize/2,badgeY+badgeSize*0.7);
  ctx.font=`800 ${badgeSize*0.1}px ${cardFont()}`;ctx.fillStyle=text;
  ctx.fillText(lv.title,badgeX+badgeSize/2,badgeY+badgeSize*0.84);
- let textX,textY,textW;
- if(landscape){textX=badgeX+badgeSize+pad*0.9;textY=pad;textW=w-textX-pad}
- else{textX=pad;textY=badgeY+badgeSize+pad*0.8;textW=w-pad*2}
  ctx.textAlign=landscape?'left':'center';ctx.textBaseline='top';
  let cx=landscape?textX:textX+textW/2;
- ctx.font=`900 ${textW*0.1}px ${cardFont()}`;ctx.fillStyle=text;
+ ctx.font=`900 ${textW*0.095}px ${cardFont()}`;ctx.fillStyle=text;
  ctx.fillText(`已收藏 ${owned.length} 件`,cx,textY);
- let curY=textY+textW*0.1*1.3+textW*0.02;
- ctx.font=`600 ${textW*0.045}px ${cardFont()}`;ctx.globalAlpha=.75;
+ let curY=textY+textW*0.095*1.3+textW*0.02;
+ ctx.font=`600 ${textW*0.042}px ${cardFont()}`;ctx.globalAlpha=.75;
  ctx.fillText(`${db.series.length} 個系列／作品`,cx,curY);ctx.globalAlpha=1;
- curY+=textW*0.045*1.9;
+ curY+=textW*0.042*1.8;
  Object.entries(byType).forEach(([t,c])=>{
-  ctx.font=`700 ${textW*0.042}px ${cardFont()}`;ctx.fillStyle=accent;
+  ctx.font=`700 ${textW*0.038}px ${cardFont()}`;ctx.fillStyle=accent;
   ctx.fillText(`${t}　${c} 件`,cx,curY);
-  curY+=textW*0.042*1.7
+  curY+=textW*0.038*1.6
  });
- ctx.fillStyle=text;ctx.globalAlpha=.5;ctx.font=`700 ${w*0.022}px ${cardFont()}`;ctx.textAlign='right';ctx.textBaseline='alphabetic';
- ctx.fillText('我的收藏櫃',w-pad*0.6,h-pad*0.35);ctx.globalAlpha=1
+ if(picks.length){
+  let picksY=h-pad-picksAreaH;
+  ctx.textAlign=landscape?'left':'center';ctx.textBaseline='top';
+  ctx.font=`800 ${w*0.028}px ${cardFont()}`;ctx.fillStyle=text;ctx.globalAlpha=.85;
+  ctx.fillText('推薦作品',landscape?pad:w/2,picksY);ctx.globalAlpha=1;
+  let labelH=w*0.028*1.7;
+  let n=picks.length,gap=w*0.03,totalW=w-pad*2;
+  let thumbW=(totalW-gap*(n-1))/n;
+  let thumbH=Math.max(40,picksAreaH-labelH-w*0.05);
+  let thumbY=picksY+labelH;
+  for(let i=0;i<n;i++){
+   let s=picks[i],x=pad+i*(thumbW+gap),img=null;
+   if(s.cover){try{img=await loadImageSafe(s.cover)}catch(e){img=null}}
+   ctx.save();roundRectPath(ctx,x,thumbY,thumbW,thumbH,14);ctx.clip();
+   if(img)drawCoverContain(ctx,img,x,thumbY,thumbW,thumbH);
+   else{ctx.fillStyle=cardbg;ctx.fillRect(x,thumbY,thumbW,thumbH);ctx.fillStyle=accent;ctx.font=`900 ${thumbW*0.35}px ${cardFont()}`;ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText((s.title||'?').slice(0,1),x+thumbW/2,thumbY+thumbH/2)}
+   ctx.restore();
+   ctx.font=`700 ${w*0.022}px ${cardFont()}`;ctx.fillStyle=text;ctx.textAlign='center';ctx.textBaseline='top';
+   wrapCJKText(ctx,s.title,x+thumbW/2,thumbY+thumbH+6,thumbW,w*0.022*1.3,2)
+  }
+ }
+ ctx.fillStyle=text;ctx.globalAlpha=.5;ctx.font=`700 ${w*0.02}px ${cardFont()}`;ctx.textAlign='right';ctx.textBaseline='alphabetic';
+ ctx.fillText('我的收藏櫃',w-pad*0.6,h-pad*0.18);ctx.globalAlpha=1
+}
+function renderPickListHtml(){
+ if(!db.series.length)return '<div class="empty">還沒有收藏可以推薦。</div>'
+ return db.series.map(s=>`<label style="display:flex;align-items:center;gap:10px;padding:6px 4px;border-bottom:1px solid var(--line)"><input type="checkbox" style="width:auto" ${profileCardPicks.has(s.id)?'checked':''} onchange="togglePick('${s.id}',this.checked)"><img src="${esc(s.cover||'')}" style="width:32px;height:44px;object-fit:cover;border-radius:6px;background:var(--line)" onerror="this.style.visibility='hidden'"><span style="font-size:13px;font-weight:700;flex:1">${esc(s.title)}</span></label>`).join('')
+}
+function togglePick(sid,checked){
+ if(checked){
+  if(profileCardPicks.size>=3){toast('最多只能選 3 個作品');document.getElementById('pickList').innerHTML=renderPickListHtml();return}
+  profileCardPicks.add(sid)
+ } else profileCardPicks.delete(sid);
+ document.getElementById('pickList').innerHTML=renderPickListHtml();
+ renderProfileCardPreview(lastProfileRatio)
 }
 function openProfileShareCard(){
+ profileCardPicks=new Set([...db.series].filter(s=>s.rating>=4).sort((a,b)=>(b.rating||0)-(a.rating||0)).slice(0,3).map(s=>s.id));
  showModal(`<h2>分享我的收藏</h2>
-<div class="notice">分享你的收藏等級與數量給朋友看，不會包含個別項目的購入價格等細節。</div>
+<div class="notice">分享你的收藏等級、數量，還可以挑最多 3 個想推薦給朋友的作品一起放進圖卡。不會包含個別項目的購入價格等細節。</div>
 <div class="row wrap" style="margin:10px 0"><button class="btn small purple" onclick="renderProfileCardPreview('16:9')">橫式 16:9</button><button class="btn small" onclick="renderProfileCardPreview('9:16')">直式 9:16（限動）</button></div>
 <div style="display:flex;justify-content:center;background:var(--accent2);border-radius:16px;padding:12px"><canvas id="shareCanvas" style="max-width:100%;height:auto;border-radius:12px"></canvas></div>
+<h3 style="margin-top:16px">推薦作品（最多 3 個，預設帶入你評 4★ 以上的作品）</h3>
+<div id="pickList" style="max-height:220px;overflow:auto;border:1px solid var(--line);border-radius:14px;padding:8px">${renderPickListHtml()}</div>
 <button class="btn purple" style="width:100%;margin-top:12px" onclick="downloadShareCard('我的收藏')">下載圖片</button>`)
  renderProfileCardPreview('16:9')
 }
 async function renderProfileCardPreview(ratio){
+ lastProfileRatio=ratio;
  let canvas=document.getElementById('shareCanvas');if(!canvas)return;
  await drawProfileShareCard(canvas,ratio)
 }
