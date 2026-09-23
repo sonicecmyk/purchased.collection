@@ -452,7 +452,7 @@ function renderStats(){
 
 function openEditor(b={}){
  let id=b.id||uid();
- showModal(`<h2>手動新增作品</h2>
+ showModal(`<h2>新增作品</h2>
  <div class="formgrid">
  <div class="full"><label>系列／作品名稱</label><input id="fTitle" value="${esc(b.title||'')}"></div>
  <div><label>收藏類型</label>${typeSelectHtml('fType','書籍',"updateFormForType('f',this.value)")}</div>
@@ -484,7 +484,7 @@ function openEditor(b={}){
  <div class="switch"><span>標記為待出售</span><input id="fSell" type="checkbox"></div>
  <div class="switch"><span>標記為絕版</span><input id="fOOP" type="checkbox"></div>
  </details>
- <button class="btn purple" style="width:100%;margin-top:14px" onclick='createSeries(${JSON.stringify(b)})'>建立作品＋第一項</button>`)
+ <button class="btn purple" style="width:100%;margin-top:14px" onclick='createSeries(${JSON.stringify(b)})'>建立作品</button>`)
 }
 function createSeries(b){
  let type=document.getElementById('fType').value;
