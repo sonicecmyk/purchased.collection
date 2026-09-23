@@ -15,7 +15,7 @@
 :root{
   --bg:#f6f1e9;--card:#fffaf3;--text:#3b332c;--muted:#8a7f6f;--line:#e6dcc8;
   --primary:#3b332c;--accent:#b3623c;--accent2:#f3e3d3;--green:#6b7d4f;--red:#b3462f;
-  --greenbg:#e3ead9;--greentext:#4b5d38;--heroFrom:#3b332c;--heroTo:#b3623c;
+  --greenbg:#e3ead9;--greentext:#4b5d38;--heroFrom:#3b332c;--heroTo:#b3623c;--ownedbg:#3f7a4e;--ownedtext:#ffffff;
   --shadow:0 12px 32px rgba(59,51,44,.10);--radius:22px;
 }
 *{box-sizing:border-box} body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans TC",sans-serif}
@@ -40,8 +40,8 @@ label{font-size:12px;font-weight:800;color:#475569;display:block;margin:10px 0 6
 .cover{width:62px;height:86px;object-fit:cover;border-radius:9px;background:#e5e7eb;flex:none}.cover.big{width:90px;height:126px}
 .meta{min-width:0;flex:1}.title{font-weight:900;line-height:1.35}.muted{color:var(--muted);font-size:12px;line-height:1.5}.tag{display:inline-block;background:#f1f5f9;border-radius:999px;padding:4px 8px;font-size:11px;margin:3px 3px 0 0}.tag.purple{background:var(--accent2);color:#5b21b6}.tag.green{background:var(--greenbg);color:var(--greentext)}
 .volgrid{display:flex;flex-wrap:wrap;gap:8px}
-.voltile{position:relative;min-width:46px;height:46px;padding:0 6px;border-radius:12px;background:#f1f5f9;color:#475569;font-weight:800;font-size:13px}
-.voltile.owned{background:var(--greenbg);color:var(--greentext)}
+.voltile{position:relative;min-width:46px;height:46px;padding:0 6px;border-radius:12px;background:var(--line);color:var(--muted);font-weight:800;font-size:13px}
+.voltile.owned{background:var(--ownedbg);color:var(--ownedtext)}
 .voltile.sell::after{content:'';position:absolute;top:5px;right:5px;width:7px;height:7px;border-radius:50%;background:var(--red)}
 .voltile.selected{outline:3px solid var(--accent);outline-offset:1px}
 .ed-badge{position:absolute;bottom:2px;left:3px;font-size:9px;font-weight:800;background:#111827;color:#fff;border-radius:5px;padding:0 3px;line-height:1.4}
@@ -55,6 +55,9 @@ label{font-size:12px;font-weight:800;color:#475569;display:block;margin:10px 0 6
 .shelfcard .title{font-size:12.5px;font-weight:800;line-height:1.3;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;min-height:2.6em}
 .suggest-chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
 .suggest-chip{background:var(--accent2);color:var(--text);border-radius:999px;padding:5px 10px;font-size:11.5px;font-weight:700}
+.starpick{display:flex;gap:3px;font-size:22px;line-height:1;cursor:pointer;color:var(--accent)}
+.levelbadge{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.16);border-radius:999px;padding:8px 14px;margin-top:10px;font-weight:800;font-size:14px}
+.levelbadge .emoji{font-size:20px}
 .empty{text-align:center;color:var(--muted);padding:28px 10px}.list{display:flex;flex-direction:column;gap:10px}
 .bookrow{display:flex;gap:12px;align-items:center;background:#fff;border:1px solid var(--line);padding:10px 12px;border-radius:16px}.bookrow .cover{width:44px;height:62px}.bookrow .title{font-size:14px}
 .progress{height:8px;background:#eef2f7;border-radius:99px;overflow:hidden}.progress i{display:block;height:100%;background:var(--accent);border-radius:99px}
@@ -82,9 +85,12 @@ label{font-size:12px;font-weight:800;color:#475569;display:block;margin:10px 0 6
 
 <main>
 <section id="home" class="page active">
-  <div class="hero"><h1>記錄你每一個收藏</h1><p>搜尋書名／作者、掃 ISBN、記錄每一集的價格與收藏狀態。</p></div>
+  <div class="hero">
+    <h1>記錄你每一個收藏</h1><p>書籍、專輯周邊、公仔娃娃⋯依類型整理，記錄每一項的價格與收藏狀態。</p>
+    <div class="levelbadge"><span class="emoji" id="hLevelEmoji">📦</span><span id="hLevelText">尚未開始收藏</span></div>
+  </div>
   <div class="grid">
-    <div class="stat"><b id="sBooks">0</b><span>已收藏本數</span></div>
+    <div class="stat"><b id="sBooks">0</b><span>已收藏數量</span></div>
     <div class="stat"><b id="sSeries">0</b><span>收藏系列</span></div>
     <div class="stat"><b id="sSpend">$0</b><span>實際花費</span></div>
     <div class="stat"><b id="sWant">0</b><span>待購入</span></div>
@@ -93,10 +99,11 @@ label{font-size:12px;font-weight:800;color:#475569;display:block;margin:10px 0 6
     <div class="row between"><h2>快速開始</h2><button class="btn purple" onclick="openEditor()">＋ 新增作品</button></div>
     <div class="row wrap">
       <button class="btn" onclick="go('want')">想買清單</button>
-      <button class="btn" onclick="go('stats')">看作者統計</button>
+      <button class="btn" onclick="go('stats')">看統計與排行</button>
+      <button class="btn" onclick="openProfileShareCard()">分享我的收藏</button>
     </div>
   </div>
-  <div class="card"><h2>收藏進度</h2><div id="homeSeries" class="list"></div></div>
+  <div class="card"><div class="row between"><h2>收藏進度</h2><button class="btn small" onclick="go('books')">查看全部</button></div><div id="homeSeries" class="shelfgrid" style="margin-top:10px"></div></div>
 </section>
 
 <section id="books" class="page">
@@ -106,7 +113,7 @@ label{font-size:12px;font-weight:800;color:#475569;display:block;margin:10px 0 6
     <div class="formgrid" style="margin-top:10px">
       <div><label>類型</label><select id="bookType" onchange="renderBooks()"><option value="all">全部類型</option><option value="書籍">書籍</option><option value="專輯與周邊">專輯與周邊</option><option value="IP公仔／娃娃">IP公仔／娃娃</option><option value="其他收藏">其他收藏</option></select></div>
       <div><label>篩選</label><select id="bookFilter" onchange="renderBooks()"><option value="all">全部</option><option value="owned">已收藏</option><option value="unowned">待購入</option><option value="sell">待出售</option><option value="ongoing">連載中（要追新集）</option><option value="oop">已絕版</option></select></div>
-      <div><label>排序</label><select id="bookSort" onchange="renderBooks()"><option value="default">新增順序</option><option value="dateDesc">購入日期：新到舊</option><option value="dateAsc">購入日期：舊到新</option><option value="priceDesc">價格：高到低</option><option value="priceAsc">價格：低到高</option><option value="unownedFirst">未收藏優先</option></select></div>
+      <div><label>排序</label><select id="bookSort" onchange="renderBooks()"><option value="default">新增順序</option><option value="dateDesc">購入日期：新到舊</option><option value="dateAsc">購入日期：舊到新</option><option value="priceDesc">價格：高到低</option><option value="priceAsc">價格：低到高</option><option value="unownedFirst">未收藏優先</option><option value="ratingDesc">評分：高到低</option></select></div>
     </div>
   </div>
   <div id="bookList" class="shelfgrid"></div>
@@ -119,6 +126,7 @@ label{font-size:12px;font-weight:800;color:#475569;display:block;margin:10px 0 6
 
 <section id="stats" class="page">
   <div class="card"><h2>收藏統計</h2><div id="statsSummary"></div></div>
+  <div class="card"><h3>我的最愛排行</h3><div class="muted" style="margin-bottom:8px">依你在作品頁打的個人評分排序。</div><div id="rankStats"></div></div>
   <div class="card"><h3>作者</h3><div id="authorStats"></div></div>
   <div class="card"><h3>分類／類型</h3><div id="catStats"></div></div>
 </section>
@@ -149,11 +157,11 @@ let db=JSON.parse(localStorage.getItem(KEY)||'null')||{
 db.settings=db.settings||{theme:'侘寂日系'};
 db.suggest=db.suggest||{};
 const THEMES={
- '侘寂日系':{bg:'#f6f1e9',card:'#fffaf3',text:'#3b332c',muted:'#8a7f6f',line:'#e6dcc8',primary:'#3b332c',accent:'#b3623c',accent2:'#f3e3d3',green:'#6b7d4f',red:'#b3462f',greenbg:'#e3ead9',greentext:'#4b5d38',heroFrom:'#3b332c',heroTo:'#b3623c'},
- '薄荷清新':{bg:'#f1f8f6',card:'#ffffff',text:'#1f2d28',muted:'#6b8079',line:'#dcece6',primary:'#1f2d28',accent:'#2f9e78',accent2:'#dff3ea',green:'#2f9e78',red:'#d15b4f',greenbg:'#dff3ea',greentext:'#1f6b4f',heroFrom:'#1f2d28',heroTo:'#2f9e78'},
- '櫻花粉':{bg:'#fdf3f6',card:'#ffffff',text:'#3d2b30',muted:'#9c7f88',line:'#f5dee5',primary:'#3d2b30',accent:'#e37fa0',accent2:'#fbe4ec',green:'#7a9b6b',red:'#d1495b',greenbg:'#eaf1e3',greentext:'#4f6b43',heroFrom:'#3d2b30',heroTo:'#e37fa0'},
- '深夜藍':{bg:'#12141c',card:'#1b1f2c',text:'#eef1f8',muted:'#8891a8',line:'#2a2f42',primary:'#eef1f8',accent:'#7c9bff',accent2:'#26304d',green:'#4ade80',red:'#f87171',greenbg:'#1c3326',greentext:'#7fe3ab',heroFrom:'#1b1f2c',heroTo:'#3c4a8f'},
- '經典紫':{bg:'#f5f7fb',card:'#ffffff',text:'#172033',muted:'#6b7280',line:'#e5e7eb',primary:'#111827',accent:'#7c3aed',accent2:'#ede9fe',green:'#15803d',red:'#dc2626',greenbg:'#dcfce7',greentext:'#166534',heroFrom:'#111827',heroTo:'#312e81'}
+ '侘寂日系':{bg:'#f6f1e9',card:'#fffaf3',text:'#3b332c',muted:'#8a7f6f',line:'#e6dcc8',primary:'#3b332c',accent:'#b3623c',accent2:'#f3e3d3',green:'#6b7d4f',red:'#b3462f',greenbg:'#e3ead9',greentext:'#4b5d38',heroFrom:'#3b332c',heroTo:'#b3623c',ownedbg:'#3f7a4e',ownedtext:'#ffffff'},
+ '薄荷清新':{bg:'#f1f8f6',card:'#ffffff',text:'#1f2d28',muted:'#6b8079',line:'#dcece6',primary:'#1f2d28',accent:'#2f9e78',accent2:'#dff3ea',green:'#2f9e78',red:'#d15b4f',greenbg:'#dff3ea',greentext:'#1f6b4f',heroFrom:'#1f2d28',heroTo:'#2f9e78',ownedbg:'#0f766e',ownedtext:'#ffffff'},
+ '櫻花粉':{bg:'#fdf3f6',card:'#ffffff',text:'#3d2b30',muted:'#9c7f88',line:'#f5dee5',primary:'#3d2b30',accent:'#e37fa0',accent2:'#fbe4ec',green:'#7a9b6b',red:'#d1495b',greenbg:'#eaf1e3',greentext:'#4f6b43',heroFrom:'#3d2b30',heroTo:'#e37fa0',ownedbg:'#3f6b4f',ownedtext:'#ffffff'},
+ '深夜藍':{bg:'#12141c',card:'#1b1f2c',text:'#eef1f8',muted:'#8891a8',line:'#2a2f42',primary:'#eef1f8',accent:'#7c9bff',accent2:'#26304d',green:'#4ade80',red:'#f87171',greenbg:'#1c3326',greentext:'#7fe3ab',heroFrom:'#1b1f2c',heroTo:'#3c4a8f',ownedbg:'#22c55e',ownedtext:'#052e16'},
+ '經典紫':{bg:'#f5f7fb',card:'#ffffff',text:'#172033',muted:'#6b7280',line:'#e5e7eb',primary:'#111827',accent:'#7c3aed',accent2:'#ede9fe',green:'#15803d',red:'#dc2626',greenbg:'#dcfce7',greentext:'#166534',heroFrom:'#111827',heroTo:'#312e81',ownedbg:'#16a34a',ownedtext:'#ffffff'}
 };
 function applyTheme(name){
  let t=THEMES[name]||THEMES['侘寂日系'];
@@ -162,6 +170,35 @@ function applyTheme(name){
  let m=document.querySelector('meta[name="theme-color"]');if(m)m.setAttribute('content',t.primary)
 }
 applyTheme(db.settings.theme);
+const COLLECTOR_LEVELS=[
+ {level:1,min:1,max:30,emoji:'🌱',title:'收藏萌芽'},
+ {level:2,min:31,max:100,emoji:'🎒',title:'收藏玩家'},
+ {level:3,min:101,max:300,emoji:'💎',title:'收藏家'},
+ {level:4,min:301,max:1000,emoji:'🏛️',title:'典藏家'},
+ {level:5,min:1001,max:Infinity,emoji:'👑',title:'收藏殿堂'}
+];
+function getCollectorLevel(count){
+ if(count<1)return {level:0,min:0,max:0,emoji:'📦',title:'尚未開始收藏',next:1};
+ let cur=COLLECTOR_LEVELS.find(l=>count>=l.min&&count<=l.max)||COLLECTOR_LEVELS[COLLECTOR_LEVELS.length-1];
+ let idx=COLLECTOR_LEVELS.indexOf(cur);
+ let next=COLLECTOR_LEVELS[idx+1];
+ return {...cur,next:next?next.min:null}
+}
+function starsHtml(prefix,val){
+ return Array.from({length:5},(_,i)=>`<span onclick="setStars('${prefix}',${i+1})">${i<val?'★':'☆'}</span>`).join('')
+}
+function setStars(prefix,n){
+ let input=document.getElementById(prefix+'Rating');
+ let cur=Number(input.value)||0;
+ let next=(cur===n)?0:n;
+ input.value=next;
+ document.getElementById(prefix+'RatingWrap').innerHTML=starsHtml(prefix,next)
+}
+function rateSeriesQuick(sid,n){
+ let s=db.series.find(x=>x.id===sid);if(!s)return;
+ s.rating=(s.rating===n)?0:n;
+ save();openSeries(sid)
+}
 function save(){localStorage.setItem(KEY,JSON.stringify(db));renderAll()}
 function esc(s=''){return String(s).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]))}
 function langSelectHtml(id,current){
@@ -301,9 +338,13 @@ function renderHome(){
  document.getElementById('sSeries').textContent=db.series.length;
  document.getElementById('sSpend').textContent=money(spend);
  document.getElementById('sWant').textContent=vols.filter(v=>!v.owned).length;
- document.getElementById('homeSeries').innerHTML=db.series.length?db.series.map(s=>{
-   let o=(s.volumes||[]).filter(v=>v.owned).length,total=(s.volumes||[]).length,pct=total?Math.round(o/total*100):0;
-   return `<div class="bookrow" onclick="openSeries('${s.id}')"><img class="cover" src="${esc(s.cover||'')}" onerror="this.style.visibility='hidden'"><div class="meta"><div class="title">${esc(s.title)}</div><div class="muted">${esc((s.authors||[]).join('、'))} · ${o}/${total} 本</div><div class="progress"><i style="width:${pct}%"></i></div></div><b>${pct}%</b></div>`
+ let lv=getCollectorLevel(owned.length);
+ document.getElementById('hLevelEmoji').textContent=lv.emoji;
+ document.getElementById('hLevelText').textContent=lv.level?`Lv.${lv.level}　${lv.title}`:lv.title;
+ let preview=db.series.slice(0,8);
+ document.getElementById('homeSeries').innerHTML=preview.length?preview.map(s=>{
+  let o=(s.volumes||[]).filter(v=>v.owned).length,total=(s.volumes||[]).length,pct=total?Math.round(o/total*100):0;
+  return `<div class="shelfcard" onclick="openSeries('${s.id}')"><div class="cwrap"><img src="${esc(s.cover||'')}" onerror="this.style.visibility='hidden'"><span class="pctdot">${pct}%</span></div><div class="info"><div class="title">${esc(s.title)}</div></div></div>`
  }).join(''):'<div class="empty">還沒有收藏。按底部中央「＋ 新增」開始吧。</div>'
 }
 function renderBooks(){
@@ -333,9 +374,11 @@ function renderBooks(){
  else if(sortBy==='priceDesc')rows.sort((a,b)=>spendOf(b)-spendOf(a));
  else if(sortBy==='priceAsc')rows.sort((a,b)=>spendOf(a)-spendOf(b));
  else if(sortBy==='unownedFirst')rows.sort((a,b)=>ratioOf(a)-ratioOf(b));
+ else if(sortBy==='ratingDesc')rows.sort((a,b)=>(b.rating||0)-(a.rating||0));
  document.getElementById('bookList').innerHTML=rows.length?rows.map(s=>{
   let total=(s.volumes||[]).length,owned=(s.volumes||[]).filter(v=>v.owned).length,pct=total?Math.round(owned/total*100):0;
-  return `<div class="shelfcard" onclick="openSeries('${s.id}')"><div class="cwrap"><img src="${esc(s.cover||'')}" onerror="this.style.visibility='hidden'"><span class="pctdot">${pct}%</span></div><div class="info"><div class="title">${esc(s.title)}</div></div></div>`
+  let ratingBadge=s.rating?`<span class="pctdot" style="left:6px;right:auto">★${s.rating}</span>`:'';
+  return `<div class="shelfcard" onclick="openSeries('${s.id}')"><div class="cwrap"><img src="${esc(s.cover||'')}" onerror="this.style.visibility='hidden'"><span class="pctdot">${pct}%</span>${ratingBadge}</div><div class="info"><div class="title">${esc(s.title)}</div></div></div>`
  }).join(''):'<div class="empty">找不到符合的作品。</div>'
 }
 function renderWant(){
@@ -349,6 +392,8 @@ function renderWant(){
 function renderStats(){
  let vols=db.series.flatMap(s=>s.volumes||[]),owned=vols.filter(v=>v.owned);
  document.getElementById('statsSummary').innerHTML=`<div class="grid"><div class="stat"><b>${owned.length}</b><span>已收藏本數</span></div><div class="stat"><b>${db.series.length}</b><span>收藏系列</span></div><div class="stat"><b>${new Set(db.series.flatMap(s=>s.authors||[])).size}</b><span>作者</span></div><div class="stat"><b>${money(owned.reduce((a,v)=>a+Number(v.purchasePrice||0),0))}</b><span>實際花費</span></div></div>`;
+ let ranked=db.series.filter(s=>s.rating>0).sort((a,b)=>b.rating-a.rating);
+ document.getElementById('rankStats').innerHTML=ranked.length?ranked.map((s,i)=>`<div class="bookrow" onclick="openSeries('${s.id}')"><img class="cover" src="${esc(s.cover||'')}" onerror="this.style.visibility='hidden'"><div class="meta"><div class="title">#${i+1}　${esc(s.title)}</div><div class="muted">${'★'.repeat(s.rating)}${'☆'.repeat(5-s.rating)}</div></div></div>`).join(''):'<div class="empty">還沒有評分，到作品頁點星星打分數吧。</div>';
  let amap={};db.series.forEach(s=>(s.authors||['未填作者']).forEach(a=>{if(!amap[a])amap[a]={books:0,series:0};amap[a].series++;amap[a].books+=(s.volumes||[]).filter(v=>v.owned).length}));
  document.getElementById('authorStats').innerHTML=Object.entries(amap).sort((a,b)=>b[1].books-a[1].books).map(([a,x])=>`<div class="bookrow"><div class="meta"><div class="title">${esc(a)}</div><div class="muted">已收藏 ${x.books} 本 · ${x.series} 個系列</div></div><b>${x.books}</b></div>`).join('')||'<div class="empty">還沒有資料。</div>';
  let cmap={};db.series.forEach(s=>(s.category||'未分類').split(',').forEach(c=>{c=c.trim();cmap[c]=(cmap[c]||0)+(s.volumes||[]).filter(v=>v.owned).length}));
@@ -423,7 +468,8 @@ function openSeries(id){
    :`<button class="voltile ${v.owned?'owned':''} ${v.sell?'sell':''}"${title} onpointerdown="volPointerDown(this,'${s.id}','${v.id}')" onpointerup="volPointerUp(this,'${s.id}','${v.id}')" onpointercancel="volPointerCancel(this)" onpointerleave="volPointerCancel(this)">${label}${editionBadge(v)}${oopBadge}</button>`
  }).join(''):'<div class="empty">還沒有項目，按上面「＋ 新增項目」開始。</div>';
  showModal(`<div class="row"><img class="cover big" src="${esc(s.cover||'')}" onerror="this.style.visibility='hidden'"><div class="meta"><h2>${esc(s.title)}</h2><div class="muted">${esc((s.authors||[]).join('、'))}</div><div class="muted">${esc(s.publisher||'')} · ${esc(s.language||'')} · ${esc(s.category||'未分類')}</div>
- <div style="margin-top:6px"><span class="tag">${esc(s.type||'書籍')}</span><span class="tag ${statusClass}">${esc(s.status||'未知')}</span><span class="tag">已收藏 ${owned}/${total}</span>${sell?`<span class="tag">${sell} 項待出售</span>`:''}</div></div></div>
+ <div style="margin-top:6px"><span class="tag">${esc(s.type||'書籍')}</span><span class="tag ${statusClass}">${esc(s.status||'未知')}</span><span class="tag">已收藏 ${owned}/${total}</span>${sell?`<span class="tag">${sell} 項待出售</span>`:''}</div>
+ <div class="starpick" style="margin-top:6px;font-size:18px">${Array.from({length:5},(_,i)=>`<span onclick="rateSeriesQuick('${s.id}',${i+1})">${i<(s.rating||0)?'★':'☆'}</span>`).join('')}</div></div></div>
  <div class="row wrap" style="margin:15px 0"><button class="btn purple" onclick="addVolume('${s.id}')">＋ 新增項目</button><button class="btn" onclick="editSeriesInfo('${s.id}')">編輯作品資訊</button><button class="btn ${batchMode?'purple':''}" onclick="toggleBatchMode('${s.id}')">${batchMode?'結束批次':'批次修改'}</button><button class="btn" onclick="openShareCard('${s.id}')">分享圖卡</button></div>
  ${batchMode?`<div class="notice" style="background:#eef2ff;color:#3730a3;margin-bottom:12px">
   <div style="margin-bottom:8px">批次模式：點項目選取，已選 ${batchSelected.size} 項</div>
@@ -431,7 +477,7 @@ function openSeries(id){
   <div class="row wrap" style="margin-top:8px;gap:6px"><input id="batchPriceInput" type="number" step="0.01" placeholder="輸入金額" style="flex:1;min-width:100px"><button class="btn small purple" onclick="batchApplyPrice('${s.id}','purchase')">套用為實際購入價</button><button class="btn small" onclick="batchApplyPrice('${s.id}','list')">套用為參考價</button></div>
  </div>`:''}
  <div class="volgrid">${chipsHtml}</div>
- <div class="notice" style="margin-top:12px">${batchMode?'點項目多選，再用上面按鈕批次套用購買狀態或金額。':'點一下切換已購入／待購入；按住不放可開啟詳細編輯（價格、ISBN、版本、備註）。'}<span style="color:var(--greentext)">■</span> 已收藏　<span style="color:var(--muted)">■</span> 待購入　右上紅點代表待出售、左下字母代表版本、左上「絕」代表絕版、數字右上角 ×N 代表第幾本重複收藏。${s.status==='連載中'?'這部還在連載中，記得留意有沒有新集數。':(s.status==='已完結'?'這部已經完結了，收齊就不用再追新集數。':'')}</div>`)
+ <div class="notice" style="margin-top:12px">${batchMode?'點項目多選，再用上面按鈕批次套用購買狀態或金額。':'點一下切換已購入／待購入；按住不放可開啟詳細編輯（價格、ISBN、版本、備註）。'}<span style="color:var(--ownedbg)">■</span> 已收藏　<span style="color:var(--muted)">■</span> 待購入　右上紅點代表待出售、左下字母代表版本、左上「絕」代表絕版、數字右上角 ×N 代表第幾本重複收藏。${s.status==='連載中'?'這部還在連載中，記得留意有沒有新集數。':(s.status==='已完結'?'這部已經完結了，收齊就不用再追新集數。':'')}</div>`)
 }
 function toggleBatchMode(sid){batchMode=!batchMode;batchSelected.clear();openSeries(sid)}
 function toggleBatchSelect(sid,vid){if(batchSelected.has(vid))batchSelected.delete(vid);else batchSelected.add(vid);openSeries(sid)}
@@ -551,6 +597,7 @@ function editSeriesInfo(sid){
  <div><label>語言</label>${langSelectHtml('esLang',s.language||'')}</div>
  <div><label>分類</label><div id="esCatWrap">${categorySelectHtml('esCat',curType,s.category||'')}</div></div>
  <div id="esStatusWrap"><label>連載狀態</label><select id="esStatus"><option value="未知" ${!s.status||s.status==='未知'?'selected':''}>未知</option><option value="連載中" ${s.status==='連載中'?'selected':''}>連載中（還會繼續出）</option><option value="已完結" ${s.status==='已完結'?'selected':''}>已完結（不用再追）</option></select></div>
+ <div><label>個人評分</label><div id="esRatingWrap" class="starpick">${starsHtml('es',s.rating||0)}</div><input type="hidden" id="esRating" value="${s.rating||0}"></div>
  <div class="full"><label>封面 URL 或從相簿上傳</label><input id="esCover" value="${esc(s.cover||'')}">
  <input type="file" accept="image/*" style="margin-top:8px" onchange="handleCoverFile(this,'esCover')"></div>
  </div>
@@ -568,6 +615,7 @@ function saveSeriesInfo(sid){
  s.language=readLang('esLang');
  s.category=readCategory('esCat');
  s.status=document.getElementById('esStatus').value;
+ s.rating=Number(document.getElementById('esRating').value)||0;
  s.cover=document.getElementById('esCover').value.trim();
  s.authors.forEach(a=>bumpSuggest(type,cfg.authorField,a));
  save();openSeries(sid)
@@ -692,6 +740,66 @@ function downloadShareCard(title){
   if(!blob){toast('產生圖片失敗');return}
   let a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=`${title||'收藏卡'}.png`;a.click()
  },'image/png')
+}
+function cardFont(){return '-apple-system,BlinkMacSystemFont,"PingFang TC","Noto Sans TC",sans-serif'}
+async function drawProfileShareCard(canvas,ratio){
+ let w=ratio==='16:9'?1200:675, h=ratio==='16:9'?675:1200;
+ canvas.width=w;canvas.height=h;
+ let ctx=canvas.getContext('2d');
+ let cs=getComputedStyle(document.documentElement);
+ let bg=(cs.getPropertyValue('--bg')||'#f6f1e9').trim();
+ let accent=(cs.getPropertyValue('--accent')||'#b3623c').trim();
+ let accent2=(cs.getPropertyValue('--accent2')||'#f3e3d3').trim();
+ let text=(cs.getPropertyValue('--text')||'#3b332c').trim();
+ let cardbg=(cs.getPropertyValue('--card')||'#fffaf3').trim();
+ let grad=ctx.createLinearGradient(0,0,w,h);grad.addColorStop(0,accent2);grad.addColorStop(1,bg);
+ ctx.fillStyle=grad;ctx.fillRect(0,0,w,h);
+ let vols=db.series.flatMap(s=>s.volumes||[]);
+ let owned=vols.filter(v=>v.owned);
+ let lv=getCollectorLevel(owned.length);
+ let byType={};
+ db.series.forEach(s=>{let t=s.type||'書籍';let c=(s.volumes||[]).filter(v=>v.owned).length;if(c)byType[t]=(byType[t]||0)+c});
+ let pad=w*0.08,landscape=ratio==='16:9';
+ let badgeSize=landscape?h-pad*2:w-pad*2*1.3;
+ let badgeX=landscape?pad:(w-badgeSize)/2, badgeY=landscape?pad:pad;
+ ctx.save();roundRectPath(ctx,badgeX,badgeY,badgeSize,badgeSize,32);ctx.fillStyle=cardbg;ctx.fill();ctx.restore();
+ ctx.textAlign='center';ctx.textBaseline='middle';
+ ctx.font=`${badgeSize*0.4}px ${cardFont()}`;ctx.fillStyle=text;
+ ctx.fillText(lv.emoji,badgeX+badgeSize/2,badgeY+badgeSize*0.4);
+ ctx.font=`900 ${badgeSize*0.09}px ${cardFont()}`;ctx.fillStyle=accent;
+ ctx.fillText(lv.level?`Lv.${lv.level}`:'',badgeX+badgeSize/2,badgeY+badgeSize*0.7);
+ ctx.font=`800 ${badgeSize*0.1}px ${cardFont()}`;ctx.fillStyle=text;
+ ctx.fillText(lv.title,badgeX+badgeSize/2,badgeY+badgeSize*0.84);
+ let textX,textY,textW;
+ if(landscape){textX=badgeX+badgeSize+pad*0.9;textY=pad;textW=w-textX-pad}
+ else{textX=pad;textY=badgeY+badgeSize+pad*0.8;textW=w-pad*2}
+ ctx.textAlign=landscape?'left':'center';ctx.textBaseline='top';
+ let cx=landscape?textX:textX+textW/2;
+ ctx.font=`900 ${textW*0.1}px ${cardFont()}`;ctx.fillStyle=text;
+ ctx.fillText(`已收藏 ${owned.length} 件`,cx,textY);
+ let curY=textY+textW*0.1*1.3+textW*0.02;
+ ctx.font=`600 ${textW*0.045}px ${cardFont()}`;ctx.globalAlpha=.75;
+ ctx.fillText(`${db.series.length} 個系列／作品`,cx,curY);ctx.globalAlpha=1;
+ curY+=textW*0.045*1.9;
+ Object.entries(byType).forEach(([t,c])=>{
+  ctx.font=`700 ${textW*0.042}px ${cardFont()}`;ctx.fillStyle=accent;
+  ctx.fillText(`${t}　${c} 件`,cx,curY);
+  curY+=textW*0.042*1.7
+ });
+ ctx.fillStyle=text;ctx.globalAlpha=.5;ctx.font=`700 ${w*0.022}px ${cardFont()}`;ctx.textAlign='right';ctx.textBaseline='alphabetic';
+ ctx.fillText('我的收藏櫃',w-pad*0.6,h-pad*0.35);ctx.globalAlpha=1
+}
+function openProfileShareCard(){
+ showModal(`<h2>分享我的收藏</h2>
+<div class="notice">分享你的收藏等級與數量給朋友看，不會包含個別項目的購入價格等細節。</div>
+<div class="row wrap" style="margin:10px 0"><button class="btn small purple" onclick="renderProfileCardPreview('16:9')">橫式 16:9</button><button class="btn small" onclick="renderProfileCardPreview('9:16')">直式 9:16（限動）</button></div>
+<div style="display:flex;justify-content:center;background:var(--accent2);border-radius:16px;padding:12px"><canvas id="shareCanvas" style="max-width:100%;height:auto;border-radius:12px"></canvas></div>
+<button class="btn purple" style="width:100%;margin-top:12px" onclick="downloadShareCard('我的收藏')">下載圖片</button>`)
+ renderProfileCardPreview('16:9')
+}
+async function renderProfileCardPreview(ratio){
+ let canvas=document.getElementById('shareCanvas');if(!canvas)return;
+ await drawProfileShareCard(canvas,ratio)
 }
 function importData(inputEl){
  let f=inputEl.files&&inputEl.files[0];if(!f)return;
