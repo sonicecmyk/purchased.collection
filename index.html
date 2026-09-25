@@ -25,7 +25,14 @@
   --shadow:var(--shadow-md);--radius:var(--radius-md);
   --ease:cubic-bezier(.22,.8,.28,1);
 }
-*{box-sizing:border-box} body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans TC",sans-serif;font-size:var(--fs-base);-webkit-font-smoothing:antialiased}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{margin:0;color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans TC",sans-serif;font-size:var(--fs-base);-webkit-font-smoothing:antialiased;
+  background:
+    radial-gradient(1100px 620px at 100% -8%,color-mix(in srgb,var(--accent) 16%,transparent),transparent 60%),
+    radial-gradient(800px 520px at -8% 12%,color-mix(in srgb,var(--accent2) 70%,transparent),transparent 58%),
+    radial-gradient(700px 480px at 90% 70%,color-mix(in srgb,var(--accent) 7%,transparent),transparent 55%),
+    var(--bg);
+  background-attachment:fixed}
 button,input,select,textarea{font:inherit} button{cursor:pointer;border:0;transition:transform .15s var(--ease),box-shadow .15s var(--ease),opacity .15s var(--ease)}
 button:active{transform:scale(.96)}
 svg.icon{width:1em;height:1em;display:inline-block;vertical-align:-.14em;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
@@ -33,33 +40,34 @@ h1,h2,h3{font-family:inherit}
 .app{max-width:760px;margin:auto;min-height:100vh;padding-bottom:calc(96px + env(safe-area-inset-bottom))}
 header{position:sticky;top:0;z-index:20;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);padding:var(--sp-4) var(--sp-4) var(--sp-3);border-bottom:1px solid var(--line)}
 .top{display:flex;justify-content:space-between;align-items:center}
-.brand{font-weight:900;font-size:var(--fs-xl);letter-spacing:-.01em;display:flex;align-items:center;gap:8px}
-.brand::before{content:'';width:9px;height:9px;border-radius:50%;background:var(--accent)}
+.brand{font-weight:900;font-size:var(--fs-xl);letter-spacing:-.01em;display:flex;align-items:center;gap:7px}
 .sub{font-size:var(--fs-sm);color:var(--muted);margin-top:3px}
 .iconbtn{width:42px;height:42px;border-radius:var(--radius-xs);background:var(--card);border:1px solid var(--line);box-shadow:var(--shadow-sm);font-size:18px;color:var(--text);display:inline-flex;align-items:center;justify-content:center}
 .iconbtn:hover{border-color:var(--accent)}
 main{padding:var(--sp-4)}
 .page{display:none}.page.active{display:block;animation:fadeIn .25s var(--ease)}
 @keyframes fadeIn{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
-.hero{background:linear-gradient(160deg,var(--heroFrom,#332a22),var(--heroTo,#a8522c));color:#fff;border-radius:var(--radius-lg);padding:var(--sp-5);box-shadow:var(--shadow-lg);margin-bottom:var(--sp-4);position:relative;overflow:hidden}
-.hero::after{content:'';position:absolute;inset:0;background:radial-gradient(120% 90% at 100% 0%,rgba(255,255,255,.16),transparent 55%);pointer-events:none}
-.hero h1{margin:0 0 6px;font-size:var(--fs-2xl);font-weight:900;letter-spacing:-.01em}
-.hero p{margin:0;color:rgba(255,255,255,.82);font-size:var(--fs-sm);line-height:1.6;max-width:34ch}
+.hero{background:linear-gradient(150deg,var(--heroFrom,#332a22) 0%,color-mix(in srgb,var(--heroFrom) 35%,var(--heroTo)) 48%,var(--heroTo,#a8522c) 100%);color:#fff;border-radius:var(--radius-lg);padding:var(--sp-5);box-shadow:var(--shadow-lg);margin-bottom:var(--sp-4);position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;width:260px;height:260px;border-radius:50%;background:radial-gradient(circle,rgba(255,255,255,.14),transparent 70%);top:-120px;right:-60px;pointer-events:none}
+.hero::after{content:'';position:absolute;inset:0;background:radial-gradient(120% 90% at 100% 0%,rgba(255,255,255,.14),transparent 55%);pointer-events:none}
+.hero h1{margin:0 0 6px;font-size:var(--fs-2xl);font-weight:900;letter-spacing:-.01em;position:relative}
+.hero p{margin:0;color:rgba(255,255,255,.82);font-size:var(--fs-sm);line-height:1.6;max-width:34ch;position:relative}
 .grid{display:grid;grid-template-columns:repeat(2,1fr);gap:var(--sp-3)}
-.stat{background:var(--card);border:1px solid var(--line);border-radius:var(--radius-md);padding:var(--sp-4);box-shadow:var(--shadow-sm)}
+.stat{position:relative;overflow:hidden;background:var(--card);border:1px solid var(--line);border-radius:var(--radius-md);padding:var(--sp-4);box-shadow:var(--shadow-sm),inset 0 1px 0 rgba(255,255,255,.4)}
+.stat::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--accent),color-mix(in srgb,var(--accent) 30%,transparent))}
 .stat b{font-size:var(--fs-2xl);display:block;font-weight:900;letter-spacing:-.01em}
 .stat span{font-size:var(--fs-xs);color:var(--muted);font-weight:700;letter-spacing:.02em;text-transform:uppercase}
-.card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius-md);padding:var(--sp-4);margin-bottom:var(--sp-3);box-shadow:var(--shadow-sm)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius-md);padding:var(--sp-4);margin-bottom:var(--sp-3);box-shadow:var(--shadow-sm),inset 0 1px 0 rgba(255,255,255,.35)}
 .card h2{margin:0 0 var(--sp-3);font-size:var(--fs-lg);font-weight:900;letter-spacing:-.01em}
 .card h3{margin:0 0 var(--sp-3);font-size:var(--fs-md);font-weight:800}
 .row{display:flex;gap:10px;align-items:center}.between{justify-content:space-between}.wrap{flex-wrap:wrap}
 .btn{padding:11px 16px;border-radius:var(--radius-sm);background:transparent;color:var(--text);font-weight:700;font-size:var(--fs-base);border:1px solid var(--line)}
 .btn:hover{border-color:var(--muted)}
-.btn.primary,.btn.purple{background:var(--accent);color:#fff;border-color:var(--accent);box-shadow:0 6px 16px color-mix(in srgb,var(--accent) 35%,transparent)}
+.btn.primary,.btn.purple{background:linear-gradient(135deg,color-mix(in srgb,var(--accent) 82%,#fff 18%),var(--accent));color:#fff;border-color:var(--accent);box-shadow:0 6px 16px color-mix(in srgb,var(--accent) 35%,transparent)}
 .btn.green{background:var(--greenbg);color:var(--greentext);border-color:transparent}
 .btn.red{background:#fee2e2;color:#991b1b;border-color:transparent}
 .btn.small{padding:8px 12px;font-size:var(--fs-sm)}
-input,select,textarea{width:100%;border:1px solid var(--line);background:var(--card);color:var(--text);border-radius:var(--radius-sm);padding:12px 13px;outline:none;font-size:var(--fs-base)}
+input,select,textarea{width:100%;border:1px solid var(--line);background:var(--card);color:var(--text);border-radius:var(--radius-sm);padding:12px 13px;outline:none;font-size:16px}
 input:focus,select:focus,textarea:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent2)}
 label{font-size:var(--fs-sm);font-weight:800;color:var(--muted);display:block;margin:10px 0 6px}
 .formgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.full{grid-column:1/-1}
@@ -81,6 +89,7 @@ label{font-size:var(--fs-sm);font-weight:800;color:var(--muted);display:block;ma
 .shelfgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(104px,1fr));gap:12px}
 .shelfcard{background:var(--card);border:1px solid var(--line);border-radius:var(--radius-md);overflow:hidden;cursor:pointer;box-shadow:var(--shadow-sm);transition:box-shadow .2s var(--ease),transform .2s var(--ease)}
 .shelfcard:hover{box-shadow:var(--shadow-md);transform:translateY(-2px)}
+.shelfcard:active{transform:scale(.97);box-shadow:var(--shadow-sm)}
 .shelfcard .cwrap{position:relative;width:100%;aspect-ratio:3/4;background:var(--accent2)}
 .shelfcard .cwrap img{width:100%;height:100%;object-fit:cover;display:block}
 .shelfcard .pctdot{position:absolute;right:6px;bottom:6px;background:rgba(17,15,12,.68);color:#fff;font-size:11px;font-weight:800;padding:2px 7px;border-radius:var(--radius-pill)}
@@ -94,7 +103,8 @@ label{font-size:var(--fs-sm);font-weight:800;color:var(--muted);display:block;ma
 .empty{text-align:center;color:var(--muted);padding:var(--sp-6) var(--sp-3);border:1.5px dashed var(--line);border-radius:var(--radius-md);font-size:var(--fs-sm)}
 .empty::before{content:'';display:block;width:36px;height:36px;margin:0 auto 10px;opacity:.5;background-color:var(--muted);-webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M3 9l2-5h14l2 5'/%3E%3Cpath d='M3 9v9a1 1 0 0 0 1 1h16a1 1 0 0 0 1-1V9'/%3E%3Cpath d='M3 9h18'/%3E%3Cpath d='M9 13a3 3 0 0 0 6 0'/%3E%3C/svg%3E") center/contain no-repeat;mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M3 9l2-5h14l2 5'/%3E%3Cpath d='M3 9v9a1 1 0 0 0 1 1h16a1 1 0 0 0 1-1V9'/%3E%3Cpath d='M3 9h18'/%3E%3Cpath d='M9 13a3 3 0 0 0 6 0'/%3E%3C/svg%3E") center/contain no-repeat}
 .list{display:flex;flex-direction:column;gap:10px}
-.bookrow{display:flex;gap:12px;align-items:center;background:var(--card);border:1px solid var(--line);padding:10px 12px;border-radius:var(--radius-md);box-shadow:var(--shadow-sm)}
+.bookrow{display:flex;gap:12px;align-items:center;background:var(--card);border:1px solid var(--line);padding:10px 12px;border-radius:var(--radius-md);box-shadow:var(--shadow-sm);transition:transform .15s var(--ease)}
+.bookrow[onclick]:active{transform:scale(.98)}
 .bookrow .cover{width:44px;height:62px}.bookrow .title{font-size:var(--fs-base)}
 .draghandle{cursor:grab;padding:4px 8px;font-size:20px;color:var(--muted);touch-action:none;user-select:none}
 .bookrow.dragging{opacity:.65;box-shadow:var(--shadow-lg);position:relative;z-index:5}
@@ -110,7 +120,7 @@ label{font-size:var(--fs-sm);font-weight:800;color:var(--muted);display:block;ma
 .addnav em{font-style:normal;position:relative;top:24px}
 .modal{position:fixed;inset:0;background:rgba(20,15,10,.5);z-index:50;display:none;align-items:flex-end}
 .modal.show{display:flex}
-.sheet{background:var(--card);color:var(--text);width:100%;max-width:760px;margin:auto;border-radius:var(--radius-lg) var(--radius-lg) 0 0;max-height:92vh;overflow:auto;padding:18px 18px 30px;box-shadow:var(--shadow-lg)}
+.sheet{background:var(--card);color:var(--text);width:100%;max-width:760px;margin:auto;border-radius:var(--radius-lg) var(--radius-lg) 0 0;max-height:92vh;overflow:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;padding:18px 18px 30px;box-shadow:var(--shadow-lg)}
 .handle{width:42px;height:5px;background:var(--line);border-radius:9px;margin:0 auto 15px}
 .toast{position:fixed;left:50%;bottom:90px;transform:translateX(-50%);background:var(--primary);color:var(--bg);padding:11px 18px;border-radius:var(--radius-pill);font-size:var(--fs-sm);font-weight:700;z-index:100;display:none;box-shadow:var(--shadow-lg)}
 .toast.show{display:block;animation:fadeIn .2s var(--ease)}
@@ -123,7 +133,7 @@ label{font-size:var(--fs-sm);font-weight:800;color:var(--muted);display:block;ma
 <div class="app">
 <header>
   <div class="top">
-    <div><div class="brand">我的收藏櫃</div></div>
+    <div><div class="brand"><svg class="icon" viewBox="0 0 24 24" style="width:20px;height:20px;fill:var(--accent);stroke:none"><path d="M6 3a2 2 0 0 0-2 2v16l8-4.5L20 21V5a2 2 0 0 0-2-2H6Z"/></svg>我的收藏櫃</div><div class="sub">把喜歡的東西，好好收進來</div></div>
     <button class="iconbtn" onclick="openShare()" aria-label="設定"><svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></button>
   </div>
 </header>
@@ -131,20 +141,20 @@ label{font-size:var(--fs-sm);font-weight:800;color:var(--muted);display:block;ma
 <main>
 <section id="home" class="page active">
   <div class="hero">
-    <h1>記錄你每一個收藏</h1><p>書籍、專輯周邊、公仔娃娃⋯依類型整理，記錄每一項的價格與收藏狀態。</p>
+    <h1>每一件收藏，都值得被好好記住</h1><p>書籍、專輯周邊、IP 公仔娃娃⋯依類型分櫃整理，價格、狀態、心得一次掌握。</p>
     <div class="levelbadge"><span class="emoji" id="hLevelEmoji">📦</span><span id="hLevelText">尚未開始收藏</span></div>
   </div>
   <div class="grid">
-    <div class="stat"><b id="sBooks">0</b><span>已收藏數量</span></div>
+    <div class="stat"><b id="sBooks">0</b><span>已收藏</span></div>
     <div class="stat"><b id="sSeries">0</b><span>收藏系列</span></div>
     <div class="stat"><b id="sSpend">$0</b><span>實際花費</span></div>
-    <div class="stat"><b id="sWant">0</b><span>待購入</span></div>
+    <div class="stat"><b id="sWant">0</b><span>待入手</span></div>
   </div>
   <div class="card">
-    <div class="row between"><h2>快速開始</h2><button class="btn purple" onclick="openEditor()">＋ 新增作品</button></div>
+    <div class="row between"><h2>快速開始</h2><button class="btn purple" onclick="openEditor()">＋ 新增收藏</button></div>
     <div class="row wrap">
-      <button class="btn" onclick="go('want')">想買清單</button>
-      <button class="btn" onclick="go('stats')">看統計與排行</button>
+      <button class="btn" onclick="go('want')">待入手清單</button>
+      <button class="btn" onclick="go('stats')">收藏統計與排行</button>
       <button class="btn" onclick="openProfileShareCard()">分享我的收藏</button>
     </div>
   </div>
@@ -152,12 +162,12 @@ label{font-size:var(--fs-sm);font-weight:800;color:var(--muted);display:block;ma
 </section>
 
 <section id="books" class="page">
-  <div class="row between"><div><h2>我的收藏</h2><div class="muted">依作品分組顯示，點一下看每一項的價格與狀態。</div></div></div>
+  <div class="row between"><div><h2>我的收藏櫃</h2><div class="muted">依作品分組顯示，點一下查看每一項的價格與狀態。</div></div></div>
   <div class="card">
-    <div class="searchbar"><input id="localSearch" placeholder="搜尋：書名／作者品牌／ISBN" oninput="onBooksFilterInput()"><button class="btn" onclick="onBooksFilterInput()">搜尋</button></div>
+    <div class="searchbar"><input id="localSearch" placeholder="搜尋書名／作者品牌／ISBN" oninput="onBooksFilterInput()"><button class="btn" onclick="onBooksFilterInput()">搜尋</button></div>
     <div class="formgrid" style="margin-top:10px">
       <div><label>類型</label><select id="bookType" onchange="onBooksFilterInput()"><option value="all">全部類型</option><option value="書籍">書籍</option><option value="專輯與周邊">專輯與周邊</option><option value="IP公仔／娃娃">IP公仔／娃娃</option><option value="其他收藏">其他收藏</option></select></div>
-      <div><label>篩選</label><select id="bookFilter" onchange="onBooksFilterInput()"><option value="all">全部</option><option value="owned">已收藏</option><option value="unowned">待購入</option><option value="sell">待出售</option><option value="ongoing">連載中（要追新集）</option><option value="oop">已絕版</option></select></div>
+      <div><label>篩選</label><select id="bookFilter" onchange="onBooksFilterInput()"><option value="all">全部</option><option value="owned">已收藏</option><option value="unowned">待入手</option><option value="sell">待出售</option><option value="ongoing">連載中（要追新集）</option><option value="oop">已絕版</option></select></div>
       <div><label>排序</label><select id="bookSort" onchange="onBooksSortChange()"><option value="default">自訂順序（可手動調整）</option><option value="dateDesc">購入日期：新到舊</option><option value="dateAsc">購入日期：舊到新</option><option value="priceDesc">價格：高到低</option><option value="priceAsc">價格：低到高</option><option value="unownedFirst">未收藏優先</option><option value="ratingDesc">評分：高到低</option></select></div>
     </div>
     <div class="row" style="margin-top:10px"><button class="btn small" id="reorderBtn" onclick="toggleReorderMode()">調整順序</button></div>
@@ -166,7 +176,7 @@ label{font-size:var(--fs-sm);font-weight:800;color:var(--muted);display:block;ma
 </section>
 
 <section id="want" class="page">
-  <div class="card"><h2>想買／待補集數</h2><div class="muted">可以把缺的單集留在這裡，之後一鍵轉成已購入。</div><div id="wantBudget" class="muted" style="margin-top:6px;font-weight:800"></div></div>
+  <div class="card"><h2>待入手清單</h2><div class="muted">把還沒收齊的項目留在這裡，到手後一鍵標記為已購入。</div><div id="wantBudget" class="muted" style="margin-top:6px;font-weight:800"></div></div>
   <div id="wantList" class="list"></div>
 </section>
 
@@ -182,13 +192,13 @@ label{font-size:var(--fs-sm);font-weight:800;color:var(--muted);display:block;ma
   <button class="nav active" data-page="home" onclick="go('home')"><svg class="icon" viewBox="0 0 24 24"><path d="M3 11.5 12 4l9 7.5"/><path d="M5.5 10v9a1 1 0 0 0 1 1H10v-6h4v6h3.5a1 1 0 0 0 1-1v-9"/></svg>首頁</button>
   <button class="nav" data-page="books" onclick="go('books')"><svg class="icon" viewBox="0 0 24 24"><rect x="3.5" y="3.5" width="17" height="17" rx="3"/><path d="M3.5 10h17M10 10v10.5"/></svg>收藏櫃</button>
   <button class="nav addnav" onclick="openEditor()"><div class="plus"><svg class="icon" viewBox="0 0 24 24"><path d="M12 4.5v15M4.5 12h15"/></svg></div><em>新增</em></button>
-  <button class="nav" data-page="want" onclick="go('want')"><svg class="icon" viewBox="0 0 24 24"><path d="M12 20.5s-7.5-4.6-9.8-9.2C.8 8 2.3 4.5 5.7 3.7c2-.5 4 .3 5 2 1-1.7 3-2.5 5-2 3.4.8 4.9 4.3 3.5 7.6-2.3 4.6-9.8 9.2-9.8 9.2Z"/></svg>想買</button>
+  <button class="nav" data-page="want" onclick="go('want')"><svg class="icon" viewBox="0 0 24 24"><path d="M12 20.5s-7.5-4.6-9.8-9.2C.8 8 2.3 4.5 5.7 3.7c2-.5 4 .3 5 2 1-1.7 3-2.5 5-2 3.4.8 4.9 4.3 3.5 7.6-2.3 4.6-9.8 9.2-9.8 9.2Z"/></svg>待入手</button>
   <button class="nav" data-page="stats" onclick="go('stats')"><svg class="icon" viewBox="0 0 24 24"><path d="M4 20V10M12 20V4M20 20v-7"/></svg>統計</button>
 </nav>
 </div>
 
 <div id="modal" class="modal"><div class="sheet" style="position:relative">
-  <button class="iconbtn" style="position:absolute;top:14px;right:14px;width:34px;height:34px;font-size:15px;z-index:5" onclick="confirmCloseModal()">✕</button>
+  <button class="iconbtn" style="position:absolute;top:12px;right:12px;width:40px;height:40px;font-size:16px;z-index:5" onclick="confirmCloseModal()" aria-label="關閉">✕</button>
   <div class="handle"></div><div id="modalBody"></div>
 </div></div>
 <div id="toast" class="toast"></div>
@@ -271,7 +281,7 @@ const CATEGORY_PRESETS={
 const TYPE_FORM_CONFIG={
  '書籍':{authorLabel:'作者',authorField:'author',showItemKind:false,showISBN:true,showPages:true,showStatus:true,publisherLabel:'出版社',dateLabel:'出版日'},
  '專輯與周邊':{authorLabel:'歌手／團體',authorField:'artist',showItemKind:true,itemKindLabel:'周邊品項',itemKindPlaceholder:'例如：手燈、毛巾、小卡',itemKindField:'merch',showISBN:false,showPages:false,showStatus:false,publisherLabel:'發行／廠商',dateLabel:'發售日'},
- 'IP公仔／娃娃':{authorLabel:'IP名稱',authorField:'ip',showItemKind:true,itemKindLabel:'系列／波次',itemKindPlaceholder:'例如：麻糬系列、機場限定',itemKindField:'wave',showISBN:false,showPages:false,showStatus:false,publisherLabel:'廠商',dateLabel:'發售日'},
+ 'IP公仔／娃娃':{authorLabel:'IP名稱',authorField:'ip',showCharacter:true,characterLabel:'角色／人物',showItemKind:true,itemKindLabel:'系列／波次',itemKindPlaceholder:'例如：麻糬系列、機場限定',itemKindField:'wave',showISBN:false,showPages:false,showStatus:false,publisherLabel:'廠商',dateLabel:'發售日'},
  '其他收藏':{authorLabel:'作者／品牌',authorField:'other',showItemKind:true,itemKindLabel:'項目類型',itemKindPlaceholder:'',itemKindField:'itemtype',showISBN:false,showPages:false,showStatus:true,publisherLabel:'廠商',dateLabel:'日期'}
 };
 function updateFormForType(prefix,type){
@@ -279,6 +289,11 @@ function updateFormForType(prefix,type){
  let setLabel=(wrapId,text)=>{let el=document.querySelector(`#${prefix}${wrapId} > label`);if(el)el.textContent=text};
  let setShow=(wrapId,show)=>{let el=document.getElementById(prefix+wrapId);if(el)el.style.display=show?'':'none'};
  setLabel('AuthorWrap',cfg.authorLabel);
+ setShow('CharacterWrap',!!cfg.showCharacter);
+ if(cfg.showCharacter){
+  setLabel('CharacterWrap',cfg.characterLabel);
+  let csug=document.getElementById(prefix+'CharacterSuggest');if(csug)csug.innerHTML=suggestChipsHtml(type,'character',prefix+'Character',false)
+ }
  setShow('ItemKindWrap',!!cfg.showItemKind);
  if(cfg.showItemKind){
   setLabel('ItemKindWrap',cfg.itemKindLabel);
@@ -481,7 +496,7 @@ function renderWant(){
  rows.sort((a,b)=>(order[a.v.priority||'中']??1)-(order[b.v.priority||'中']??1));
  let budget=rows.reduce((a,{v})=>a+Number(v.listPrice||0),0);
  document.getElementById('wantBudget').textContent=rows.length?`待購預算合計（依參考價）：${money(budget)}`:'';
- document.getElementById('wantList').innerHTML=rows.length?rows.map(({s,v})=>`<div class="card"><div class="row"><img class="cover" src="${esc(v.cover||s.cover||'')}" onerror="this.style.visibility='hidden'"><div class="meta"><div class="title">${esc(s.title)} ${v.volumeNo?`· 第 ${esc(v.volumeNo)} 集`:''}</div><div class="muted">${esc((s.authors||[]).join('、'))} · ISBN ${esc(v.isbn13||v.isbn10||'—')}</div><div class="muted">參考價：${money(v.listPrice)}　實際購入價：尚未購入</div>${v.notes?`<div class="muted">備註：${esc(v.notes)}</div>`:''}<span class="tag ${v.priority==='高'?'purple':''}">優先：${esc(v.priority||'中')}</span></div></div><div class="row" style="margin-top:10px"><button class="btn green small" onclick="buyVolume('${s.id}','${v.id}')">標記已購入</button><button class="btn small" onclick="openSeries('${s.id}')">查看系列</button></div></div>`).join(''):'<div class="empty">目前沒有待購入單集。</div>'
+ document.getElementById('wantList').innerHTML=rows.length?rows.map(({s,v})=>`<div class="card"><div class="row"><img class="cover" src="${esc(v.cover||s.cover||'')}" onerror="this.style.visibility='hidden'"><div class="meta"><div class="title">${esc(s.title)} ${v.volumeNo?`· 第 ${esc(v.volumeNo)} 集`:''}</div><div class="muted">${esc((s.authors||[]).join('、'))} · ISBN ${esc(v.isbn13||v.isbn10||'—')}</div><div class="muted">參考價：${money(v.listPrice)}　實際購入價：尚未購入</div>${v.notes?`<div class="muted">備註：${esc(v.notes)}</div>`:''}<span class="tag ${v.priority==='高'?'purple':''}">優先：${esc(v.priority||'中')}</span></div></div><div class="row" style="margin-top:10px"><button class="btn green small" onclick="buyVolume('${s.id}','${v.id}')">標記已購入</button><button class="btn small" onclick="openSeries('${s.id}')">查看系列</button></div></div>`).join(''):'<div class="empty">目前沒有待入手的項目。</div>'
 }
 function renderStats(){
  let vols=db.series.flatMap(s=>s.volumes||[]),owned=vols.filter(v=>v.owned);
@@ -496,11 +511,12 @@ function renderStats(){
 
 function openEditor(b={}){
  let id=b.id||uid();
- showModal(`<h2>新增作品</h2>
+ showModal(`<h2>新增收藏</h2>
  <div class="formgrid">
- <div class="full"><label>系列／作品名稱</label><input id="fTitle" value="${esc(b.title||'')}"></div>
+ <div class="full"><label>系列／作品名稱</label><input id="fTitle" value="${esc(b.title||'')}" placeholder="例如：鬼滅之刃、初音未來 Nendoroid"></div>
  <div><label>收藏類型</label>${typeSelectHtml('fType','書籍',"updateFormForType('f',this.value)")}</div>
  <div id="fAuthorWrap"><label>作者</label><input id="fAuthor" value="${esc((b.authors||[]).join('、'))}"><div id="fAuthorSuggest">${suggestChipsHtml('書籍','author','fAuthor',true)}</div></div>
+ <div id="fCharacterWrap" style="display:none"><label>角色／人物</label><input id="fCharacter" placeholder="例如：竈門炭治郎、皮卡丘"><div id="fCharacterSuggest"></div></div>
  <div><label>語言</label>${langSelectHtml('fLang',b.language||'')}</div>
  <div><label>分類</label><div id="fCatWrap">${categorySelectHtml('fCat','書籍','')}</div></div>
  <div id="fItemKindWrap" style="display:none"><label>周邊品項</label><input id="fItemKind" placeholder=""><div id="fItemKindSuggest"></div></div>
@@ -508,10 +524,10 @@ function openEditor(b={}){
  <div class="full"><label>第一批要建立的項目／集數（可輸入範圍，如 1-12，或直接輸入名稱）</label><input id="fVol" value="1"></div>
  <div><label>版本</label>${editionSelectHtml('fEdition','')}</div>
  <div><label>參考／原價</label><input id="fList" type="number" step="0.01" value="${esc(b.listPrice??'')}"></div>
- <div class="full"><label>封面 URL 或從相簿上傳</label><input id="fCover" value="${esc(b.cover||'')}">
+ <div class="full"><label>封面 URL 或從相簿上傳</label><input id="fCover" value="${esc(b.cover||'')}" placeholder="沒有圖片也沒關係，之後可以再補">
  <input type="file" accept="image/*" style="margin-top:8px" onchange="handleCoverFile(this,'fCover')"></div>
  </div>
- <div class="switch"><span>這一集已購入</span><input id="fOwned" type="checkbox" checked></div>
+ <div class="switch"><span>這一集已經到手了</span><input id="fOwned" type="checkbox" checked></div>
  <details style="margin-top:12px"><summary style="cursor:pointer;font-weight:800;color:var(--muted)">更多欄位（出版社、狀態、ISBN、價格細節⋯）</summary>
  <div class="formgrid" style="margin-top:10px">
  <div id="fPublisherWrap"><label>出版社</label><input id="fPublisher" value="${esc(b.publisher||'')}"></div>
@@ -528,13 +544,14 @@ function openEditor(b={}){
  <div class="switch"><span>標記為待出售</span><input id="fSell" type="checkbox"></div>
  <div class="switch"><span>標記為絕版</span><input id="fOOP" type="checkbox"></div>
  </details>
- <button class="btn purple" style="width:100%;margin-top:14px" onclick='createSeries(${JSON.stringify(b)})'>建立作品</button>`)
+ <button class="btn purple" style="width:100%;margin-top:14px" onclick='createSeries(${JSON.stringify(b)})'>加入收藏櫃</button>`)
 }
 function createSeries(b){
  let type=document.getElementById('fType').value;
  let cfg=TYPE_FORM_CONFIG[type]||TYPE_FORM_CONFIG['書籍'];
- let s={id:uid(),title:document.getElementById('fTitle').value.trim(),type,authors:document.getElementById('fAuthor').value.split(/[,、]/).map(x=>x.trim()).filter(Boolean),publisher:document.getElementById('fPublisher').value.trim(),language:readLang('fLang'),category:readCategory('fCat'),status:document.getElementById('fStatus').value,cover:document.getElementById('fCover').value.trim(),pages:document.getElementById('fPages').value,createdAt:new Date().toISOString(),volumes:[]};
- if(!s.title){toast('請輸入作品名稱');return}
+ let character=(document.getElementById('fCharacter')?.value||'').trim();
+ let s={id:uid(),title:document.getElementById('fTitle').value.trim(),type,authors:document.getElementById('fAuthor').value.split(/[,、]/).map(x=>x.trim()).filter(Boolean),character,publisher:document.getElementById('fPublisher').value.trim(),language:readLang('fLang'),category:readCategory('fCat'),status:document.getElementById('fStatus').value,cover:document.getElementById('fCover').value.trim(),pages:document.getElementById('fPages').value,createdAt:new Date().toISOString(),volumes:[]};
+ if(!s.title){toast('先幫這筆收藏取個名字吧');return}
  let tokens=parseVolumeTokens(document.getElementById('fVol').value.trim()||'1');
  let owned=document.getElementById('fOwned').checked,sell=document.getElementById('fSell').checked,outOfPrint=document.getElementById('fOOP').checked,today=new Date().toISOString().slice(0,10);
  let listPrice=document.getElementById('fList').value,purchasePrice=document.getElementById('fBuy').value,discount=document.getElementById('fDiscount').value,priority=document.getElementById('fPriority').value,notes=document.getElementById('fNotes').value.trim(),cover=document.getElementById('fCover').value.trim(),language=s.language,edition=readEdition('fEdition'),isbn13=document.getElementById('fISBN13').value.trim(),isbn10=document.getElementById('fISBN10').value.trim(),publishedDate=document.getElementById('fDate').value.trim(),itemKind=(document.getElementById('fItemKind').value||'').trim(),region=(document.getElementById('fRegion').value||'').trim();
@@ -543,7 +560,8 @@ function createSeries(b){
  });
  s.authors.forEach(a=>bumpSuggest(type,cfg.authorField,a));
  if(itemKind)bumpSuggest(type,cfg.itemKindField,itemKind);
- db.series.unshift(s);save();closeModal();toast(tokens.length>1?`已加入書櫃，共建立 ${tokens.length} 集`:'已加入書櫃')}
+ if(cfg.showCharacter && character)bumpSuggest(type,'character',character);
+ db.series.unshift(s);save();closeModal();toast(tokens.length>1?`已加入收藏櫃，共建立 ${tokens.length} 項`:'已加入收藏櫃')}
 let batchMode=false,batchSelected=new Set();
 function openSeries(id){
  let s=db.series.find(x=>x.id===id);if(!s)return;
@@ -561,8 +579,8 @@ function openSeries(id){
    ?`<button class="voltile ${v.owned?'owned':''} ${v.sell?'sell':''} ${batchSelected.has(v.id)?'selected':''}"${title} onclick="toggleBatchSelect('${s.id}','${v.id}')">${label}${editionBadge(v)}${oopBadge}</button>`
    :`<button class="voltile ${v.owned?'owned':''} ${v.sell?'sell':''}"${title} onpointerdown="volPointerDown(this,'${s.id}','${v.id}')" onpointerup="volPointerUp(this,'${s.id}','${v.id}')" onpointercancel="volPointerCancel(this)" onpointerleave="volPointerCancel(this)">${label}${editionBadge(v)}${oopBadge}</button>`
  }).join(''):'<div class="empty">還沒有項目，按上面「＋ 新增項目」開始。</div>';
- showModal(`<div class="row"><img class="cover big" src="${esc(s.cover||'')}" onerror="this.style.visibility='hidden'"><div class="meta"><h2>${esc(s.title)}</h2><div class="muted">${esc((s.authors||[]).join('、'))}</div><div class="muted">${esc(s.publisher||'')} · ${esc(s.language||'')} · ${esc(s.category||'未分類')}</div>
- <div style="margin-top:6px"><span class="tag">${esc(s.type||'書籍')}</span><span class="tag ${statusClass}">${esc(s.status||'未知')}</span><span class="tag">已收藏 ${owned}/${total}</span>${sell?`<span class="tag">${sell} 項待出售</span>`:''}</div>
+ showModal(`<div class="row"><img class="cover big" src="${esc(s.cover||'')}" onerror="this.style.visibility='hidden'"><div class="meta"><h2>${esc(s.title)}</h2><div class="muted">${esc((s.authors||[]).join('、'))}${s.character?` · 飾演／角色：${esc(s.character)}`:''}</div><div class="muted">${esc(s.publisher||'')} · ${esc(s.language||'')} · ${esc(s.category||'未分類')}</div>
+ <div style="margin-top:6px"><span class="tag">${esc(s.type||'書籍')}</span>${s.character?`<span class="tag purple">${esc(s.character)}</span>`:''}<span class="tag ${statusClass}">${esc(s.status||'未知')}</span><span class="tag">已收藏 ${owned}/${total}</span>${sell?`<span class="tag">${sell} 項待出售</span>`:''}</div>
  <div class="starpick" style="margin-top:6px;font-size:18px">${Array.from({length:5},(_,i)=>`<span onclick="rateSeriesQuick('${s.id}',${i+1})">${i<(s.rating||0)?'★':'☆'}</span>`).join('')}</div></div></div>
  <div class="row wrap" style="margin:15px 0"><button class="btn purple" onclick="addVolume('${s.id}')">＋ 新增項目</button><button class="btn" onclick="editSeriesInfo('${s.id}')">編輯作品資訊</button><button class="btn ${batchMode?'purple':''}" onclick="toggleBatchMode('${s.id}')">${batchMode?'結束批次':'批次修改'}</button><button class="btn" onclick="openShareCard('${s.id}')">分享圖卡</button></div>
  ${batchMode?`<div class="notice" style="background:#eef2ff;color:#3730a3;margin-bottom:12px">
@@ -687,15 +705,16 @@ function editSeriesInfo(sid){
  <div class="full"><label>系列／作品名稱</label><input id="esTitle" value="${esc(s.title)}"></div>
  <div><label>收藏類型</label>${typeSelectHtml('esType',curType,"updateFormForType('es',this.value)")}</div>
  <div id="esAuthorWrap"><label>${esc(cfg.authorLabel)}</label><input id="esAuthor" value="${esc((s.authors||[]).join('、'))}"><div id="esAuthorSuggest">${suggestChipsHtml(curType,cfg.authorField,'esAuthor',true)}</div></div>
+ <div id="esCharacterWrap" style="display:${cfg.showCharacter?'':'none'}"><label>${esc(cfg.characterLabel||'角色／人物')}</label><input id="esCharacter" value="${esc(s.character||'')}"><div id="esCharacterSuggest">${cfg.showCharacter?suggestChipsHtml(curType,'character','esCharacter',false):''}</div></div>
  <div id="esPublisherWrap"><label>${esc(cfg.publisherLabel)}</label><input id="esPublisher" value="${esc(s.publisher||'')}"></div>
  <div><label>語言</label>${langSelectHtml('esLang',s.language||'')}</div>
  <div><label>分類</label><div id="esCatWrap">${categorySelectHtml('esCat',curType,s.category||'')}</div></div>
  <div id="esStatusWrap"><label>連載狀態</label><select id="esStatus"><option value="未知" ${!s.status||s.status==='未知'?'selected':''}>未知</option><option value="連載中" ${s.status==='連載中'?'selected':''}>連載中（還會繼續出）</option><option value="已完結" ${s.status==='已完結'?'selected':''}>已完結（不用再追）</option></select></div>
  <div><label>個人評分</label><div id="esRatingWrap" class="starpick">${starsHtml('es',s.rating||0)}</div><input type="hidden" id="esRating" value="${s.rating||0}"></div>
- <div class="full"><label>封面 URL 或從相簿上傳</label><input id="esCover" value="${esc(s.cover||'')}">
+ <div class="full"><label>封面 URL 或從相簿上傳</label><input id="esCover" value="${esc(s.cover||'')}" placeholder="沒有圖片也沒關係，之後可以再補">
  <input type="file" accept="image/*" style="margin-top:8px" onchange="handleCoverFile(this,'esCover')"></div>
  </div>
- <button class="btn purple" style="width:100%;margin-top:12px" onclick="saveSeriesInfo('${sid}')">儲存</button>
+ <button class="btn purple" style="width:100%;margin-top:12px" onclick="saveSeriesInfo('${sid}')">儲存變更</button>
  <button class="btn red" style="width:100%;margin-top:8px" onclick="deleteSeries('${sid}')">刪除整個作品</button>`)
 }
 function saveSeriesInfo(sid){
@@ -705,6 +724,7 @@ function saveSeriesInfo(sid){
  s.title=document.getElementById('esTitle').value.trim()||s.title;
  s.type=type;
  s.authors=document.getElementById('esAuthor').value.split(/[,、]/).map(x=>x.trim()).filter(Boolean);
+ s.character=(document.getElementById('esCharacter')?.value||'').trim();
  s.publisher=document.getElementById('esPublisher').value.trim();
  s.language=readLang('esLang');
  s.category=readCategory('esCat');
@@ -712,6 +732,7 @@ function saveSeriesInfo(sid){
  s.rating=Number(document.getElementById('esRating').value)||0;
  s.cover=document.getElementById('esCover').value.trim();
  s.authors.forEach(a=>bumpSuggest(type,cfg.authorField,a));
+ if(cfg.showCharacter && s.character)bumpSuggest(type,'character',s.character);
  save();openSeries(sid)
 }
 function openShare(){
@@ -754,79 +775,174 @@ function wrapCJKText(ctx,text,x,y,maxWidth,lineHeight,maxLines,align){
  lines.forEach((l,i)=>ctx.fillText(l,x,y+i*lineHeight));
  return lines.length
 }
-async function drawShareCard(canvas,s,ratio){
+function hexToRgb(hex){
+ hex=String(hex||'').trim().replace('#','');
+ if(hex.length===3)hex=hex.split('').map(c=>c+c).join('');
+ let num=parseInt(hex,16);
+ if(isNaN(num))return{r:0,g:0,b:0};
+ return{r:(num>>16)&255,g:(num>>8)&255,b:num&255}
+}
+function hexA(hex,a){let{r,g,b}=hexToRgb(hex);return `rgba(${r},${g},${b},${a})`}
+function drawCardBackground(ctx,w,h,accent,accent2,bg){
+ let grad=ctx.createLinearGradient(0,0,w,h);
+ grad.addColorStop(0,accent2);grad.addColorStop(.5,bg);grad.addColorStop(1,bg);
+ ctx.fillStyle=grad;ctx.fillRect(0,0,w,h);
+ let g1=ctx.createRadialGradient(w*0.96,h*0.02,0,w*0.96,h*0.02,w*0.58);
+ g1.addColorStop(0,hexA(accent,.18));g1.addColorStop(1,hexA(accent,0));
+ ctx.fillStyle=g1;ctx.fillRect(0,0,w,h);
+ let g2=ctx.createRadialGradient(w*0.04,h*0.98,0,w*0.04,h*0.98,w*0.5);
+ g2.addColorStop(0,hexA(accent,.12));g2.addColorStop(1,hexA(accent,0));
+ ctx.fillStyle=g2;ctx.fillRect(0,0,w,h);
+ ctx.save();ctx.strokeStyle=hexA(accent,.2);ctx.lineWidth=Math.max(2,w*0.0028);
+ roundRectPath(ctx,w*0.018,w*0.018,w-w*0.036,h-w*0.036,w*0.028);ctx.stroke();ctx.restore()
+}
+function drawBrandMark(ctx,x,y,size,accent){
+ let r=size*0.24,notch=size*0.24;
+ ctx.save();
+ ctx.beginPath();
+ ctx.moveTo(x,y+r);
+ ctx.arcTo(x,y,x+r,y,r);
+ ctx.lineTo(x+size-r,y);
+ ctx.arcTo(x+size,y,x+size,y+r,r);
+ ctx.lineTo(x+size,y+size);
+ ctx.lineTo(x+size/2,y+size-notch);
+ ctx.lineTo(x,y+size);
+ ctx.closePath();
+ ctx.fillStyle=accent;ctx.fill();
+ ctx.restore()
+}
+function drawFooterBrand(ctx,w,h,pad,accent,text){
+ let markSize=Math.max(20,w*0.028),y=h-pad*0.6;
+ drawBrandMark(ctx,pad*0.62,y-markSize*0.78,markSize,accent);
+ ctx.textAlign='left';ctx.textBaseline='middle';
+ ctx.font=`800 ${w*0.024}px ${cardFont()}`;ctx.fillStyle=text;ctx.globalAlpha=.75;
+ ctx.fillText('我的收藏櫃',pad*0.62+markSize+w*0.012,y-markSize*0.78+markSize/2);
+ ctx.globalAlpha=1
+}
+function drawProgressRing(ctx,cx,cy,r,thick,pct,track,fill){
+ ctx.save();ctx.lineCap='round';
+ ctx.strokeStyle=track;ctx.lineWidth=thick;
+ ctx.beginPath();ctx.arc(cx,cy,r,0,Math.PI*2);ctx.stroke();
+ ctx.strokeStyle=fill;
+ ctx.beginPath();ctx.arc(cx,cy,r,-Math.PI/2,-Math.PI/2+Math.PI*2*Math.max(0.004,pct/100));ctx.stroke();
+ ctx.restore()
+}
+function drawPlaceholderArt(ctx,x,y,w,h,title,type,accent,accent2,cardbg,text){
+ let g=ctx.createLinearGradient(x,y,x+w,y+h);
+ g.addColorStop(0,accent2);g.addColorStop(1,cardbg);
+ ctx.fillStyle=g;ctx.fillRect(x,y,w,h);
+ ctx.save();
+ ctx.beginPath();ctx.arc(x+w*0.86,y+h*0.1,w*0.4,0,Math.PI*2);ctx.fillStyle=hexA(accent,.12);ctx.fill();
+ ctx.beginPath();ctx.arc(x+w*0.1,y+h*0.94,w*0.3,0,Math.PI*2);ctx.fillStyle=hexA(accent,.09);ctx.fill();
+ ctx.restore();
+ let m=Math.min(w,h),cx=x+w/2,cy=y+h*0.46,r=m*0.24;
+ ctx.save();ctx.shadowColor=hexA(text,.22);ctx.shadowBlur=m*0.06;
+ ctx.beginPath();ctx.arc(cx,cy,r,0,Math.PI*2);ctx.fillStyle=accent;ctx.fill();ctx.restore();
+ ctx.fillStyle='#fff';ctx.font=`900 ${r*0.92}px ${cardFont()}`;ctx.textAlign='center';ctx.textBaseline='middle';
+ ctx.fillText((title||'?').trim().slice(0,1),cx,cy+r*0.05);
+ ctx.font=`800 ${m*0.055}px ${cardFont()}`;ctx.fillStyle=accent;ctx.globalAlpha=.85;
+ ctx.fillText(type||'收藏',cx,cy+r+m*0.12);ctx.globalAlpha=1
+}
+async function drawShareCard(canvas,s,ratio,useCover=true){
  let w=ratio==='16:9'?1200:675, h=ratio==='16:9'?675:1200;
  canvas.width=w;canvas.height=h;
  let ctx=canvas.getContext('2d');
  let cs=getComputedStyle(document.documentElement);
  let bg=(cs.getPropertyValue('--bg')||'#f6f1e9').trim();
- let accent=(cs.getPropertyValue('--accent')||'#b3623c').trim();
+ let accent=(cs.getPropertyValue('--accent')||'#a8522c').trim();
  let accent2=(cs.getPropertyValue('--accent2')||'#f3e3d3').trim();
  let text=(cs.getPropertyValue('--text')||'#3b332c').trim();
  let cardbg=(cs.getPropertyValue('--card')||'#fffaf3').trim();
- let grad=ctx.createLinearGradient(0,0,w,h);grad.addColorStop(0,accent2);grad.addColorStop(1,bg);
- ctx.fillStyle=grad;ctx.fillRect(0,0,w,h);
+ drawCardBackground(ctx,w,h,accent,accent2,bg);
  let total=(s.volumes||[]).length,owned=(s.volumes||[]).filter(v=>v.owned).length,pct=total?Math.round(owned/total*100):0;
  let pad=w*0.07,landscape=ratio==='16:9';
  let coverOk=false,img=null;
- if(s.cover){try{img=await loadImageSafe(s.cover);coverOk=true}catch(e){coverOk=false}}
- let font=w=>`-apple-system,BlinkMacSystemFont,"PingFang TC","Noto Sans TC",sans-serif`;
- let textX,textY,textW,textH;
- if(landscape){
-  let coverW=h-pad*2,coverX=pad,coverY=pad;
-  ctx.save();roundRectPath(ctx,coverX,coverY,coverW,coverW,28);ctx.clip();
-  if(coverOk){drawCoverContain(ctx,img,coverX,coverY,coverW,coverW)}
-  else{ctx.fillStyle=cardbg;ctx.fillRect(coverX,coverY,coverW,coverW);ctx.fillStyle=accent;ctx.font=`900 ${coverW*0.32}px ${font()}`;ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText((s.title||'?').slice(0,1),coverX+coverW/2,coverY+coverW/2)}
-  ctx.restore();
-  textX=coverX+coverW+pad*0.9;textY=pad;textW=w-textX-pad;textH=h-pad*2
- } else {
-  let coverH=w*0.62-pad,coverX=pad,coverY=pad,coverW=w-pad*2;
-  ctx.save();roundRectPath(ctx,coverX,coverY,coverW,coverH,28);ctx.clip();
-  if(coverOk){drawCoverContain(ctx,img,coverX,coverY,coverW,coverH)}
-  else{ctx.fillStyle=cardbg;ctx.fillRect(coverX,coverY,coverW,coverH);ctx.fillStyle=accent;ctx.font=`900 ${coverH*0.32}px ${font()}`;ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText((s.title||'?').slice(0,1),coverX+coverW/2,coverY+coverH/2)}
-  ctx.restore();
-  textX=pad;textY=coverY+coverH+pad*0.9;textW=w-pad*2;textH=h-textY-pad
+ if(useCover && s.cover){try{img=await loadImageSafe(s.cover);coverOk=true}catch(e){coverOk=false}}
+ let font=()=>cardFont();
+ let textX,textY,textW,coverX,coverY,coverW,coverH;
+ if(landscape){coverW=h-pad*2;coverH=coverW;coverX=pad;coverY=pad}
+ else{coverW=w-pad*2;coverH=w*0.62-pad;coverX=pad;coverY=pad}
+ ctx.save();ctx.shadowColor=hexA(text,.3);ctx.shadowBlur=w*0.03;ctx.shadowOffsetY=w*0.014;
+ roundRectPath(ctx,coverX,coverY,coverW,coverH,w*0.026);ctx.fillStyle=cardbg;ctx.fill();ctx.restore();
+ ctx.save();roundRectPath(ctx,coverX,coverY,coverW,coverH,w*0.026);ctx.clip();
+ if(coverOk){drawCoverContain(ctx,img,coverX,coverY,coverW,coverH)}
+ else{drawPlaceholderArt(ctx,coverX,coverY,coverW,coverH,s.title,s.type,accent,accent2,cardbg,text)}
+ let gloss=ctx.createLinearGradient(0,coverY,0,coverY+coverH*0.4);
+ gloss.addColorStop(0,'rgba(255,255,255,.18)');gloss.addColorStop(1,'rgba(255,255,255,0)');
+ ctx.fillStyle=gloss;ctx.fillRect(coverX,coverY,coverW,coverH*0.4);
+ ctx.restore();
+ if(landscape){textX=coverX+coverW+pad*0.9;textY=pad;textW=w-textX-pad}
+ else{textX=pad;textY=coverY+coverH+pad*0.85;textW=w-pad*2}
+ let cx=landscape?textX:textX+textW/2;
+ let curY=textY;
+ let chipTxt=[s.type,s.status&&s.status!=='未知'?s.status:null].filter(Boolean).join(' · ');
+ if(chipTxt){
+  ctx.font=`800 ${textW*0.04}px ${font()}`;ctx.textAlign='left';ctx.textBaseline='middle';
+  let chipPadX=textW*0.032,chipH=textW*0.078,tw=ctx.measureText(chipTxt).width;
+  let chipX=landscape?textX:textX+textW/2-(tw+chipPadX*2)/2;
+  roundRectPath(ctx,chipX,curY,tw+chipPadX*2,chipH,chipH/2);ctx.fillStyle=hexA(accent,.15);ctx.fill();
+  ctx.fillStyle=accent;ctx.fillText(chipTxt,chipX+chipPadX,curY+chipH/2+1);
+  curY+=chipH+textW*0.035
  }
  ctx.textAlign=landscape?'left':'center';ctx.textBaseline='top';
- let cx=landscape?textX:textX+textW/2;
- let titleSize=textW*(landscape?0.1:0.09);
+ let titleSize=textW*(landscape?0.095:0.086);
  ctx.font=`900 ${titleSize}px ${font()}`;ctx.fillStyle=text;
- let linesUsed=wrapCJKText(ctx,s.title||'未命名作品',cx,textY,textW,titleSize*1.25,2,landscape?'left':'center');
- let curY=textY+linesUsed*titleSize*1.25+titleSize*0.35;
+ let linesUsed=wrapCJKText(ctx,s.title||'未命名作品',cx,curY,textW,titleSize*1.25,2,landscape?'left':'center');
+ curY+=linesUsed*titleSize*1.25+titleSize*0.3;
  if((s.authors||[]).length){
-  ctx.font=`600 ${textW*0.05}px ${font()}`;ctx.globalAlpha=.72;
+  ctx.font=`600 ${textW*0.044}px ${font()}`;ctx.globalAlpha=.62;
   ctx.fillText((s.authors||[]).join('、'),cx,curY);ctx.globalAlpha=1;
-  curY+=textW*0.05*1.7
+  curY+=textW*0.044*1.7
  }
- curY+=textW*0.03;
- ctx.font=`900 ${textW*0.17}px ${font()}`;ctx.fillStyle=accent;
- ctx.fillText(pct+'%',cx,curY);
- curY+=textW*0.17*1.05;
- ctx.font=`700 ${textW*0.05}px ${font()}`;ctx.fillStyle=text;ctx.globalAlpha=.82;
- ctx.fillText(`已收藏 ${owned}/${total}`,cx,curY);ctx.globalAlpha=1;
- curY+=textW*0.05*1.7;
- if(s.status && s.status!=='未知'){
-  ctx.font=`700 ${textW*0.042}px ${font()}`;ctx.fillStyle=accent;
-  ctx.fillText(s.status,cx,curY)
+ curY+=textW*0.04;
+ ctx.strokeStyle=hexA(text,.13);ctx.lineWidth=Math.max(1,w*0.0018);
+ ctx.beginPath();
+ if(landscape){ctx.moveTo(textX,curY);ctx.lineTo(textX+textW*0.3,curY)}
+ else{ctx.moveTo(textX+textW/2-textW*0.15,curY);ctx.lineTo(textX+textW/2+textW*0.15,curY)}
+ ctx.stroke();
+ curY+=textW*0.06;
+ let ringR=textW*0.145,ringThick=Math.max(6,textW*0.02);
+ let ringCx=landscape?textX+ringR:textX+textW/2,ringCy=curY+ringR;
+ drawProgressRing(ctx,ringCx,ringCy,ringR,ringThick,pct,hexA(text,.1),accent);
+ ctx.textAlign='center';ctx.textBaseline='middle';
+ ctx.font=`900 ${ringR*0.48}px ${font()}`;ctx.fillStyle=accent;
+ ctx.fillText(pct+'%',ringCx,ringCy-ringR*0.08);
+ ctx.font=`700 ${ringR*0.19}px ${font()}`;ctx.fillStyle=text;ctx.globalAlpha=.55;
+ ctx.fillText('已收藏',ringCx,ringCy+ringR*0.32);ctx.globalAlpha=1;
+ if(landscape){
+  ctx.textAlign='left';ctx.textBaseline='middle';
+  ctx.font=`800 ${textW*0.058}px ${font()}`;ctx.fillStyle=text;
+  ctx.fillText(`${owned} / ${total}`,ringCx+ringR+textW*0.06,ringCy-textW*0.02);
+  ctx.font=`600 ${textW*0.032}px ${font()}`;ctx.globalAlpha=.58;
+  ctx.fillText('已收藏冊數',ringCx+ringR+textW*0.06,ringCy+textW*0.034);ctx.globalAlpha=1
+ } else {
+  ctx.textAlign='center';ctx.textBaseline='top';
+  ctx.font=`800 ${textW*0.05}px ${font()}`;ctx.fillStyle=text;
+  ctx.fillText(`已收藏 ${owned} / ${total}`,ringCx,ringCy+ringR+textW*0.05)
  }
- ctx.fillStyle=text;ctx.globalAlpha=.5;ctx.font=`700 ${w*0.022}px ${font()}`;ctx.textAlign='right';ctx.textBaseline='alphabetic';
- ctx.fillText('我的收藏櫃',w-pad*0.6,h-pad*0.35);ctx.globalAlpha=1;
+ drawFooterBrand(ctx,w,h,pad,accent,text);
  return coverOk
 }
+let lastShareRatio='16:9';
 function openShareCard(sid){
  let s=db.series.find(x=>x.id===sid);if(!s)return;
+ lastShareRatio='16:9';
  showModal(`<h2>分享圖卡</h2>
-<div class="notice">產生一張可以下載、分享到限時動態或社群的收藏卡圖片。如果封面是從其他網站貼網址進來的，因為瀏覽器安全限制，有時候沒辦法把封面一起放進圖片裡，屆時會自動改用純文字版本，資料本身不受影響。</div>
+<div class="notice">產生一張可以下載、分享到限時動態或社群的收藏卡圖片。不想放實體封面也沒關係，可以關掉下面的開關，圖卡會換成質感佔位設計。</div>
 <div class="row wrap" style="margin:10px 0"><button class="btn small purple" onclick="renderShareCardPreview('${sid}','16:9')">橫式 16:9</button><button class="btn small" onclick="renderShareCardPreview('${sid}','9:16')">直式 9:16（限動）</button></div>
-<div style="display:flex;justify-content:center;background:var(--accent2);border-radius:16px;padding:12px"><canvas id="shareCanvas" style="max-width:100%;height:auto;border-radius:12px"></canvas></div>
+<div class="switch"><span>圖卡中顯示作品封面</span><input id="scUseCover" type="checkbox" ${s.cover?'checked':''} ${s.cover?'':'disabled'} onchange="renderShareCardPreview('${sid}',lastShareRatio)"></div>
+<div style="display:flex;justify-content:center;background:linear-gradient(135deg,var(--accent2),var(--card));border:1px solid var(--line);border-radius:var(--radius-md);padding:14px;margin-top:10px"><canvas id="shareCanvas" style="max-width:100%;height:auto;border-radius:var(--radius-sm);box-shadow:var(--shadow-md)"></canvas></div>
 <button class="btn purple" style="width:100%;margin-top:12px" onclick="downloadShareCard('${esc(s.title).replace(/'/g,"\\'")}')">下載圖片</button>`)
  renderShareCardPreview(sid,'16:9')
 }
 async function renderShareCardPreview(sid,ratio){
+ lastShareRatio=ratio;
  let s=db.series.find(x=>x.id===sid);if(!s)return;
  let canvas=document.getElementById('shareCanvas');if(!canvas)return;
- let ok=await drawShareCard(canvas,s,ratio);
- if(!ok && s.cover)toast('封面圖片無法放入（外部網站限制），已改用純文字版本')
+ let useCoverEl=document.getElementById('scUseCover');
+ let useCover=useCoverEl?useCoverEl.checked:true;
+ let ok=await drawShareCard(canvas,s,ratio,useCover);
+ if(useCover && !ok && s.cover)toast('封面圖片無法放入（外部網站限制），已改用佔位設計')
 }
 function downloadShareCard(title){
  let canvas=document.getElementById('shareCanvas');if(!canvas)return;
@@ -843,7 +959,8 @@ function drawChipRow(ctx,items,x,y,maxWidth,fontSize,bg,fg){
  items.forEach(txt=>{
   let tw=ctx.measureText(txt).width,chipW=tw+padX*2;
   if(curX+chipW>x+maxWidth && curX>x){curX=x;curY+=chipH+lineGap}
-  roundRectPath(ctx,curX,curY,chipW,chipH,chipH/2);ctx.fillStyle=bg;ctx.fill();
+  ctx.save();ctx.shadowColor='rgba(0,0,0,.08)';ctx.shadowBlur=fontSize*0.4;ctx.shadowOffsetY=fontSize*0.12;
+  roundRectPath(ctx,curX,curY,chipW,chipH,chipH/2);ctx.fillStyle=bg;ctx.fill();ctx.restore();
   ctx.fillStyle=fg;ctx.fillText(txt,curX+padX,curY+chipH/2+1);
   curX+=chipW+gap
  });
@@ -856,12 +973,11 @@ async function drawProfileShareCard(canvas,ratio){
  let ctx=canvas.getContext('2d');
  let cs=getComputedStyle(document.documentElement);
  let bg=(cs.getPropertyValue('--bg')||'#f6f1e9').trim();
- let accent=(cs.getPropertyValue('--accent')||'#b3623c').trim();
+ let accent=(cs.getPropertyValue('--accent')||'#a8522c').trim();
  let accent2=(cs.getPropertyValue('--accent2')||'#f3e3d3').trim();
  let text=(cs.getPropertyValue('--text')||'#3b332c').trim();
  let cardbg=(cs.getPropertyValue('--card')||'#fffaf3').trim();
- let grad=ctx.createLinearGradient(0,0,w,h);grad.addColorStop(0,accent2);grad.addColorStop(1,bg);
- ctx.fillStyle=grad;ctx.fillRect(0,0,w,h);
+ drawCardBackground(ctx,w,h,accent,accent2,bg);
  let vols=db.series.flatMap(s=>s.volumes||[]);
  let owned=vols.filter(v=>v.owned);
  let lv=getCollectorLevel(owned.length);
@@ -878,30 +994,45 @@ async function drawProfileShareCard(canvas,ratio){
  let badgeX,badgeY,textX,textY,textW;
  if(landscape){badgeX=pad;badgeY=pad;textX=badgeX+badgeSize+pad*0.9;textY=pad;textW=w-textX-pad}
  else{badgeX=(w-badgeSize)/2;badgeY=pad;textX=pad;textY=badgeY+badgeSize+pad*0.6;textW=w-pad*2}
- ctx.save();roundRectPath(ctx,badgeX,badgeY,badgeSize,badgeSize,32);ctx.fillStyle=cardbg;ctx.fill();ctx.restore();
+ let bcx=badgeX+badgeSize/2,bcy=badgeY+badgeSize/2,br=badgeSize/2;
+ let glow=ctx.createRadialGradient(bcx,bcy,br*0.55,bcx,bcy,br*1.15);
+ glow.addColorStop(0,hexA(accent,.22));glow.addColorStop(1,hexA(accent,0));
+ ctx.fillStyle=glow;ctx.beginPath();ctx.arc(bcx,bcy,br*1.15,0,Math.PI*2);ctx.fill();
+ ctx.save();ctx.lineWidth=Math.max(4,badgeSize*0.032);ctx.strokeStyle=accent;
+ ctx.beginPath();ctx.arc(bcx,bcy,br-ctx.lineWidth/2,0,Math.PI*2);ctx.stroke();ctx.restore();
+ ctx.save();ctx.shadowColor=hexA(text,.2);ctx.shadowBlur=badgeSize*0.05;
+ ctx.beginPath();ctx.arc(bcx,bcy,br*0.86,0,Math.PI*2);ctx.fillStyle=cardbg;ctx.fill();ctx.restore();
  ctx.textAlign='center';ctx.textBaseline='middle';
- ctx.font=`${badgeSize*0.4}px ${cardFont()}`;ctx.fillStyle=text;
- ctx.fillText(lv.emoji,badgeX+badgeSize/2,badgeY+badgeSize*0.4);
- ctx.font=`900 ${badgeSize*0.09}px ${cardFont()}`;ctx.fillStyle=accent;
- ctx.fillText(lv.level?`Lv.${lv.level}`:'',badgeX+badgeSize/2,badgeY+badgeSize*0.7);
- ctx.font=`800 ${badgeSize*0.1}px ${cardFont()}`;ctx.fillStyle=text;
- ctx.fillText(lv.title,badgeX+badgeSize/2,badgeY+badgeSize*0.84);
+ ctx.font=`${badgeSize*0.32}px ${cardFont()}`;ctx.fillStyle=text;
+ ctx.fillText(lv.emoji,bcx,bcy-badgeSize*0.13);
+ if(lv.level){ctx.font=`900 ${badgeSize*0.082}px ${cardFont()}`;ctx.fillStyle=accent;ctx.fillText(`LV.${lv.level}`,bcx,bcy+badgeSize*0.15)}
+ ctx.font=`800 ${badgeSize*0.08}px ${cardFont()}`;ctx.fillStyle=text;ctx.globalAlpha=.85;
+ ctx.fillText(lv.title,bcx,bcy+badgeSize*0.3);ctx.globalAlpha=1;
  ctx.textAlign=landscape?'left':'center';ctx.textBaseline='top';
  let cx=landscape?textX:textX+textW/2;
  let chipX=landscape?textX:textX;
- ctx.font=`900 ${textW*0.095}px ${cardFont()}`;ctx.fillStyle=text;
- ctx.fillText(`已收藏 ${owned.length} 件`,cx,textY);
- let curY=textY+textW*0.095*1.3+textW*0.015;
- ctx.font=`600 ${textW*0.042}px ${cardFont()}`;ctx.globalAlpha=.75;
+ let curY=textY;
+ ctx.font=`800 ${textW*0.03}px ${cardFont()}`;ctx.fillStyle=accent;ctx.globalAlpha=.9;
+ ctx.fillText('COLLECTION STATS',cx,curY);ctx.globalAlpha=1;
+ curY+=textW*0.03*1.9;
+ ctx.font=`900 ${textW*0.09}px ${cardFont()}`;ctx.fillStyle=text;
+ ctx.fillText(`已收藏 ${owned.length} 件`,cx,curY);
+ curY+=textW*0.09*1.3+textW*0.012;
+ ctx.font=`600 ${textW*0.04}px ${cardFont()}`;ctx.globalAlpha=.68;
  ctx.fillText(`${db.series.length} 個系列／作品`,cx,curY);ctx.globalAlpha=1;
- curY+=textW*0.042*1.9;
+ curY+=textW*0.04*1.6;
+ ctx.strokeStyle=hexA(text,.12);ctx.lineWidth=Math.max(1,w*0.0018);
+ ctx.beginPath();
+ if(landscape){ctx.moveTo(chipX,curY);ctx.lineTo(chipX+textW*0.26,curY)}else{ctx.moveTo(cx-textW*0.13,curY);ctx.lineTo(cx+textW*0.13,curY)}
+ ctx.stroke();
+ curY+=textW*0.035;
  if(Object.keys(byType).length){
   let chips=Object.entries(byType).map(([t,c])=>`${t} ${c}件`);
   curY=drawChipRow(ctx,chips,chipX,curY,textW,textW*0.034,accent2,accent)+textW*0.03
  }
  if(topAuthors.length){
   ctx.textAlign=landscape?'left':'center';ctx.textBaseline='top';
-  ctx.font=`800 ${textW*0.032}px ${cardFont()}`;ctx.fillStyle=text;ctx.globalAlpha=.7;
+  ctx.font=`800 ${textW*0.032}px ${cardFont()}`;ctx.fillStyle=text;ctx.globalAlpha=.65;
   ctx.fillText('喜歡的作者／IP／品牌',cx,curY);ctx.globalAlpha=1;
   curY+=textW*0.032*1.6;
   curY=drawChipRow(ctx,topAuthors,chipX,curY,textW,textW*0.034,cardbg,text)
@@ -919,16 +1050,22 @@ async function drawProfileShareCard(canvas,ratio){
   for(let i=0;i<n;i++){
    let s=picks[i],x=pad+i*(thumbW+gap),img=null;
    if(s.cover){try{img=await loadImageSafe(s.cover)}catch(e){img=null}}
+   ctx.save();ctx.shadowColor=hexA(text,.22);ctx.shadowBlur=w*0.012;ctx.shadowOffsetY=w*0.006;
+   roundRectPath(ctx,x,thumbY,thumbW,thumbH,14);ctx.fillStyle=cardbg;ctx.fill();ctx.restore();
    ctx.save();roundRectPath(ctx,x,thumbY,thumbW,thumbH,14);ctx.clip();
    if(img)drawCoverContain(ctx,img,x,thumbY,thumbW,thumbH);
-   else{ctx.fillStyle=cardbg;ctx.fillRect(x,thumbY,thumbW,thumbH);ctx.fillStyle=accent;ctx.font=`900 ${thumbW*0.35}px ${cardFont()}`;ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText((s.title||'?').slice(0,1),x+thumbW/2,thumbY+thumbH/2)}
+   else{drawPlaceholderArt(ctx,x,thumbY,thumbW,thumbH,s.title,s.type,accent,accent2,cardbg,text)}
    ctx.restore();
+   let rankR=Math.max(11,w*0.016);
+   ctx.save();ctx.shadowColor='rgba(0,0,0,.25)';ctx.shadowBlur=rankR*0.5;
+   ctx.beginPath();ctx.arc(x+rankR*1.1,thumbY+rankR*1.1,rankR,0,Math.PI*2);ctx.fillStyle=accent;ctx.fill();ctx.restore();
+   ctx.fillStyle='#fff';ctx.font=`800 ${rankR*1.05}px ${cardFont()}`;ctx.textAlign='center';ctx.textBaseline='middle';
+   ctx.fillText(String(i+1),x+rankR*1.1,thumbY+rankR*1.1+1);
    ctx.font=`700 ${w*0.022}px ${cardFont()}`;ctx.fillStyle=text;ctx.textAlign='center';ctx.textBaseline='top';
    wrapCJKText(ctx,s.title,x+thumbW/2,thumbY+thumbH+6,thumbW,w*0.022*1.3,2)
   }
  }
- ctx.fillStyle=text;ctx.globalAlpha=.5;ctx.font=`700 ${w*0.02}px ${cardFont()}`;ctx.textAlign='right';ctx.textBaseline='alphabetic';
- ctx.fillText('我的收藏櫃',w-pad*0.6,h-pad*0.18);ctx.globalAlpha=1
+ drawFooterBrand(ctx,w,h,pad,accent,text)
 }
 function renderPickListHtml(){
  if(!db.series.length)return '<div class="empty">還沒有收藏可以推薦。</div>'
