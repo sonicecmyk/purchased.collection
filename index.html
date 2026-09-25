@@ -99,6 +99,8 @@ label{font-size:var(--fs-sm);font-weight:800;color:var(--muted);display:block;ma
 .suggest-chip{background:var(--accent2);color:var(--accent);border-radius:var(--radius-pill);padding:5px 11px;font-size:var(--fs-xs);font-weight:700}
 .starpick{display:flex;gap:3px;font-size:22px;line-height:1;cursor:pointer;color:var(--accent)}
 .levelbadge{display:inline-flex;align-items:center;gap:10px;background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.22);border-radius:var(--radius-pill);padding:8px 16px 8px 8px;margin-top:14px;font-weight:800;font-size:var(--fs-base)}
+@keyframes levelPop{0%{transform:scale(1)}35%{transform:scale(1.22) rotate(-2deg)}60%{transform:scale(.94) rotate(1deg)}100%{transform:scale(1) rotate(0)}}
+.levelbadge.pop{animation:levelPop .7s var(--ease)}
 .levelbadge .emoji{font-size:20px;width:34px;height:34px;display:inline-flex;align-items:center;justify-content:center;background:rgba(255,255,255,.22);border-radius:50%}
 .empty{text-align:center;color:var(--muted);padding:var(--sp-6) var(--sp-3);border:1.5px dashed var(--line);border-radius:var(--radius-md);font-size:var(--fs-sm)}
 .empty::before{content:'';display:block;width:36px;height:36px;margin:0 auto 10px;opacity:.5;background-color:var(--muted);-webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M3 9l2-5h14l2 5'/%3E%3Cpath d='M3 9v9a1 1 0 0 0 1 1h16a1 1 0 0 0 1-1V9'/%3E%3Cpath d='M3 9h18'/%3E%3Cpath d='M9 13a3 3 0 0 0 6 0'/%3E%3C/svg%3E") center/contain no-repeat;mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M3 9l2-5h14l2 5'/%3E%3Cpath d='M3 9v9a1 1 0 0 0 1 1h16a1 1 0 0 0 1-1V9'/%3E%3Cpath d='M3 9h18'/%3E%3Cpath d='M9 13a3 3 0 0 0 6 0'/%3E%3C/svg%3E") center/contain no-repeat}
@@ -204,6 +206,51 @@ label{font-size:var(--fs-sm);font-weight:800;color:var(--muted);display:block;ma
 <div id="toast" class="toast"></div>
 <input type="file" id="importFile" accept="application/json" style="display:none" onchange="importData(this)">
 
+<!--
+  ▼▼▼ Firebase 設定：把 firebaseConfig 換成你自己 Firebase 專案的設定值 ▼▼▼
+  拿到設定值的位置：Firebase Console → 專案設定（齒輪圖示）→ 一般 → 「您的應用程式」
+  往下捲到「SDK 設定和設定」，選 Config，把那個物件整個貼進來取代下面這個。
+  沒有填、或還是預設的 PASTE_ 開頭時，這個 App 會自動跳過 Firebase、只用本機儲存，不會出錯。
+-->
+<script type="module">
+import{initializeApp}from"https://www.gstatic.com/firebasejs/10.13.0/firebase-app.js";
+import{getAuth,onAuthStateChanged,createUserWithEmailAndPassword,signInWithEmailAndPassword,signOut}from"https://www.gstatic.com/firebasejs/10.13.0/firebase-auth.js";
+import{getFirestore,doc,getDoc,setDoc}from"https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore.js";
+
+const firebaseConfig={
+  apiKey:"AIzaSyCzc3_2HWF1wx86_cuXy4Vj5O3Lo4J-nK4",
+  authDomain:"purchasedcollection-dd964.firebaseapp.com",
+  projectId:"purchasedcollection-dd964",
+  storageBucket:"purchasedcollection-dd964.firebasestorage.app",
+  messagingSenderId:"464422143636",
+  appId:"1:464422143636:web:415aa253189dae4e791681"
+};
+
+try{
+  if(firebaseConfig.apiKey && !firebaseConfig.apiKey.startsWith('PASTE_')){
+    const app=initializeApp(firebaseConfig);
+    const auth=getAuth(app);
+    const fdb=getFirestore(app);
+    window.__firebase={
+      onAuthStateChanged:(cb)=>onAuthStateChanged(auth,cb),
+      signUp:(email,pass)=>createUserWithEmailAndPassword(auth,email,pass),
+      signIn:(email,pass)=>signInWithEmailAndPassword(auth,email,pass),
+      signOutUser:()=>signOut(auth),
+      docRef:(uid)=>doc(fdb,'users',uid,'library','main'),
+      getDoc:(ref)=>getDoc(ref),
+      setDoc:(ref,data)=>setDoc(ref,data)
+    };
+  } else {
+    window.__firebase=null;
+  }
+}catch(e){
+  console.warn('Firebase 初始化失敗，改用本機儲存',e);
+  window.__firebase=null;
+}
+window.dispatchEvent(new Event('firebase-ready'));
+</script>
+<!-- ▲▲▲ Firebase 設定區結束 ▲▲▲ -->
+
 <script>
 const KEY='paperBooksV2';
 function uid(){return (crypto.randomUUID?crypto.randomUUID():'id-'+Date.now().toString(36)+'-'+Math.random().toString(36).slice(2))}
@@ -240,6 +287,10 @@ function getCollectorLevel(count){
  let next=COLLECTOR_LEVELS[idx+1];
  return {...cur,next:next?next.min:null}
 }
+if(db.settings.lastSeenLevel===undefined){
+ let ownedNow=db.series.flatMap(s=>s.volumes||[]).filter(v=>v.owned).length;
+ db.settings.lastSeenLevel=getCollectorLevel(ownedNow).level||0
+}
 function starsHtml(prefix,val){
  return Array.from({length:5},(_,i)=>`<span onclick="setStars('${prefix}',${i+1})">${i<val?'★':'☆'}</span>`).join('')
 }
@@ -255,7 +306,7 @@ function rateSeriesQuick(sid,n){
  s.rating=(s.rating===n)?0:n;
  save();openSeries(sid)
 }
-function save(){localStorage.setItem(KEY,JSON.stringify(db));renderAll()}
+function save(){localStorage.setItem(KEY,JSON.stringify(db));renderAll();scheduleCloudSave()}
 function esc(s=''){return String(s).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]))}
 function langSelectHtml(id,current){
  let known=['繁體中文','簡體中文','日文','英文','韓文'];
@@ -382,6 +433,11 @@ async function handleCoverFile(inputEl,targetId){
  finally{inputEl.value=''}
 }
 function toast(s){let t=document.getElementById('toast');t.textContent=s;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),1800)}
+function celebrateLevelUp(lv){
+ let badge=document.querySelector('#home .levelbadge');
+ if(badge){badge.classList.remove('pop');void badge.offsetWidth;badge.classList.add('pop')}
+ let t=document.getElementById('toast');t.textContent=`🎉 升級了！你現在是「${lv.emoji} ${lv.title}」`;t.classList.add('show');clearTimeout(t._levelTimer);t._levelTimer=setTimeout(()=>t.classList.remove('show'),2800)
+}
 function go(p){document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));document.getElementById(p).classList.add('active');document.querySelectorAll('.nav').forEach(x=>x.classList.toggle('active',x.dataset.page===p));renderAll()}
 function closeModal(){document.getElementById('modal').classList.remove('show')}
 function confirmCloseModal(){
@@ -402,6 +458,12 @@ function renderHome(){
  let lv=getCollectorLevel(owned.length);
  document.getElementById('hLevelEmoji').textContent=lv.emoji;
  document.getElementById('hLevelText').textContent=lv.level?`Lv.${lv.level}　${lv.title}`:lv.title;
+ if(lv.level>0 && lv.level>(db.settings.lastSeenLevel||0)){
+  db.settings.lastSeenLevel=lv.level;
+  localStorage.setItem(KEY,JSON.stringify(db));
+  scheduleCloudSave();
+  celebrateLevelUp(lv)
+ }
  let preview=db.series.slice(0,8);
  document.getElementById('homeSeries').innerHTML=preview.length?preview.map(s=>{
   let o=(s.volumes||[]).filter(v=>v.owned).length,total=(s.volumes||[]).length,pct=total?Math.round(o/total*100):0;
@@ -735,13 +797,35 @@ function saveSeriesInfo(sid){
  if(cfg.showCharacter && s.character)bumpSuggest(type,'character',s.character);
  save();openSeries(sid)
 }
+function syncStatusHtml(){
+ if(syncAdapter && syncAdapter.label==='claude'){
+  return `<div class="row" style="gap:10px"><span style="width:10px;height:10px;border-radius:50%;background:var(--green);flex:none;box-shadow:0 0 0 4px var(--greenbg)"></span><div><div style="font-weight:800">已跨裝置同步（Claude 帳號）</div><div class="muted">資料存在你自己的 Claude 帳號裡，只有你看得到；換手機、換電腦登入同一個帳號都能看到同一份收藏。朋友各自用自己的帳號開啟，彼此的紀錄不會混在一起。</div></div></div>`
+ }
+ if(fb && fbUser){
+  return `<div class="row" style="gap:10px"><span style="width:10px;height:10px;border-radius:50%;background:var(--green);flex:none;box-shadow:0 0 0 4px var(--greenbg)"></span><div style="flex:1"><div style="font-weight:800">已登入：${esc(fbUser.email||'')}</div><div class="muted">資料同步到這個帳號，換裝置登入同一組帳號就能看到同一份收藏；朋友各自登入自己的帳號，彼此的紀錄不會混在一起。</div><button class="btn small" style="margin-top:8px" onclick="firebaseSignOut()">登出</button></div></div>`
+ }
+ if(fb){
+  return `<div class="row" style="gap:10px;align-items:flex-start"><span style="width:10px;height:10px;border-radius:50%;background:var(--muted);flex:none;margin-top:5px"></span><div style="flex:1">
+   <div style="font-weight:800;margin-bottom:2px">尚未登入</div>
+   <div class="muted" style="margin-bottom:8px">註冊或登入帳號，就能讓收藏跨裝置同步，朋友各自登入也不會互相看到彼此的資料。</div>
+   <input id="fbEmail" type="email" placeholder="Email" style="margin-bottom:6px">
+   <input id="fbPass" type="password" placeholder="密碼（至少 6 碼）" style="margin-bottom:8px">
+   <div class="row wrap"><button class="btn small purple" onclick="firebaseSignIn()">登入</button><button class="btn small" onclick="firebaseSignUp()">註冊新帳號</button></div>
+   <div id="fbAuthMsg" class="muted" style="margin-top:6px;color:var(--red)"></div>
+  </div></div>`
+ }
+ return `<div class="row" style="gap:10px"><span style="width:10px;height:10px;border-radius:50%;background:var(--muted);flex:none"></span><div><div style="font-weight:800">僅保存在這台裝置</div><div class="muted">目前是在瀏覽器本機模式，資料不會自動同步到其他裝置。用 Claude 開啟這個 App 的連結可自動啟用同步；建議也定期匯出備份保險。</div></div></div>`
+}
 function openShare(){
  let names=Object.keys(THEMES),cur=db.settings.theme;
  showModal(`<h2>設定</h2>
+<h3>帳號與同步</h3>
+<div class="notice" style="margin-bottom:16px">${syncStatusHtml()}</div>
+<hr style="border:0;border-top:1px solid var(--line);margin:20px 0">
 <h3>外觀主題</h3>
 <div class="row wrap" style="margin-bottom:16px">${names.map(n=>`<button class="btn ${n===cur?'purple':''}" onclick="chooseTheme('${n}')">${esc(n)}</button>`).join('')}</div>
 <hr style="border:0;border-top:1px solid var(--line);margin:20px 0">
-<h3>備份與還原</h3><div class="muted" style="margin-bottom:10px">資料只存在這台裝置的瀏覽器裡，建議定期匯出備份。</div>
+<h3>備份與還原</h3><div class="muted" style="margin-bottom:10px">不管有沒有開啟雲端同步，都建議偶爾手動備份一份，多一層保障。</div>
 <div class="row wrap"><button class="btn" onclick="exportData()">⬇︎ 匯出備份 JSON</button><button class="btn" onclick="document.getElementById('importFile').click()">⬆︎ 匯入備份 JSON</button></div>`)
 }
 function chooseTheme(name){db.settings.theme=name;save();applyTheme(name);openShare()}
@@ -1112,7 +1196,107 @@ function importData(inputEl){
  inputEl.value=''
 }
 function exportData(){let blob=new Blob([JSON.stringify(db,null,2)],{type:'application/json'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='我的紙本書櫃_backup.json';a.click()}
+/* ---- 雲端同步：syncAdapter 是統一介面，背後可能是 Claude db 能力，也可能是 Firebase ----
+   syncAdapter = { label:'claude'|'firebase', get: async()=>obj|null, set: async(obj)=>void } */
+let syncAdapter=null,cloudSaveTimer=null,cloudSyncing=false;
+function scheduleCloudSave(){
+ if(!syncAdapter)return;
+ clearTimeout(cloudSaveTimer);
+ cloudSaveTimer=setTimeout(async()=>{
+  try{
+   let json=JSON.stringify(db);
+   if(json.length>(syncAdapter.cap||240*1024)){toast('雲端空間快滿了（可能是圖片太多），這次變更先只存在這台裝置');return}
+   cloudSyncing=true;
+   await syncAdapter.set(JSON.parse(json));
+  }catch(e){/* 暫時離線或失敗，下次變更會再試一次 */}
+  finally{cloudSyncing=false}
+ },900)
+}
+async function loadFromCloud(){
+ try{
+  let cloud=await syncAdapter.get();
+  if(cloud && Array.isArray(cloud.series)){
+   db=cloud;
+   db.settings=db.settings||{theme:'侘寂日系'};
+   db.suggest=db.suggest||{};
+   localStorage.setItem(KEY,JSON.stringify(db));
+   applyTheme(db.settings.theme);
+   toast('已從雲端同步收藏資料');
+  } else if(db.series && db.series.length){
+   scheduleCloudSave()
+  }
+  renderAll()
+ }catch(e){/* 讀取失敗，維持本機資料 */}
+}
+async function initClaudeSync(){
+ try{
+  if(!window.claude||!window.claude.use)return false;
+  let[dbCap,userCap]=await Promise.all([window.claude.use('db'),window.claude.use('user')]);
+  if(!dbCap||!userCap)return false;
+  let uid=await userCap.id();
+  if(!uid)return false;
+  let ref=dbCap.doc('data/users/'+uid+'/library');
+  syncAdapter={label:'claude',cap:240*1024,get:async()=>{let s=await ref.get();return s.exists?s.data():null},set:async(data)=>ref.set(data)};
+  await loadFromCloud();
+  return true
+ }catch(e){return false}
+}
+function waitFirebaseBridge(){
+ return new Promise(resolve=>{
+  if(window.__firebase!==undefined){resolve(window.__firebase);return}
+  window.addEventListener('firebase-ready',()=>resolve(window.__firebase),{once:true});
+  setTimeout(()=>resolve(window.__firebase||null),4000)
+ })
+}
+let fb=null,fbUser=null;
+function friendlyFbError(e){
+ let code=(e&&e.code)||'';
+ if(code.includes('email-already-in-use'))return '這個 Email 已經註冊過了，改用下面登入';
+ if(code.includes('invalid-credential')||code.includes('wrong-password')||code.includes('user-not-found'))return 'Email 或密碼不正確';
+ if(code.includes('invalid-email'))return 'Email 格式不正確';
+ if(code.includes('weak-password'))return '密碼太簡單，至少要 6 碼';
+ if(code.includes('network'))return '網路連線有問題，請稍後再試';
+ return '發生錯誤，請稍後再試（'+(code||'未知')+'）'
+}
+async function firebaseSignIn(){
+ if(!fb)return;
+ let email=(document.getElementById('fbEmail')?.value||'').trim(),pass=document.getElementById('fbPass')?.value||'';
+ if(!email||!pass){let m=document.getElementById('fbAuthMsg');if(m)m.textContent='請輸入 Email 和密碼';return}
+ try{await fb.signIn(email,pass);toast('登入成功');openShare()}
+ catch(e){let m=document.getElementById('fbAuthMsg');if(m)m.textContent=friendlyFbError(e)}
+}
+async function firebaseSignUp(){
+ if(!fb)return;
+ let email=(document.getElementById('fbEmail')?.value||'').trim(),pass=document.getElementById('fbPass')?.value||'';
+ if(!email||!pass){let m=document.getElementById('fbAuthMsg');if(m)m.textContent='請輸入 Email 和密碼';return}
+ if(pass.length<6){let m=document.getElementById('fbAuthMsg');if(m)m.textContent='密碼至少要 6 碼';return}
+ try{await fb.signUp(email,pass);toast('註冊成功，已自動登入');openShare()}
+ catch(e){let m=document.getElementById('fbAuthMsg');if(m)m.textContent=friendlyFbError(e)}
+}
+async function firebaseSignOut(){
+ if(!fb)return;
+ await fb.signOutUser();toast('已登出，改回本機保存');openShare()
+}
+async function initFirebase(){
+ fb=await waitFirebaseBridge();
+ if(!fb)return;
+ fb.onAuthStateChanged(async(user)=>{
+  fbUser=user;
+  if(user){
+   let ref=fb.docRef(user.uid);
+   syncAdapter={label:'firebase',cap:950*1024,get:async()=>{let s=await fb.getDoc(ref);return s.exists()?s.data():null},set:async(data)=>fb.setDoc(ref,data)};
+   await loadFromCloud()
+  } else if(syncAdapter && syncAdapter.label==='firebase'){
+   syncAdapter=null
+  }
+ })
+}
+async function initSync(){
+ let usedClaude=await initClaudeSync();
+ if(!usedClaude)await initFirebase()
+}
 renderAll();
+initSync();
 </script>
 </body>
 </html>
