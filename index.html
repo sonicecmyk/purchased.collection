@@ -120,6 +120,18 @@ label{font-size:var(--fs-sm);font-weight:800;color:var(--muted);display:block;ma
 .addnav .plus{position:absolute;left:50%;top:-30px;transform:translateX(-50%);width:60px;height:60px;border-radius:20px;background:var(--accent);color:#fff;box-shadow:0 14px 30px color-mix(in srgb,var(--accent) 45%,transparent);border:5px solid var(--bg);display:flex;align-items:center;justify-content:center}
 .addnav .plus svg.icon{width:26px;height:26px;stroke-width:2.4}
 .addnav em{font-style:normal;position:relative;top:24px}
+.drawer-overlay{position:fixed;inset:0;background:rgba(20,15,10,.45);z-index:60;opacity:0;pointer-events:none;transition:opacity .25s var(--ease)}
+.drawer-overlay.show{opacity:1;pointer-events:auto}
+.drawer{position:fixed;top:0;left:0;bottom:0;width:min(300px,82vw);background:var(--card);z-index:61;transform:translateX(-100%);transition:transform .28s var(--ease);box-shadow:var(--shadow-lg);padding:calc(20px + env(safe-area-inset-top)) 16px 20px;overflow-y:auto;-webkit-overflow-scrolling:touch}
+.drawer.show{transform:translateX(0)}
+.drawer-head{text-align:center;padding-bottom:16px;margin-bottom:10px;border-bottom:1px solid var(--line)}
+.drawer-avatar{width:64px;height:64px;border-radius:50%;background:linear-gradient(135deg,var(--accent2),var(--card));border:2px solid var(--accent);display:flex;align-items:center;justify-content:center;font-size:30px;margin:0 auto 10px}
+.drawer-name{font-weight:900;font-size:17px}
+.drawer-status{font-size:11.5px;color:var(--muted);margin-top:4px;line-height:1.5}
+.drawer-nav{display:flex;flex-direction:column;gap:3px}
+.drawer-nav button{display:flex;align-items:center;gap:10px;padding:12px 10px;border-radius:12px;background:transparent;color:var(--text);font-weight:700;text-align:left;font-size:14px;width:100%}
+.drawer-nav button:active{background:var(--accent2)}
+.drawer-nav button.danger{color:var(--red)}
 .modal{position:fixed;inset:0;background:rgba(20,15,10,.5);z-index:50;display:none;align-items:flex-end}
 .modal.show{display:flex}
 .sheet{background:var(--card);color:var(--text);width:100%;max-width:760px;margin:auto;border-radius:var(--radius-lg) var(--radius-lg) 0 0;max-height:92vh;overflow:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;padding:18px 18px 30px;box-shadow:var(--shadow-lg)}
@@ -136,7 +148,7 @@ label{font-size:var(--fs-sm);font-weight:800;color:var(--muted);display:block;ma
 <header>
   <div class="top">
     <div><div class="brand"><svg class="icon" viewBox="0 0 24 24" style="width:20px;height:20px;fill:var(--accent);stroke:none"><path d="M6 3a2 2 0 0 0-2 2v16l8-4.5L20 21V5a2 2 0 0 0-2-2H6Z"/></svg>我的收藏櫃</div><div class="sub">把喜歡的東西，好好收進來</div></div>
-    <button class="iconbtn" onclick="openShare()" aria-label="設定"><svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></button>
+    <button class="iconbtn" onclick="openDrawer()" aria-label="選單"><svg class="icon" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h10"/></svg></button>
   </div>
 </header>
 
@@ -199,6 +211,9 @@ label{font-size:var(--fs-sm);font-weight:800;color:var(--muted);display:block;ma
 </nav>
 </div>
 
+<div id="drawerOverlay" class="drawer-overlay" onclick="closeDrawer()"></div>
+<aside id="sideDrawer" class="drawer"></aside>
+
 <div id="modal" class="modal"><div class="sheet" style="position:relative">
   <button class="iconbtn" style="position:absolute;top:12px;right:12px;width:40px;height:40px;font-size:16px;z-index:5" onclick="confirmCloseModal()" aria-label="關閉">✕</button>
   <div class="handle"></div><div id="modalBody"></div>
@@ -214,7 +229,7 @@ label{font-size:var(--fs-sm);font-weight:800;color:var(--muted);display:block;ma
 -->
 <script type="module">
 import{initializeApp}from"https://www.gstatic.com/firebasejs/10.13.0/firebase-app.js";
-import{getAuth,onAuthStateChanged,createUserWithEmailAndPassword,signInWithEmailAndPassword,signOut}from"https://www.gstatic.com/firebasejs/10.13.0/firebase-auth.js";
+import{getAuth,onAuthStateChanged,createUserWithEmailAndPassword,signInWithEmailAndPassword,signOut,GoogleAuthProvider,signInWithPopup,sendSignInLinkToEmail,isSignInWithEmailLink,signInWithEmailLink,updateProfile,sendPasswordResetEmail,EmailAuthProvider,reauthenticateWithCredential,updatePassword}from"https://www.gstatic.com/firebasejs/10.13.0/firebase-auth.js";
 import{getFirestore,doc,getDoc,setDoc}from"https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore.js";
 
 const firebaseConfig={
@@ -236,6 +251,15 @@ try{
       signUp:(email,pass)=>createUserWithEmailAndPassword(auth,email,pass),
       signIn:(email,pass)=>signInWithEmailAndPassword(auth,email,pass),
       signOutUser:()=>signOut(auth),
+      signInGoogle:()=>signInWithPopup(auth,new GoogleAuthProvider()),
+      sendEmailLink:(email)=>sendSignInLinkToEmail(auth,email,{url:window.location.href,handleCodeInApp:true}),
+      isEmailLink:(url)=>isSignInWithEmailLink(auth,url),
+      completeEmailLinkSignIn:(email,url)=>signInWithEmailLink(auth,email,url),
+      currentUser:()=>auth.currentUser,
+      updateUserProfile:(data)=>updateProfile(auth.currentUser,data),
+      sendPasswordReset:(email)=>sendPasswordResetEmail(auth,email),
+      reauthenticate:(email,pass)=>reauthenticateWithCredential(auth.currentUser,EmailAuthProvider.credential(email,pass)),
+      changePassword:(newPass)=>updatePassword(auth.currentUser,newPass),
       docRef:(uid)=>doc(fdb,'users',uid,'library','main'),
       getDoc:(ref)=>getDoc(ref),
       setDoc:(ref,data)=>setDoc(ref,data)
@@ -262,12 +286,42 @@ db.suggest=db.suggest||{};
 const THEMES={
  '侘寂日系':{bg:'#f6f1e9',card:'#fffaf3',text:'#3b332c',muted:'#8a7f6f',line:'#e6dcc8',primary:'#3b332c',accent:'#a8522c',accent2:'#f3e3d3',green:'#6b7d4f',red:'#b3462f',greenbg:'#e3ead9',greentext:'#4b5d38',heroFrom:'#332a22',heroTo:'#a8522c',ownedbg:'#3f7a4e',ownedtext:'#ffffff'},
  '薄荷清新':{bg:'#f1f8f6',card:'#ffffff',text:'#1f2d28',muted:'#6b8079',line:'#dcece6',primary:'#1f2d28',accent:'#2f9e78',accent2:'#dff3ea',green:'#2f9e78',red:'#d15b4f',greenbg:'#dff3ea',greentext:'#1f6b4f',heroFrom:'#1f2d28',heroTo:'#2f9e78',ownedbg:'#0f766e',ownedtext:'#ffffff'},
- '櫻花粉':{bg:'#fdf3f6',card:'#ffffff',text:'#3d2b30',muted:'#9c7f88',line:'#f5dee5',primary:'#3d2b30',accent:'#e37fa0',accent2:'#fbe4ec',green:'#7a9b6b',red:'#d1495b',greenbg:'#eaf1e3',greentext:'#4f6b43',heroFrom:'#3d2b30',heroTo:'#e37fa0',ownedbg:'#3f6b4f',ownedtext:'#ffffff'},
+ '櫻花粉':{bg:'#fdf3f6',card:'#ffffff',text:'#3d2b30',muted:'#9c7f88',line:'#f5dee5',primary:'#3d2b30',accent:'#e37fa0',accent2:'#fbe4ec',green:'#7a9b6b',red:'#d1495b',greenbg:'#eaf1e3',greentext:'#4f6b43',heroFrom:'#4a2436',heroTo:'#e37fa0',ownedbg:'#3f6b4f',ownedtext:'#ffffff'},
  '深夜藍':{bg:'#12141c',card:'#1b1f2c',text:'#eef1f8',muted:'#8891a8',line:'#2a2f42',primary:'#eef1f8',accent:'#7c9bff',accent2:'#26304d',green:'#4ade80',red:'#f87171',greenbg:'#1c3326',greentext:'#7fe3ab',heroFrom:'#1b1f2c',heroTo:'#3c4a8f',ownedbg:'#22c55e',ownedtext:'#052e16'},
- '經典紫':{bg:'#f5f7fb',card:'#ffffff',text:'#172033',muted:'#6b7280',line:'#e5e7eb',primary:'#111827',accent:'#7c3aed',accent2:'#ede9fe',green:'#15803d',red:'#dc2626',greenbg:'#dcfce7',greentext:'#166534',heroFrom:'#111827',heroTo:'#312e81',ownedbg:'#16a34a',ownedtext:'#ffffff'}
+ '經典紫':{bg:'#f5f7fb',card:'#ffffff',text:'#172033',muted:'#6b7280',line:'#e5e7eb',primary:'#111827',accent:'#7c3aed',accent2:'#ede9fe',green:'#15803d',red:'#dc2626',greenbg:'#dcfce7',greentext:'#166534',heroFrom:'#111827',heroTo:'#312e81',ownedbg:'#16a34a',ownedtext:'#ffffff'},
+ '海霧藍':{bg:'#eef3f6',card:'#ffffff',text:'#1c2b36',muted:'#6b8494',line:'#dbe6ec',primary:'#1c2b36',accent:'#3f7ea6',accent2:'#dcebf2',green:'#3f7d4f',red:'#c1443a',greenbg:'#e1f0e3',greentext:'#2f6b3f',heroFrom:'#16222b',heroTo:'#3f7ea6',ownedbg:'#2f6b8f',ownedtext:'#ffffff'},
+ '森林綠':{bg:'#f0f5ee',card:'#ffffff',text:'#20301f',muted:'#728064',line:'#dde6d5',primary:'#20301f',accent:'#3f6b3a',accent2:'#dfe9d6',green:'#3f6b3a',red:'#b6462f',greenbg:'#dfe9d6',greentext:'#2c4a29',heroFrom:'#1c2b18',heroTo:'#3f6b3a',ownedbg:'#2c4a29',ownedtext:'#ffffff'},
+ '琥珀暖陽':{bg:'#fbf3e7',card:'#fffaf0',text:'#3a2a12',muted:'#8f7757',line:'#f0dfc0',primary:'#3a2a12',accent:'#c97a1f',accent2:'#f6e3bf',green:'#5f7d3f',red:'#c1442f',greenbg:'#e7edd6',greentext:'#41562b',heroFrom:'#2e2211',heroTo:'#c97a1f',ownedbg:'#8a5a1c',ownedtext:'#ffffff'},
+ '曜石黑':{bg:'#141210',card:'#1e1b18',text:'#f2ede4',muted:'#9c9186',line:'#2c2723',primary:'#f2ede4',accent:'#d1a24a',accent2:'#332b1e',green:'#4ade80',red:'#f87171',greenbg:'#22301f',greentext:'#8fdc9a',heroFrom:'#1a1512',heroTo:'#8a6423',ownedbg:'#22c55e',ownedtext:'#052e16'}
 };
+function hexToHsl(hex){
+ let{r,g,b}=hexToRgb(hex);r/=255;g/=255;b/=255;
+ let max=Math.max(r,g,b),min=Math.min(r,g,b),h=0,s=0,l=(max+min)/2;
+ if(max!==min){
+  let d=max-min;s=l>0.5?d/(2-max-min):d/(max+min);
+  switch(max){case r:h=(g-b)/d+(g<b?6:0);break;case g:h=(b-r)/d+2;break;default:h=(r-g)/d+4}
+  h/=6
+ }
+ return{h:h*360,s:s*100,l:l*100}
+}
+function hslToHex(h,s,l){
+ h=((h%360)+360)%360;s=Math.max(0,Math.min(100,s))/100;l=Math.max(0,Math.min(100,l))/100;
+ let c=(1-Math.abs(2*l-1))*s,x=c*(1-Math.abs((h/60)%2-1)),m=l-c/2,r,g,b;
+ if(h<60){r=c;g=x;b=0}else if(h<120){r=x;g=c;b=0}else if(h<180){r=0;g=c;b=x}else if(h<240){r=0;g=x;b=c}else if(h<300){r=x;g=0;b=c}else{r=c;g=0;b=x}
+ let R=Math.round((r+m)*255),G=Math.round((g+m)*255),B=Math.round((b+m)*255);
+ return'#'+[R,G,B].map(v=>v.toString(16).padStart(2,'0')).join('')
+}
+function deriveCustomTheme(accentHex,dark){
+ let{h,s}=hexToHsl(accentHex||'#a8522c');
+ s=Math.max(35,Math.min(85,s));
+ let accent=hslToHex(h,s,dark?62:42),accentDeep=hslToHex(h,s,dark?45:26);
+ if(dark){
+  return{bg:hslToHex(h,18,10),card:hslToHex(h,16,14),text:hslToHex(h,15,94),muted:hslToHex(h,12,64),line:hslToHex(h,16,22),primary:hslToHex(h,15,94),accent,accent2:hslToHex(h,30,20),green:'#4ade80',red:'#f87171',greenbg:hslToHex(140,25,16),greentext:'#86efac',heroFrom:hslToHex(h,20,12),heroTo:accent,ownedbg:'#22c55e',ownedtext:'#052e16'}
+ }
+ return{bg:hslToHex(h,32,96),card:'#ffffff',text:hslToHex(h,25,18),muted:hslToHex(h,14,46),line:hslToHex(h,28,88),primary:hslToHex(h,25,18),accent,accent2:hslToHex(h,45,90),green:'#3f7d4f',red:'#c1443a',greenbg:hslToHex(140,30,92),greentext:'#2f6b3f',heroFrom:accentDeep,heroTo:accent,ownedbg:'#3f7a4e',ownedtext:'#ffffff'}
+}
 function applyTheme(name){
- let t=THEMES[name]||THEMES['侘寂日系'];
+ let t=name==='自訂'?deriveCustomTheme((db.settings.customTheme||{}).accent,!!(db.settings.customTheme||{}).dark):(THEMES[name]||THEMES['侘寂日系']);
  let root=document.documentElement.style;
  Object.entries(t).forEach(([k,v])=>root.setProperty('--'+k,v));
  let m=document.querySelector('meta[name="theme-color"]');if(m)m.setAttribute('content',t.primary)
@@ -807,28 +861,132 @@ function syncStatusHtml(){
  if(fb){
   return `<div class="row" style="gap:10px;align-items:flex-start"><span style="width:10px;height:10px;border-radius:50%;background:var(--muted);flex:none;margin-top:5px"></span><div style="flex:1">
    <div style="font-weight:800;margin-bottom:2px">尚未登入</div>
-   <div class="muted" style="margin-bottom:8px">註冊或登入帳號，就能讓收藏跨裝置同步，朋友各自登入也不會互相看到彼此的資料。</div>
+   <div class="muted" style="margin-bottom:10px">登入帳號，就能讓收藏跨裝置同步，朋友各自登入也不會互相看到彼此的資料。</div>
+   <button class="btn" style="width:100%;justify-content:center;gap:8px" onclick="firebaseSignInGoogle()"><svg width="16" height="16" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.99.66-2.26 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.85C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09A6.6 6.6 0 0 1 5.48 12c0-.73.13-1.43.36-2.09V7.06H2.18A10.97 10.97 0 0 0 1 12c0 1.77.42 3.45 1.18 4.94l3.66-2.85z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.85C6.71 7.31 9.14 5.38 12 5.38z"/></svg>用 Google 登入</button>
+   <div class="row" style="margin:10px 0;align-items:center;gap:8px"><div style="flex:1;height:1px;background:var(--line)"></div><span class="muted" style="font-size:11px">或用 Email</span><div style="flex:1;height:1px;background:var(--line)"></div></div>
    <input id="fbEmail" type="email" placeholder="Email" style="margin-bottom:6px">
-   <input id="fbPass" type="password" placeholder="密碼（至少 6 碼）" style="margin-bottom:8px">
-   <div class="row wrap"><button class="btn small purple" onclick="firebaseSignIn()">登入</button><button class="btn small" onclick="firebaseSignUp()">註冊新帳號</button></div>
+   <input id="fbPass" type="password" placeholder="密碼（至少 6 碼，用連結登入可留空）" style="margin-bottom:4px">
+   <div style="text-align:right;margin-bottom:8px"><button class="btn small" style="background:transparent;border:0;padding:2px;color:var(--accent);font-weight:700" onclick="firebaseForgotPassword()">忘記密碼？</button></div>
+   <div class="row wrap"><button class="btn small purple" onclick="firebaseSignIn()">登入</button><button class="btn small" onclick="firebaseSignUp()">註冊新帳號</button><button class="btn small" onclick="firebaseSendEmailLink()">寄登入連結（免密碼）</button></div>
    <div id="fbAuthMsg" class="muted" style="margin-top:6px;color:var(--red)"></div>
   </div></div>`
  }
  return `<div class="row" style="gap:10px"><span style="width:10px;height:10px;border-radius:50%;background:var(--muted);flex:none"></span><div><div style="font-weight:800">僅保存在這台裝置</div><div class="muted">目前是在瀏覽器本機模式，資料不會自動同步到其他裝置。用 Claude 開啟這個 App 的連結可自動啟用同步；建議也定期匯出備份保險。</div></div></div>`
 }
 function openShare(){
+ closeDrawer();
  let names=Object.keys(THEMES),cur=db.settings.theme;
- showModal(`<h2>設定</h2>
-<h3>帳號與同步</h3>
-<div class="notice" style="margin-bottom:16px">${syncStatusHtml()}</div>
-<hr style="border:0;border-top:1px solid var(--line);margin:20px 0">
+ let cc=db.settings.customTheme||{accent:'#a8522c',dark:false};
+ showModal(`<h2>外觀與備份</h2>
 <h3>外觀主題</h3>
-<div class="row wrap" style="margin-bottom:16px">${names.map(n=>`<button class="btn ${n===cur?'purple':''}" onclick="chooseTheme('${n}')">${esc(n)}</button>`).join('')}</div>
+<div class="row wrap" style="margin-bottom:14px">${names.map(n=>`<button class="btn ${n===cur?'purple':''}" onclick="chooseTheme('${n}')">${esc(n)}</button>`).join('')}</div>
+<div class="card" style="margin:0 0 16px;padding:14px">
+ <div class="row between" style="margin-bottom:10px"><h3 style="margin:0">自訂配色</h3>${cur==='自訂'?'<span class="tag purple">使用中</span>':''}</div>
+ <div class="row wrap" style="gap:14px;align-items:center;margin-bottom:12px">
+  <input id="customAccent" type="color" value="${esc(cc.accent||'#a8522c')}" style="width:56px;height:42px;padding:2px;border-radius:10px;border:1px solid var(--line)">
+  <div class="row wrap" style="gap:6px">
+   <button class="btn small ${!cc.dark?'purple':''}" onclick="setCustomBase(false)">淺色底</button>
+   <button class="btn small ${cc.dark?'purple':''}" onclick="setCustomBase(true)">深色底</button>
+  </div>
+ </div>
+ <div class="muted" style="margin-bottom:10px">選一個你喜歡的顏色當主色，其他配色會自動幫你搭好。</div>
+ <button class="btn purple" style="width:100%" onclick="applyCustomTheme()">套用自訂配色</button>
+</div>
 <hr style="border:0;border-top:1px solid var(--line);margin:20px 0">
 <h3>備份與還原</h3><div class="muted" style="margin-bottom:10px">不管有沒有開啟雲端同步，都建議偶爾手動備份一份，多一層保障。</div>
 <div class="row wrap"><button class="btn" onclick="exportData()">⬇︎ 匯出備份 JSON</button><button class="btn" onclick="document.getElementById('importFile').click()">⬆︎ 匯入備份 JSON</button></div>`)
 }
 function chooseTheme(name){db.settings.theme=name;save();applyTheme(name);openShare()}
+function setCustomBase(dark){
+ db.settings.customTheme=Object.assign({accent:'#a8522c',dark:false},db.settings.customTheme,{dark});
+ if(db.settings.theme==='自訂'){save();applyTheme('自訂')}
+ openShare()
+}
+function applyCustomTheme(){
+ let accent=document.getElementById('customAccent').value||'#a8522c';
+ let dark=!!(db.settings.customTheme && db.settings.customTheme.dark);
+ db.settings.customTheme={accent,dark};
+ db.settings.theme='自訂';
+ save();applyTheme('自訂');openShare();toast('已套用自訂配色')
+}
+function drawerHtml(){
+ let claudeSync=syncAdapter && syncAdapter.label==='claude';
+ let loggedIn=fb && fbUser;
+ let avatarEmoji=loggedIn && fbUser.photoURL && fbUser.photoURL.startsWith('avatar:')?fbUser.photoURL.slice(7):'🙂';
+ let name=claudeSync?'Claude 使用者':(loggedIn?(fbUser.displayName||(fbUser.email||'').split('@')[0]||'我的帳號'):'訪客');
+ let status=claudeSync?'☁️ 已跨裝置同步（Claude 帳號）':(loggedIn?('☁️ 已登入：'+esc(fbUser.email||'')):'📱 僅本機保存，尚未登入');
+ return `<div class="drawer-head"><div class="drawer-avatar">${claudeSync?'📚':avatarEmoji}</div><div class="drawer-name">${esc(name)}</div><div class="drawer-status">${status}</div></div>
+ <nav class="drawer-nav">
+  <button onclick="openProfileModal()">👤　個人檔案</button>
+  <button onclick="openAccountSecurity()">🔒　帳號安全</button>
+  <button onclick="openShare()">🎨　外觀與備份</button>
+  ${loggedIn?`<button class="danger" onclick="closeDrawer();firebaseSignOut()">🚪　登出</button>`:''}
+ </nav>`
+}
+function openDrawer(){document.getElementById('sideDrawer').innerHTML=drawerHtml();document.getElementById('sideDrawer').classList.add('show');document.getElementById('drawerOverlay').classList.add('show')}
+function closeDrawer(){document.getElementById('sideDrawer').classList.remove('show');document.getElementById('drawerOverlay').classList.remove('show')}
+function openProfileModal(){
+ closeDrawer();
+ if(!fb || !fbUser){showModal(`<h2>個人檔案</h2><div class="notice">登入帳號後才能設定暱稱與頭像，先去「帳號安全」登入吧。</div><button class="btn purple" style="width:100%;margin-top:12px" onclick="openAccountSecurity()">前往登入</button>`);return}
+ let curAvatar=fbUser.photoURL && fbUser.photoURL.startsWith('avatar:')?fbUser.photoURL.slice(7):'🙂';
+ let avatarOptions=['🙂','🦊','🐱','🐧','🐼','🦄','🐸','🐻','🌟','📚','🎮','🎨'];
+ showModal(`<h2>個人檔案</h2>
+ <label>頭像</label>
+ <div class="row wrap" style="margin-bottom:14px">${avatarOptions.map(e=>`<button class="btn small ${e===curAvatar?'purple':''}" style="font-size:17px;padding:7px 11px" onclick="pickAvatar('${e}')">${e}</button>`).join('')}</div>
+ <label>暱稱</label>
+ <input id="pfName" value="${esc(fbUser.displayName||'')}" placeholder="想被怎麼稱呼？">
+ <button class="btn purple" style="width:100%;margin-top:14px" onclick="saveProfile()">儲存</button>`)
+}
+async function pickAvatar(e){
+ try{await fb.updateUserProfile({photoURL:'avatar:'+e});fbUser=fb.currentUser();openProfileModal();toast('頭像已更新')}
+ catch(err){toast('更新失敗，請稍後再試')}
+}
+async function saveProfile(){
+ let name=(document.getElementById('pfName').value||'').trim();
+ try{await fb.updateUserProfile({displayName:name});fbUser=fb.currentUser();closeModal();toast('個人檔案已更新')}
+ catch(err){toast('更新失敗，請稍後再試')}
+}
+function providerLabel(id){
+ if(id==='google.com')return 'Google';
+ if(id==='password')return 'Email 密碼';
+ if(id==='emailLink')return 'Email 連結';
+ return id
+}
+function openAccountSecurity(){
+ closeDrawer();
+ if(!fb){showModal(`<h2>帳號安全</h2><div class="notice">目前沒有連接雲端帳號功能，這台裝置是本機模式。</div>`);return}
+ if(!fbUser){showModal(`<h2>帳號安全</h2><div class="notice" style="margin-bottom:14px">${syncStatusHtml()}</div>`);return}
+ let providers=(fbUser.providerData||[]).map(p=>providerLabel(p.providerId));
+ let hasPasswordProvider=providers.includes('Email 密碼');
+ showModal(`<h2>帳號安全</h2>
+ <div class="muted" style="margin-bottom:14px">登入方式：${esc(providers.join('、')||'未知')}</div>
+ ${hasPasswordProvider?`<h3>修改密碼</h3>
+ <input id="pwOld" type="password" placeholder="目前密碼" style="margin-bottom:6px">
+ <input id="pwNew" type="password" placeholder="新密碼（至少 6 碼）" style="margin-bottom:8px">
+ <button class="btn purple" style="width:100%" onclick="changePassword()">更新密碼</button>
+ <div id="pwMsg" class="muted" style="margin-top:6px"></div>`:`<div class="notice">你是用 ${esc(providers.join('、'))} 登入的，沒有密碼可以改。</div>`}
+ <hr style="border:0;border-top:1px solid var(--line);margin:18px 0">
+ <button class="btn red" style="width:100%" onclick="firebaseSignOut()">登出這個帳號</button>`)
+}
+async function changePassword(){
+ let oldPass=document.getElementById('pwOld').value,newPass=document.getElementById('pwNew').value;
+ let msg=document.getElementById('pwMsg');
+ if(!oldPass||!newPass){msg.textContent='請輸入目前密碼和新密碼';return}
+ if(newPass.length<6){msg.textContent='新密碼至少要 6 碼';return}
+ try{
+  await fb.reauthenticate(fbUser.email,oldPass);
+  await fb.changePassword(newPass);
+  msg.style.color='var(--green)';msg.textContent='密碼已更新';
+  document.getElementById('pwOld').value='';document.getElementById('pwNew').value=''
+ }catch(e){msg.style.color='var(--red)';msg.textContent=friendlyFbError(e)}
+}
+async function firebaseForgotPassword(){
+ let email=(document.getElementById('fbEmail')?.value||'').trim();
+ let m=document.getElementById('fbAuthMsg');
+ if(!email){if(m)m.textContent='請先輸入 Email';return}
+ try{await fb.sendPasswordReset(email);if(m){m.style.color='var(--green)';m.textContent='已寄出密碼重設信，去信箱收信'}}
+ catch(e){if(m){m.style.color='var(--red)';m.textContent=friendlyFbError(e)}}
+}
 function loadImageSafe(src){
  return new Promise((resolve,reject)=>{
   if(!src){reject(new Error('no src'));return}
@@ -1255,6 +1413,8 @@ function friendlyFbError(e){
  if(code.includes('invalid-credential')||code.includes('wrong-password')||code.includes('user-not-found'))return 'Email 或密碼不正確';
  if(code.includes('invalid-email'))return 'Email 格式不正確';
  if(code.includes('weak-password'))return '密碼太簡單，至少要 6 碼';
+ if(code.includes('popup-closed-by-user')||code.includes('cancelled-popup-request'))return '登入視窗被關掉了，再試一次';
+ if(code.includes('popup-blocked'))return '瀏覽器擋掉了登入彈窗，請允許彈出視窗後再試一次';
  if(code.includes('network'))return '網路連線有問題，請稍後再試';
  return '發生錯誤，請稍後再試（'+(code||'未知')+'）'
 }
@@ -1273,13 +1433,45 @@ async function firebaseSignUp(){
  try{await fb.signUp(email,pass);toast('註冊成功，已自動登入');openShare()}
  catch(e){let m=document.getElementById('fbAuthMsg');if(m)m.textContent=friendlyFbError(e)}
 }
+async function firebaseSignInGoogle(){
+ if(!fb)return;
+ try{await fb.signInGoogle();toast('登入成功');openShare()}
+ catch(e){let m=document.getElementById('fbAuthMsg');if(m)m.textContent=friendlyFbError(e)}
+}
+async function firebaseSendEmailLink(){
+ if(!fb)return;
+ let email=(document.getElementById('fbEmail')?.value||'').trim();
+ if(!email){let m=document.getElementById('fbAuthMsg');if(m)m.textContent='請先輸入 Email';return}
+ try{
+  await fb.sendEmailLink(email);
+  localStorage.setItem('emailForSignIn',email);
+  let m=document.getElementById('fbAuthMsg');if(m){m.style.color='var(--green)';m.textContent='登入連結已經寄到你的信箱，去信箱點一下連結就會自動登入（同一個瀏覽器開啟最順利）'}
+ }catch(e){let m=document.getElementById('fbAuthMsg');if(m){m.style.color='var(--red)';m.textContent=friendlyFbError(e)}}
+}
 async function firebaseSignOut(){
  if(!fb)return;
  await fb.signOutUser();toast('已登出，改回本機保存');openShare()
 }
+async function completeEmailLinkIfPresent(){
+ try{
+  if(!fb.isEmailLink(window.location.href))return;
+  let email=localStorage.getItem('emailForSignIn');
+  if(!email){
+   email=(prompt('請輸入收到登入連結的那個 Email，用來完成登入：')||'').trim();
+   if(!email)return
+  }
+  await fb.completeEmailLinkSignIn(email,window.location.href);
+  localStorage.removeItem('emailForSignIn');
+  let url=new URL(window.location.href);
+  url.search='';
+  history.replaceState({},document.title,url.toString());
+  toast('登入成功')
+ }catch(e){toast('登入連結失效或已使用過，請重新寄一次')}
+}
 async function initFirebase(){
  fb=await waitFirebaseBridge();
  if(!fb)return;
+ await completeEmailLinkIfPresent();
  fb.onAuthStateChanged(async(user)=>{
   fbUser=user;
   if(user){
