@@ -74,6 +74,9 @@ label{font-size:var(--fs-sm);font-weight:800;color:var(--muted);display:block;ma
 .searchbar{display:flex;gap:8px}.searchbar input{flex:1}.searchbar .btn{white-space:nowrap}
 .result{display:flex;gap:12px;padding:12px 0;border-bottom:1px solid var(--line)}.result:last-child{border-bottom:0}
 .cover{width:62px;height:86px;object-fit:cover;border-radius:var(--radius-xs);background:var(--line);flex:none;box-shadow:var(--shadow-sm)}.cover.big{width:90px;height:126px}
+.cover-ph{background:linear-gradient(135deg,var(--accent2),var(--card));color:var(--accent);display:flex;align-items:center;justify-content:center;font-weight:900;font-size:20px}
+.cover.big.cover-ph{font-size:32px}
+.shelfcard .cwrap .cover-ph{position:absolute;inset:0;font-size:16px;border-radius:0}
 .meta{min-width:0;flex:1}.title{font-weight:900;line-height:1.35}
 .muted{color:var(--muted);font-size:var(--fs-sm);line-height:1.5}
 .tag{display:inline-block;background:var(--line);color:var(--text);border-radius:var(--radius-pill);padding:4px 9px;font-size:var(--fs-xs);font-weight:700;margin:3px 3px 0 0}
@@ -91,7 +94,7 @@ label{font-size:var(--fs-sm);font-weight:800;color:var(--muted);display:block;ma
 .shelfcard:hover{box-shadow:var(--shadow-md);transform:translateY(-2px)}
 .shelfcard:active{transform:scale(.97);box-shadow:var(--shadow-sm)}
 .shelfcard .cwrap{position:relative;width:100%;aspect-ratio:3/4;background:var(--accent2)}
-.shelfcard .cwrap img{width:100%;height:100%;object-fit:cover;display:block}
+.shelfcard .cwrap .cwrap-img{width:100%;height:100%;object-fit:cover;display:block}
 .shelfcard .pctdot{position:absolute;right:6px;bottom:6px;background:rgba(17,15,12,.68);color:#fff;font-size:11px;font-weight:800;padding:2px 7px;border-radius:var(--radius-pill)}
 .shelfcard .info{padding:9px 10px 11px}
 .shelfcard .title{font-size:var(--fs-sm);font-weight:800;line-height:1.3;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;min-height:2.6em}
@@ -102,6 +105,9 @@ label{font-size:var(--fs-sm);font-weight:800;color:var(--muted);display:block;ma
 @keyframes levelPop{0%{transform:scale(1)}35%{transform:scale(1.22) rotate(-2deg)}60%{transform:scale(.94) rotate(1deg)}100%{transform:scale(1) rotate(0)}}
 .levelbadge.pop{animation:levelPop .7s var(--ease)}
 .levelbadge .emoji{font-size:20px;width:34px;height:34px;display:inline-flex;align-items:center;justify-content:center;background:rgba(255,255,255,.22);border-radius:50%}
+.level-progress{height:6px;background:rgba(255,255,255,.24);border-radius:var(--radius-pill);overflow:hidden;margin-top:12px;max-width:320px}
+.level-progress-bar{height:100%;background:#fff;border-radius:var(--radius-pill);transition:width .5s var(--ease)}
+.level-progress-label{font-size:11.5px;color:rgba(255,255,255,.78);margin-top:7px}
 .empty{text-align:center;color:var(--muted);padding:var(--sp-6) var(--sp-3);border:1.5px dashed var(--line);border-radius:var(--radius-md);font-size:var(--fs-sm)}
 .empty::before{content:'';display:block;width:36px;height:36px;margin:0 auto 10px;opacity:.5;background-color:var(--muted);-webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M3 9l2-5h14l2 5'/%3E%3Cpath d='M3 9v9a1 1 0 0 0 1 1h16a1 1 0 0 0 1-1V9'/%3E%3Cpath d='M3 9h18'/%3E%3Cpath d='M9 13a3 3 0 0 0 6 0'/%3E%3C/svg%3E") center/contain no-repeat;mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M3 9l2-5h14l2 5'/%3E%3Cpath d='M3 9v9a1 1 0 0 0 1 1h16a1 1 0 0 0 1-1V9'/%3E%3Cpath d='M3 9h18'/%3E%3Cpath d='M9 13a3 3 0 0 0 6 0'/%3E%3C/svg%3E") center/contain no-repeat}
 .list{display:flex;flex-direction:column;gap:10px}
@@ -140,6 +146,11 @@ label{font-size:var(--fs-sm);font-weight:800;color:var(--muted);display:block;ma
 .toast.show{display:block;animation:fadeIn .2s var(--ease)}
 .switch{display:flex;align-items:center;justify-content:space-between;padding:11px 0;border-bottom:1px solid var(--line)}.switch input{width:auto}
 .notice{font-size:var(--fs-sm);background:var(--accent2);border-radius:var(--radius-sm);padding:12px 14px;color:var(--text);line-height:1.6}
+.chiprow{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px}
+.chip{padding:7px 13px;border-radius:var(--radius-pill);background:var(--card);border:1px solid var(--line);color:var(--text);font-size:12.5px;font-weight:700}
+.chip.active{background:var(--accent);color:#fff;border-color:var(--accent)}
+.shelfcard.batch-selected{outline:3px solid var(--accent);outline-offset:-3px}
+.batch-check{position:absolute;top:6px;left:6px;width:22px;height:22px;border-radius:50%;background:rgba(255,255,255,.92);border:2px solid var(--accent);color:var(--accent);font-weight:900;font-size:13px;display:flex;align-items:center;justify-content:center;z-index:2}
 @media(min-width:700px){.grid{grid-template-columns:repeat(4,1fr)}.sheet{border-radius:var(--radius-lg);margin-bottom:20px}.modal{align-items:center}.formgrid.three{grid-template-columns:repeat(3,1fr)}}
 </style>
 </head>
@@ -155,8 +166,10 @@ label{font-size:var(--fs-sm);font-weight:800;color:var(--muted);display:block;ma
 <main>
 <section id="home" class="page active">
   <div class="hero">
-    <h1>每一件收藏，都值得被好好記住</h1><p>書籍、專輯周邊、IP 公仔娃娃⋯依類型分櫃整理，價格、狀態、心得一次掌握。</p>
+    <h1 id="heroTitle">每一件收藏，都值得被好好記住</h1><p id="heroSub">書籍、專輯周邊、IP 公仔娃娃⋯依類型分櫃整理，價格、狀態、心得一次掌握。</p>
     <div class="levelbadge"><span class="emoji" id="hLevelEmoji">📦</span><span id="hLevelText">尚未開始收藏</span></div>
+    <div class="level-progress"><div class="level-progress-bar" id="hLevelBar" style="width:0%"></div></div>
+    <div class="level-progress-label" id="hLevelNext"></div>
   </div>
   <div class="grid">
     <div class="stat"><b id="sBooks">0</b><span>已收藏</span></div>
@@ -172,6 +185,7 @@ label{font-size:var(--fs-sm);font-weight:800;color:var(--muted);display:block;ma
       <button class="btn" onclick="openProfileShareCard()">分享我的收藏</button>
     </div>
   </div>
+  <div class="card"><h2>最近動態</h2><div id="homeRecent"></div></div>
   <div class="card"><div class="row between"><h2>收藏進度</h2><button class="btn small" onclick="go('books')">查看全部</button></div><div id="homeSeries" class="shelfgrid" style="margin-top:10px"></div></div>
 </section>
 
@@ -179,18 +193,36 @@ label{font-size:var(--fs-sm);font-weight:800;color:var(--muted);display:block;ma
   <div class="row between"><div><h2>我的收藏櫃</h2><div class="muted">依作品分組顯示，點一下查看每一項的價格與狀態。</div></div></div>
   <div class="card">
     <div class="searchbar"><input id="localSearch" placeholder="搜尋書名／作者品牌／ISBN" oninput="onBooksFilterInput()"><button class="btn" onclick="onBooksFilterInput()">搜尋</button></div>
-    <div class="formgrid" style="margin-top:10px">
-      <div><label>類型</label><select id="bookType" onchange="onBooksFilterInput()"><option value="all">全部類型</option><option value="書籍">書籍</option><option value="專輯與周邊">專輯與周邊</option><option value="IP公仔／娃娃">IP公仔／娃娃</option><option value="其他收藏">其他收藏</option></select></div>
-      <div><label>篩選</label><select id="bookFilter" onchange="onBooksFilterInput()"><option value="all">全部</option><option value="owned">已收藏</option><option value="unowned">待入手</option><option value="sell">待出售</option><option value="ongoing">連載中（要追新集）</option><option value="oop">已絕版</option></select></div>
-      <div><label>排序</label><select id="bookSort" onchange="onBooksSortChange()"><option value="default">自訂順序（可手動調整）</option><option value="dateDesc">購入日期：新到舊</option><option value="dateAsc">購入日期：舊到新</option><option value="priceDesc">價格：高到低</option><option value="priceAsc">價格：低到高</option><option value="unownedFirst">未收藏優先</option><option value="ratingDesc">評分：高到低</option></select></div>
+    <label>類型</label>
+    <div class="chiprow" id="bookTypeChips">
+      <button class="chip active" data-val="all" onclick="setBookType('all')">全部類型</button>
+      <button class="chip" data-val="書籍" onclick="setBookType('書籍')">書籍</button>
+      <button class="chip" data-val="專輯與周邊" onclick="setBookType('專輯與周邊')">專輯與周邊</button>
+      <button class="chip" data-val="IP公仔／娃娃" onclick="setBookType('IP公仔／娃娃')">IP公仔／娃娃</button>
+      <button class="chip" data-val="其他收藏" onclick="setBookType('其他收藏')">其他收藏</button>
     </div>
-    <div class="row" style="margin-top:10px"><button class="btn small" id="reorderBtn" onclick="toggleReorderMode()">調整順序</button></div>
+    <label>篩選</label>
+    <div class="chiprow" id="bookFilterChips">
+      <button class="chip active" data-val="all" onclick="setBookFilter('all')">全部</button>
+      <button class="chip" data-val="owned" onclick="setBookFilter('owned')">已收藏</button>
+      <button class="chip" data-val="unowned" onclick="setBookFilter('unowned')">待入手</button>
+      <button class="chip" data-val="sell" onclick="setBookFilter('sell')">待出售</button>
+      <button class="chip" data-val="ongoing" onclick="setBookFilter('ongoing')">連載中</button>
+      <button class="chip" data-val="oop" onclick="setBookFilter('oop')">已絕版</button>
+    </div>
+    <div class="formgrid" style="margin-top:6px">
+      <div class="full"><label>排序</label><select id="bookSort" onchange="onBooksSortChange()"><option value="default">自訂順序（可手動調整）</option><option value="dateDesc">購入日期：新到舊</option><option value="dateAsc">購入日期：舊到新</option><option value="priceDesc">價格：高到低</option><option value="priceAsc">價格：低到高</option><option value="unownedFirst">未收藏優先</option><option value="ratingDesc">評分：高到低</option></select></div>
+    </div>
+    <div class="row wrap" style="margin-top:10px"><button class="btn small" id="reorderBtn" onclick="toggleReorderMode()">調整順序</button><button class="btn small" id="seriesBatchBtn" onclick="toggleSeriesBatchMode()">批次編輯</button></div>
   </div>
+  <div id="batchBar"></div>
   <div id="bookList" class="shelfgrid"></div>
 </section>
 
 <section id="want" class="page">
-  <div class="card"><h2>待入手清單</h2><div class="muted">把還沒收齊的項目留在這裡，到手後一鍵標記為已購入。</div><div id="wantBudget" class="muted" style="margin-top:6px;font-weight:800"></div></div>
+  <div class="card"><h2>待入手清單</h2><div class="muted">把還沒收齊的項目留在這裡，到手後一鍵標記為已購入。</div><div id="wantBudget" class="muted" style="margin-top:6px;font-weight:800"></div>
+  <div class="row wrap" style="margin-top:10px"><button class="btn small purple" onclick="openWantShareCard()">🔍 徵求圖卡</button><button class="btn small" onclick="openWantShareText()">📋 文字版</button></div>
+  </div>
   <div id="wantList" class="list"></div>
 </section>
 
@@ -231,6 +263,7 @@ label{font-size:var(--fs-sm);font-weight:800;color:var(--muted);display:block;ma
 import{initializeApp}from"https://www.gstatic.com/firebasejs/10.13.0/firebase-app.js";
 import{getAuth,onAuthStateChanged,createUserWithEmailAndPassword,signInWithEmailAndPassword,signOut,GoogleAuthProvider,signInWithPopup,sendSignInLinkToEmail,isSignInWithEmailLink,signInWithEmailLink,updateProfile,sendPasswordResetEmail,EmailAuthProvider,reauthenticateWithCredential,updatePassword}from"https://www.gstatic.com/firebasejs/10.13.0/firebase-auth.js";
 import{getFirestore,doc,getDoc,setDoc}from"https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore.js";
+import{getStorage,ref,uploadString,getDownloadURL}from"https://www.gstatic.com/firebasejs/10.13.0/firebase-storage.js";
 
 const firebaseConfig={
   apiKey:"AIzaSyCzc3_2HWF1wx86_cuXy4Vj5O3Lo4J-nK4",
@@ -246,6 +279,7 @@ try{
     const app=initializeApp(firebaseConfig);
     const auth=getAuth(app);
     const fdb=getFirestore(app);
+    const fstorage=getStorage(app);
     window.__firebase={
       onAuthStateChanged:(cb)=>onAuthStateChanged(auth,cb),
       signUp:(email,pass)=>createUserWithEmailAndPassword(auth,email,pass),
@@ -262,7 +296,13 @@ try{
       changePassword:(newPass)=>updatePassword(auth.currentUser,newPass),
       docRef:(uid)=>doc(fdb,'users',uid,'library','main'),
       getDoc:(ref)=>getDoc(ref),
-      setDoc:(ref,data)=>setDoc(ref,data)
+      setDoc:(ref,data)=>setDoc(ref,data),
+      uploadCoverImage:async(uid,dataUrl)=>{
+        let path='users/'+uid+'/covers/'+Date.now()+'_'+Math.random().toString(36).slice(2)+'.jpg';
+        let sref=ref(fstorage,path);
+        await uploadString(sref,dataUrl,'data_url');
+        return await getDownloadURL(sref)
+      }
     };
   } else {
     window.__firebase=null;
@@ -362,6 +402,12 @@ function rateSeriesQuick(sid,n){
 }
 function save(){localStorage.setItem(KEY,JSON.stringify(db));renderAll();scheduleCloudSave()}
 function esc(s=''){return String(s).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]))}
+function coverHtml(src,title,cls,style){
+ let ph=esc((String(title||'?').trim().charAt(0))||'?');
+ let styleAttr=style?` style="${esc(style)}"`:'';
+ if(!src)return `<span class="${cls||''} cover-ph"${styleAttr}>${ph}</span>`;
+ return `<img class="${cls||''}" src="${esc(src)}" data-ph="${ph}"${styleAttr} onerror="var s=document.createElement('span');s.className=this.className+' cover-ph';s.textContent=this.dataset.ph;s.setAttribute('style',this.getAttribute('style')||'');this.replaceWith(s)">`
+}
 function langSelectHtml(id,current){
  let known=['繁體中文','簡體中文','日文','英文','韓文'];
  let val=current&&known.includes(current)?current:(current?'其他':'繁體中文');
@@ -384,10 +430,10 @@ const CATEGORY_PRESETS={
  '其他收藏':[]
 };
 const TYPE_FORM_CONFIG={
- '書籍':{authorLabel:'作者',authorField:'author',showItemKind:false,showISBN:true,showPages:true,showStatus:true,publisherLabel:'出版社',dateLabel:'出版日'},
- '專輯與周邊':{authorLabel:'歌手／團體',authorField:'artist',showItemKind:true,itemKindLabel:'周邊品項',itemKindPlaceholder:'例如：手燈、毛巾、小卡',itemKindField:'merch',showISBN:false,showPages:false,showStatus:false,publisherLabel:'發行／廠商',dateLabel:'發售日'},
- 'IP公仔／娃娃':{authorLabel:'IP名稱',authorField:'ip',showCharacter:true,characterLabel:'角色／人物',showItemKind:true,itemKindLabel:'系列／波次',itemKindPlaceholder:'例如：麻糬系列、機場限定',itemKindField:'wave',showISBN:false,showPages:false,showStatus:false,publisherLabel:'廠商',dateLabel:'發售日'},
- '其他收藏':{authorLabel:'作者／品牌',authorField:'other',showItemKind:true,itemKindLabel:'項目類型',itemKindPlaceholder:'',itemKindField:'itemtype',showISBN:false,showPages:false,showStatus:true,publisherLabel:'廠商',dateLabel:'日期'}
+ '書籍':{authorLabel:'作者',authorField:'author',showItemKind:false,showISBN:true,showStatus:true,publisherLabel:'出版社',dateLabel:'出版日',volumeLabel:'卷次／單集'},
+ '專輯與周邊':{authorLabel:'歌手／團體',authorField:'artist',showItemKind:true,itemKindLabel:'周邊品項',itemKindPlaceholder:'例如：手燈、毛巾、小卡',itemKindField:'merch',showISBN:false,showStatus:false,publisherLabel:'發行／廠商',dateLabel:'發售日',volumeLabel:'品項名稱／編號'},
+ 'IP公仔／娃娃':{authorLabel:'IP名稱',authorField:'ip',showCharacter:true,characterLabel:'角色／人物',showItemKind:true,itemKindLabel:'系列／波次',itemKindPlaceholder:'例如：麻糬系列、機場限定',itemKindField:'wave',showISBN:false,showStatus:false,publisherLabel:'廠商',dateLabel:'發售日',volumeLabel:'版本／編號'},
+ '其他收藏':{authorLabel:'作者／品牌',authorField:'other',showItemKind:true,itemKindLabel:'項目類型',itemKindPlaceholder:'',itemKindField:'itemtype',showISBN:false,showStatus:true,publisherLabel:'廠商',dateLabel:'日期',volumeLabel:'項目名稱／編號'}
 };
 function updateFormForType(prefix,type){
  let cfg=TYPE_FORM_CONFIG[type]||TYPE_FORM_CONFIG['書籍'];
@@ -405,11 +451,11 @@ function updateFormForType(prefix,type){
   let inp=document.getElementById(prefix+'ItemKind');if(inp)inp.placeholder=cfg.itemKindPlaceholder||'';
   let sc=document.getElementById(prefix+'ItemKindSuggest');if(sc)sc.innerHTML=suggestChipsHtml(type,cfg.itemKindField,prefix+'ItemKind',false)
  }
- setShow('ISBN13Wrap',cfg.showISBN);setShow('ISBN10Wrap',cfg.showISBN);
- setShow('PagesWrap',cfg.showPages);
+ setShow('ISBN13Wrap',cfg.showISBN);
  setShow('StatusWrap',cfg.showStatus);
  setLabel('PublisherWrap',cfg.publisherLabel);
  setLabel('DateWrap',cfg.dateLabel);
+ let vl=document.getElementById(prefix+'VolLabel');if(vl)vl.textContent=`第一批要建立的${cfg.volumeLabel||'項目／集數'}（可輸入範圍，如 1-12，或直接輸入名稱）`;
  let cw=document.getElementById(prefix+'CatWrap');if(cw)cw.innerHTML=categorySelectHtml(prefix+'Cat',type,'');
  let asug=document.getElementById(prefix+'AuthorSuggest');if(asug)asug.innerHTML=suggestChipsHtml(type,cfg.authorField,prefix+'Author',true)
 }
@@ -482,8 +528,23 @@ function resizeImageFile(file,maxW=500,quality=0.82){
 }
 async function handleCoverFile(inputEl,targetId){
  let f=inputEl.files&&inputEl.files[0];if(!f)return;
- try{let dataUrl=await resizeImageFile(f);document.getElementById(targetId).value=dataUrl;toast('封面已更新（來自相簿）')}
- catch(e){toast('圖片讀取失敗，請改用網址')}
+ try{
+  let dataUrl=await resizeImageFile(f);
+  if(fb && fbUser){
+   toast('圖片上傳到雲端中…');
+   try{
+    let url=await fb.uploadCoverImage(fbUser.uid,dataUrl);
+    document.getElementById(targetId).value=url;
+    toast('封面已上傳到雲端空間')
+   }catch(upErr){
+    document.getElementById(targetId).value=dataUrl;
+    toast('雲端上傳失敗，先存在這台裝置')
+   }
+  } else {
+   document.getElementById(targetId).value=dataUrl;
+   toast('封面已更新（來自相簿）')
+  }
+ }catch(e){toast('圖片讀取失敗，請改用網址')}
  finally{inputEl.value=''}
 }
 function toast(s){let t=document.getElementById('toast');t.textContent=s;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),1800)}
@@ -503,31 +564,77 @@ function confirmCloseModal(){
 function showModal(html){document.getElementById('modalBody').innerHTML=html;document.getElementById('modal').classList.add('show')}
 
 function renderAll(){renderHome();renderBooks();renderWant();renderStats()}
+function greetingWord(){
+ let h=new Date().getHours();
+ return h<5?'夜深了':h<11?'早安':h<14?'午安':h<18?'下午好':'晚安'
+}
 function renderHome(){
  let vols=db.series.flatMap(s=>s.volumes||[]), owned=vols.filter(v=>v.owned), spend=owned.reduce((a,v)=>a+Number(v.purchasePrice||0),0);
  document.getElementById('sBooks').textContent=owned.length;
  document.getElementById('sSeries').textContent=db.series.length;
  document.getElementById('sSpend').textContent=money(spend);
  document.getElementById('sWant').textContent=vols.filter(v=>!v.owned).length;
+ let heroSub=document.getElementById('heroSub');
+ if(heroSub)heroSub.textContent=owned.length?`${greetingWord()}，你已經收藏了 ${owned.length} 件寶物了`:`${greetingWord()}，開始記錄你的第一件收藏吧`;
  let lv=getCollectorLevel(owned.length);
  document.getElementById('hLevelEmoji').textContent=lv.emoji;
  document.getElementById('hLevelText').textContent=lv.level?`Lv.${lv.level}　${lv.title}`:lv.title;
+ let tierSpan=Math.max(1,(lv.max||0)-(lv.min||0)+1);
+ let tierProgress=lv.level>0?Math.min(100,Math.max(0,(owned.length-lv.min+1)/tierSpan*100)):0;
+ let bar=document.getElementById('hLevelBar');if(bar)bar.style.width=tierProgress+'%';
+ let nextLabel=document.getElementById('hLevelNext');
+ if(nextLabel)nextLabel.textContent=lv.level===0?'收藏第一件，解鎖你的第一個等級':(lv.next!=null?`再收藏 ${Math.max(0,lv.next-owned.length)} 件就能升級`:'已經是最高等級了！');
  if(lv.level>0 && lv.level>(db.settings.lastSeenLevel||0)){
   db.settings.lastSeenLevel=lv.level;
   localStorage.setItem(KEY,JSON.stringify(db));
   scheduleCloudSave();
   celebrateLevelUp(lv)
  }
+ let recent=[];
+ db.series.forEach(s=>{(s.volumes||[]).forEach(v=>{if(v.owned && v.purchaseDate)recent.push({title:s.title,vol:v.volumeNo,date:v.purchaseDate,sid:s.id,cover:v.cover||s.cover})})});
+ recent.sort((a,b)=>b.date.localeCompare(a.date));
+ recent=recent.slice(0,5);
+ document.getElementById('homeRecent').innerHTML=recent.length?recent.map(it=>`<div class="row" style="padding:8px 0;border-bottom:1px solid var(--line);cursor:pointer" onclick="openSeries('${it.sid}')">${coverHtml(it.cover,it.title,'cover','width:36px;height:50px')}<div class="meta"><div class="title" style="font-size:13px">${esc(it.title)}${it.vol?` · ${esc(it.vol)}`:''}</div><div class="muted">${esc(it.date)}</div></div></div>`).join(''):'<div class="empty">還沒有購入紀錄，新增第一項收藏開始追蹤吧。</div>';
  let preview=db.series.slice(0,8);
  document.getElementById('homeSeries').innerHTML=preview.length?preview.map(s=>{
   let o=(s.volumes||[]).filter(v=>v.owned).length,total=(s.volumes||[]).length,pct=total?Math.round(o/total*100):0;
-  return `<div class="shelfcard" onclick="openSeries('${s.id}')"><div class="cwrap"><img src="${esc(s.cover||'')}" onerror="this.style.visibility='hidden'"><span class="pctdot">${pct}%</span></div><div class="info"><div class="title">${esc(s.title)}</div></div></div>`
+  return `<div class="shelfcard" onclick="openSeries('${s.id}')"><div class="cwrap">${coverHtml(s.cover,s.title,'cwrap-img')}<span class="pctdot">${pct}%</span></div><div class="info"><div class="title">${esc(s.title)}</div></div></div>`
  }).join(''):'<div class="empty">還沒有收藏。按底部中央「＋ 新增」開始吧。</div>'
 }
-let reorderMode=false;
+let reorderMode=false,curBookType='all',curBookFilter='all',seriesBatchMode=false,seriesBatchSelected=new Set();
+function toggleSeriesBatchMode(){seriesBatchMode=!seriesBatchMode;seriesBatchSelected.clear();if(seriesBatchMode)reorderMode=false;renderBooks()}
+function toggleSeriesBatchSelect(sid){if(seriesBatchSelected.has(sid))seriesBatchSelected.delete(sid);else seriesBatchSelected.add(sid);renderBooks()}
+function openSeriesBatchActions(){
+ if(!seriesBatchSelected.size){toast('請先選取至少一項');return}
+ showModal(`<h2>批次編輯（已選 ${seriesBatchSelected.size} 項）</h2>
+ <h3>連載狀態</h3>
+ <div class="row wrap" style="margin-bottom:16px"><button class="btn small" onclick="batchSetStatus('連載中')">設為連載中</button><button class="btn small" onclick="batchSetStatus('已完結')">設為已完結</button><button class="btn small" onclick="batchSetStatus('未知')">設為未知</button></div>
+ <h3>個人評分</h3>
+ <div class="starpick" style="font-size:26px;margin-bottom:16px">${Array.from({length:5},(_,i)=>`<span onclick="batchSetRating(${i+1})">☆</span>`).join('')}</div>
+ <hr style="border:0;border-top:1px solid var(--line);margin:16px 0">
+ <button class="btn red" style="width:100%" onclick="batchDeleteConfirm()">刪除這 ${seriesBatchSelected.size} 項作品</button>`)
+}
+function batchSetStatus(status){
+ db.series.forEach(s=>{if(seriesBatchSelected.has(s.id))s.status=status});
+ save();closeModal();toast(`已將 ${seriesBatchSelected.size} 項設為「${status}」`);
+ seriesBatchMode=false;seriesBatchSelected.clear();renderBooks()
+}
+function batchSetRating(r){
+ db.series.forEach(s=>{if(seriesBatchSelected.has(s.id))s.rating=r});
+ save();closeModal();toast(`已將 ${seriesBatchSelected.size} 項評分設為 ${r} 星`);
+ seriesBatchMode=false;seriesBatchSelected.clear();renderBooks()
+}
+function batchDeleteConfirm(){
+ if(!confirm(`確定要刪除這 ${seriesBatchSelected.size} 項作品嗎？此動作無法復原。`))return;
+ db.series=db.series.filter(s=>!seriesBatchSelected.has(s.id));
+ save();closeModal();toast('已刪除');
+ seriesBatchMode=false;seriesBatchSelected.clear();renderBooks()
+}
+function setBookType(v){curBookType=v;document.querySelectorAll('#bookTypeChips .chip').forEach(c=>c.classList.toggle('active',c.dataset.val===v));onBooksFilterInput()}
+function setBookFilter(v){curBookFilter=v;document.querySelectorAll('#bookFilterChips .chip').forEach(c=>c.classList.toggle('active',c.dataset.val===v));onBooksFilterInput()}
 function onBooksFilterInput(){reorderMode=false;renderBooks()}
 function onBooksSortChange(){if(document.getElementById('bookSort').value!=='default')reorderMode=false;renderBooks()}
-function toggleReorderMode(){reorderMode=!reorderMode;if(reorderMode)document.getElementById('bookSort').value='default';renderBooks()}
+function toggleReorderMode(){reorderMode=!reorderMode;if(reorderMode){document.getElementById('bookSort').value='default';seriesBatchMode=false;seriesBatchSelected.clear()}renderBooks()}
 let dragState=null;
 function startDrag(e,sid){
  e.preventDefault();
@@ -569,18 +676,18 @@ function renderBooks(){
  let list=document.getElementById('bookList');
  if(reorderMode){
   list.className='list';
-  list.innerHTML=db.series.length?db.series.map(s=>`<div class="bookrow" id="row-${s.id}" data-id="${s.id}"><span class="draghandle" onpointerdown="startDrag(event,'${s.id}')">⠿</span><img class="cover" src="${esc(s.cover||'')}" onerror="this.style.visibility='hidden'"><div class="meta"><div class="title">${esc(s.title)}</div><div class="muted">${esc(s.type||'書籍')}</div></div></div>`).join(''):'<div class="empty">還沒有作品可以排序。</div>';
+  list.innerHTML=db.series.length?db.series.map(s=>`<div class="bookrow" id="row-${s.id}" data-id="${s.id}"><span class="draghandle" onpointerdown="startDrag(event,'${s.id}')">⠿</span>${coverHtml(s.cover,s.title,'cover')}<div class="meta"><div class="title">${esc(s.title)}</div><div class="muted">${esc(s.type||'書籍')}</div></div></div>`).join(''):'<div class="empty">還沒有作品可以排序。</div>';
   return
  }
  list.className='shelfgrid';
  let q=(document.getElementById('localSearch')?.value||'').toLowerCase();
- let typeFilter=document.getElementById('bookType')?.value||'all';
- let filter=document.getElementById('bookFilter')?.value||'all';
+ let typeFilter=curBookType;
+ let filter=curBookFilter;
  let sortBy=document.getElementById('bookSort')?.value||'default';
  let rows=db.series.filter(s=>{
   if(typeFilter!=='all' && (s.type||'書籍')!==typeFilter)return false;
   if(q){
-   let hitSeries=[s.title,...(s.authors||[])].join(' ').toLowerCase().includes(q);
+   let hitSeries=[s.title,s.character||'',...(s.authors||[])].join(' ').toLowerCase().includes(q);
    let hitVol=(s.volumes||[]).some(v=>[v.title,v.isbn13,v.isbn10].join(' ').toLowerCase().includes(q));
    if(!hitSeries && !hitVol)return false
   }
@@ -600,10 +707,16 @@ function renderBooks(){
  else if(sortBy==='priceAsc')rows.sort((a,b)=>spendOf(a)-spendOf(b));
  else if(sortBy==='unownedFirst')rows.sort((a,b)=>ratioOf(a)-ratioOf(b));
  else if(sortBy==='ratingDesc')rows.sort((a,b)=>(b.rating||0)-(a.rating||0));
+ let bbtn=document.getElementById('seriesBatchBtn');
+ if(bbtn){bbtn.textContent=seriesBatchMode?'結束批次':'批次編輯';bbtn.className='btn small'+(seriesBatchMode?' purple':'')}
+ let bar=document.getElementById('batchBar');
+ if(bar)bar.innerHTML=seriesBatchMode?`<div class="card" style="display:flex;align-items:center;justify-content:space-between;padding:12px 14px;gap:10px"><span style="font-weight:800">已選 ${seriesBatchSelected.size} 項</span><div class="row wrap"><button class="btn small purple" onclick="openSeriesBatchActions()">套用動作</button><button class="btn small" onclick="toggleSeriesBatchMode()">取消</button></div></div>`:'';
  list.innerHTML=rows.length?rows.map(s=>{
   let total=(s.volumes||[]).length,owned=(s.volumes||[]).filter(v=>v.owned).length,pct=total?Math.round(owned/total*100):0;
   let ratingBadge=s.rating?`<span class="pctdot" style="left:6px;right:auto">★${s.rating}</span>`:'';
-  return `<div class="shelfcard" onclick="openSeries('${s.id}')"><div class="cwrap"><img src="${esc(s.cover||'')}" onerror="this.style.visibility='hidden'"><span class="pctdot">${pct}%</span>${ratingBadge}</div><div class="info"><div class="title">${esc(s.title)}</div></div></div>`
+  let selected=seriesBatchSelected.has(s.id);
+  let clickAction=seriesBatchMode?`toggleSeriesBatchSelect('${s.id}')`:`openSeries('${s.id}')`;
+  return `<div class="shelfcard ${selected?'batch-selected':''}" onclick="${clickAction}"><div class="cwrap">${coverHtml(s.cover,s.title,'cwrap-img')}<span class="pctdot">${pct}%</span>${ratingBadge}${seriesBatchMode?`<span class="batch-check">${selected?'✓':''}</span>`:''}</div><div class="info"><div class="title">${esc(s.title)}</div></div></div>`
  }).join(''):'<div class="empty">找不到符合的作品。</div>'
 }
 function renderWant(){
@@ -612,13 +725,13 @@ function renderWant(){
  rows.sort((a,b)=>(order[a.v.priority||'中']??1)-(order[b.v.priority||'中']??1));
  let budget=rows.reduce((a,{v})=>a+Number(v.listPrice||0),0);
  document.getElementById('wantBudget').textContent=rows.length?`待購預算合計（依參考價）：${money(budget)}`:'';
- document.getElementById('wantList').innerHTML=rows.length?rows.map(({s,v})=>`<div class="card"><div class="row"><img class="cover" src="${esc(v.cover||s.cover||'')}" onerror="this.style.visibility='hidden'"><div class="meta"><div class="title">${esc(s.title)} ${v.volumeNo?`· 第 ${esc(v.volumeNo)} 集`:''}</div><div class="muted">${esc((s.authors||[]).join('、'))} · ISBN ${esc(v.isbn13||v.isbn10||'—')}</div><div class="muted">參考價：${money(v.listPrice)}　實際購入價：尚未購入</div>${v.notes?`<div class="muted">備註：${esc(v.notes)}</div>`:''}<span class="tag ${v.priority==='高'?'purple':''}">優先：${esc(v.priority||'中')}</span></div></div><div class="row" style="margin-top:10px"><button class="btn green small" onclick="buyVolume('${s.id}','${v.id}')">標記已購入</button><button class="btn small" onclick="openSeries('${s.id}')">查看系列</button></div></div>`).join(''):'<div class="empty">目前沒有待入手的項目。</div>'
+ document.getElementById('wantList').innerHTML=rows.length?rows.map(({s,v})=>`<div class="bookrow" style="cursor:pointer" onclick="openSeries('${s.id}')">${coverHtml(v.cover||s.cover,s.title,'cover')}<div class="meta"><div class="title">${esc(s.title)}${v.volumeNo?` · ${esc(v.volumeNo)}`:''}</div><div class="muted">${money(v.listPrice)}${v.priority==='高'?' · <b style="color:var(--accent)">優先</b>':''}</div></div><button class="btn green small" onclick="event.stopPropagation();buyVolume('${s.id}','${v.id}')">已購入</button></div>`).join(''):'<div class="empty">目前沒有待入手的項目。</div>'
 }
 function renderStats(){
  let vols=db.series.flatMap(s=>s.volumes||[]),owned=vols.filter(v=>v.owned);
  document.getElementById('statsSummary').innerHTML=`<div class="grid"><div class="stat"><b>${owned.length}</b><span>已收藏本數</span></div><div class="stat"><b>${db.series.length}</b><span>收藏系列</span></div><div class="stat"><b>${new Set(db.series.flatMap(s=>s.authors||[])).size}</b><span>作者</span></div><div class="stat"><b>${money(owned.reduce((a,v)=>a+Number(v.purchasePrice||0),0))}</b><span>實際花費</span></div></div>`;
  let ranked=db.series.filter(s=>s.rating>0).sort((a,b)=>b.rating-a.rating);
- document.getElementById('rankStats').innerHTML=ranked.length?ranked.map((s,i)=>`<div class="bookrow" onclick="openSeries('${s.id}')"><img class="cover" src="${esc(s.cover||'')}" onerror="this.style.visibility='hidden'"><div class="meta"><div class="title">#${i+1}　${esc(s.title)}</div><div class="muted">${'★'.repeat(s.rating)}${'☆'.repeat(5-s.rating)}</div></div></div>`).join(''):'<div class="empty">還沒有評分，到作品頁點星星打分數吧。</div>';
+ document.getElementById('rankStats').innerHTML=ranked.length?ranked.map((s,i)=>`<div class="bookrow" onclick="openSeries('${s.id}')">${coverHtml(s.cover,s.title,'cover')}<div class="meta"><div class="title">#${i+1}　${esc(s.title)}</div><div class="muted">${'★'.repeat(s.rating)}${'☆'.repeat(5-s.rating)}</div></div></div>`).join(''):'<div class="empty">還沒有評分，到作品頁點星星打分數吧。</div>';
  let amap={};db.series.forEach(s=>(s.authors||['未填作者']).forEach(a=>{if(!amap[a])amap[a]={books:0,series:0};amap[a].series++;amap[a].books+=(s.volumes||[]).filter(v=>v.owned).length}));
  document.getElementById('authorStats').innerHTML=Object.entries(amap).sort((a,b)=>b[1].books-a[1].books).map(([a,x])=>`<div class="bookrow"><div class="meta"><div class="title">${esc(a)}</div><div class="muted">已收藏 ${x.books} 本 · ${x.series} 個系列</div></div><b>${x.books}</b></div>`).join('')||'<div class="empty">還沒有資料。</div>';
  let cmap={};db.series.forEach(s=>(s.category||'未分類').split(',').forEach(c=>{c=c.trim();cmap[c]=(cmap[c]||0)+(s.volumes||[]).filter(v=>v.owned).length}));
@@ -636,22 +749,20 @@ function openEditor(b={}){
  <div><label>語言</label>${langSelectHtml('fLang',b.language||'')}</div>
  <div><label>分類</label><div id="fCatWrap">${categorySelectHtml('fCat','書籍','')}</div></div>
  <div id="fItemKindWrap" style="display:none"><label>周邊品項</label><input id="fItemKind" placeholder=""><div id="fItemKindSuggest"></div></div>
- <div><label>地區限定（選填）</label><input id="fRegion" placeholder="例如：日本限定、機場限定"></div>
- <div class="full"><label>第一批要建立的項目／集數（可輸入範圍，如 1-12，或直接輸入名稱）</label><input id="fVol" value="1"></div>
+ <div class="full"><label id="fVolLabel">第一批要建立的項目／集數（可輸入範圍，如 1-12，或直接輸入名稱）</label><input id="fVol" value="1"></div>
  <div><label>版本</label>${editionSelectHtml('fEdition','')}</div>
  <div><label>參考／原價</label><input id="fList" type="number" step="0.01" value="${esc(b.listPrice??'')}"></div>
  <div class="full"><label>封面 URL 或從相簿上傳</label><input id="fCover" value="${esc(b.cover||'')}" placeholder="沒有圖片也沒關係，之後可以再補">
  <input type="file" accept="image/*" style="margin-top:8px" onchange="handleCoverFile(this,'fCover')"></div>
  </div>
  <div class="switch"><span>這一集已經到手了</span><input id="fOwned" type="checkbox" checked></div>
- <details style="margin-top:12px"><summary style="cursor:pointer;font-weight:800;color:var(--muted)">更多欄位（出版社、狀態、ISBN、價格細節⋯）</summary>
+ <details style="margin-top:12px"><summary style="cursor:pointer;font-weight:800;color:var(--muted)">更多欄位（出版社、狀態、地區限定、價格細節⋯）</summary>
  <div class="formgrid" style="margin-top:10px">
  <div id="fPublisherWrap"><label>出版社</label><input id="fPublisher" value="${esc(b.publisher||'')}"></div>
  <div id="fStatusWrap"><label>連載狀態</label><select id="fStatus"><option value="未知">未知</option><option value="連載中">連載中（還會繼續出）</option><option value="已完結">已完結（不用再追）</option></select></div>
  <div id="fISBN13Wrap"><label>ISBN-13</label><input id="fISBN13" value="${esc(b.isbn13||'')}"></div>
- <div id="fISBN10Wrap"><label>ISBN-10</label><input id="fISBN10" value="${esc(b.isbn10||'')}"></div>
  <div id="fDateWrap"><label>出版日</label><input id="fDate" value="${esc(b.publishedDate||'')}"></div>
- <div id="fPagesWrap"><label>頁數</label><input id="fPages" type="number" value="${esc(b.pageCount||'')}"></div>
+ <div><label>地區限定（選填）</label><input id="fRegion" placeholder="例如：日本限定、機場限定"></div>
  <div><label>實際購入價</label><input id="fBuy" type="number" step="0.01" value=""></div>
  <div><label>折扣</label><input id="fDiscount" type="number" step="0.01" placeholder="例如 0.8 或 20"></div>
  <div><label>優先順序（想買清單用）</label><select id="fPriority"><option value="中">中</option><option value="高">高</option><option value="低">低</option></select></div>
@@ -666,13 +777,13 @@ function createSeries(b){
  let type=document.getElementById('fType').value;
  let cfg=TYPE_FORM_CONFIG[type]||TYPE_FORM_CONFIG['書籍'];
  let character=(document.getElementById('fCharacter')?.value||'').trim();
- let s={id:uid(),title:document.getElementById('fTitle').value.trim(),type,authors:document.getElementById('fAuthor').value.split(/[,、]/).map(x=>x.trim()).filter(Boolean),character,publisher:document.getElementById('fPublisher').value.trim(),language:readLang('fLang'),category:readCategory('fCat'),status:document.getElementById('fStatus').value,cover:document.getElementById('fCover').value.trim(),pages:document.getElementById('fPages').value,createdAt:new Date().toISOString(),volumes:[]};
+ let s={id:uid(),title:document.getElementById('fTitle').value.trim(),type,authors:document.getElementById('fAuthor').value.split(/[,、]/).map(x=>x.trim()).filter(Boolean),character,publisher:document.getElementById('fPublisher').value.trim(),language:readLang('fLang'),category:readCategory('fCat'),status:document.getElementById('fStatus').value,cover:document.getElementById('fCover').value.trim(),createdAt:new Date().toISOString(),volumes:[]};
  if(!s.title){toast('先幫這筆收藏取個名字吧');return}
  let tokens=parseVolumeTokens(document.getElementById('fVol').value.trim()||'1');
  let owned=document.getElementById('fOwned').checked,sell=document.getElementById('fSell').checked,outOfPrint=document.getElementById('fOOP').checked,today=new Date().toISOString().slice(0,10);
- let listPrice=document.getElementById('fList').value,purchasePrice=document.getElementById('fBuy').value,discount=document.getElementById('fDiscount').value,priority=document.getElementById('fPriority').value,notes=document.getElementById('fNotes').value.trim(),cover=document.getElementById('fCover').value.trim(),language=s.language,edition=readEdition('fEdition'),isbn13=document.getElementById('fISBN13').value.trim(),isbn10=document.getElementById('fISBN10').value.trim(),publishedDate=document.getElementById('fDate').value.trim(),itemKind=(document.getElementById('fItemKind').value||'').trim(),region=(document.getElementById('fRegion').value||'').trim();
+ let listPrice=document.getElementById('fList').value,purchasePrice=document.getElementById('fBuy').value,discount=document.getElementById('fDiscount').value,priority=document.getElementById('fPriority').value,notes=document.getElementById('fNotes').value.trim(),cover=document.getElementById('fCover').value.trim(),language=s.language,edition=readEdition('fEdition'),isbn13=document.getElementById('fISBN13').value.trim(),publishedDate=document.getElementById('fDate').value.trim(),itemKind=(document.getElementById('fItemKind').value||'').trim(),region=(document.getElementById('fRegion').value||'').trim();
  tokens.forEach((no,i)=>{
-  s.volumes.push({id:uid(),volumeNo:no,title:tokens.length===1?(b.subtitle||''):'',isbn13:tokens.length===1?isbn13:'',isbn10:tokens.length===1?isbn10:'',publishedDate:tokens.length===1?publishedDate:'',cover,language,edition,itemKind,region,listPrice,purchasePrice,discount,priority,notes,owned,sell,outOfPrint,purchaseDate:owned?today:''})
+  s.volumes.push({id:uid(),volumeNo:no,title:tokens.length===1?(b.subtitle||''):'',isbn13:tokens.length===1?isbn13:'',publishedDate:tokens.length===1?publishedDate:'',cover,language,edition,itemKind,region,listPrice,purchasePrice,discount,priority,notes,owned,sell,outOfPrint,purchaseDate:owned?today:''})
  });
  s.authors.forEach(a=>bumpSuggest(type,cfg.authorField,a));
  if(itemKind)bumpSuggest(type,cfg.itemKindField,itemKind);
@@ -695,7 +806,7 @@ function openSeries(id){
    ?`<button class="voltile ${v.owned?'owned':''} ${v.sell?'sell':''} ${batchSelected.has(v.id)?'selected':''}"${title} onclick="toggleBatchSelect('${s.id}','${v.id}')">${label}${editionBadge(v)}${oopBadge}</button>`
    :`<button class="voltile ${v.owned?'owned':''} ${v.sell?'sell':''}"${title} onpointerdown="volPointerDown(this,'${s.id}','${v.id}')" onpointerup="volPointerUp(this,'${s.id}','${v.id}')" onpointercancel="volPointerCancel(this)" onpointerleave="volPointerCancel(this)">${label}${editionBadge(v)}${oopBadge}</button>`
  }).join(''):'<div class="empty">還沒有項目，按上面「＋ 新增項目」開始。</div>';
- showModal(`<div class="row"><img class="cover big" src="${esc(s.cover||'')}" onerror="this.style.visibility='hidden'"><div class="meta"><h2>${esc(s.title)}</h2><div class="muted">${esc((s.authors||[]).join('、'))}${s.character?` · 飾演／角色：${esc(s.character)}`:''}</div><div class="muted">${esc(s.publisher||'')} · ${esc(s.language||'')} · ${esc(s.category||'未分類')}</div>
+ showModal(`<div class="row">${coverHtml(s.cover,s.title,'cover big')}<div class="meta"><h2>${esc(s.title)}</h2><div class="muted">${esc((s.authors||[]).join('、'))}${s.character?` · 飾演／角色：${esc(s.character)}`:''}</div><div class="muted">${esc(s.publisher||'')} · ${esc(s.language||'')} · ${esc(s.category||'未分類')}</div>
  <div style="margin-top:6px"><span class="tag">${esc(s.type||'書籍')}</span>${s.character?`<span class="tag purple">${esc(s.character)}</span>`:''}<span class="tag ${statusClass}">${esc(s.status||'未知')}</span><span class="tag">已收藏 ${owned}/${total}</span>${sell?`<span class="tag">${sell} 項待出售</span>`:''}</div>
  <div class="starpick" style="margin-top:6px;font-size:18px">${Array.from({length:5},(_,i)=>`<span onclick="rateSeriesQuick('${s.id}',${i+1})">${i<(s.rating||0)?'★':'☆'}</span>`).join('')}</div></div></div>
  <div class="row wrap" style="margin:15px 0"><button class="btn purple" onclick="addVolume('${s.id}')">＋ 新增項目</button><button class="btn" onclick="editSeriesInfo('${s.id}')">編輯作品資訊</button><button class="btn ${batchMode?'purple':''}" onclick="toggleBatchMode('${s.id}')">${batchMode?'結束批次':'批次修改'}</button><button class="btn" onclick="openShareCard('${s.id}')">分享圖卡</button></div>
@@ -745,7 +856,7 @@ function addVolume(sid){
  showModal(`<h2>新增項目</h2>
 <div class="notice">卷次／單集可以一次輸入多集，例如「1-12」代表第 1 到 12 集，或「1,3,5-8」混合輸入。其餘欄位會套用到每一項，之後可再個別調整。</div>
 <div class="formgrid">
-<div class="full"><label>卷次／單集（可輸入範圍，如 1-12）</label><input id="nvNo" placeholder="例如 2、25.5、特別篇，或 1-12"></div>
+<div class="full"><label>${esc(cfg.volumeLabel||'卷次／單集')}（可輸入範圍，如 1-12）</label><input id="nvNo" placeholder="例如 2、25.5、特別篇，或 1-12"></div>
 ${cfg.showItemKind?`<div class="full"><label>${esc(cfg.itemKindLabel)}</label><input id="nvItemKind" placeholder="${esc(cfg.itemKindPlaceholder||'')}"><div id="nvItemKindSuggest">${suggestChipsHtml(s.type,cfg.itemKindField,'nvItemKind',false)}</div></div>`:''}
 <div><label>地區限定（選填）</label><input id="nvRegion" placeholder="例如：日本限定"></div>
 <div><label>版本</label>${editionSelectHtml('nvEdition',s.volumes&&s.volumes[0]?.edition||'')}</div>
@@ -781,7 +892,7 @@ function editVolume(sid,vid){
  let s=db.series.find(x=>x.id===sid),v=s.volumes.find(x=>x.id===vid);
  let cfg=TYPE_FORM_CONFIG[s.type]||TYPE_FORM_CONFIG['書籍'];
  showModal(`<h2>${esc(v.volumeNo)}</h2><div class="formgrid">
-<div><label>卷次／單集</label><input id="evNo" value="${esc(v.volumeNo||'')}"></div>${cfg.showISBN?`<div><label>ISBN-13</label><input id="evISBN" value="${esc(v.isbn13||'')}"></div>`:''}
+<div><label>${esc(cfg.volumeLabel||'卷次／單集')}</label><input id="evNo" value="${esc(v.volumeNo||'')}"></div>${cfg.showISBN?`<div><label>ISBN-13</label><input id="evISBN" value="${esc(v.isbn13||'')}"></div>`:''}
 <div><label>${esc(cfg.dateLabel)}</label><input id="evDate2" value="${esc(v.publishedDate||'')}"></div><div><label>購入日期</label><input id="evDate" type="date" value="${esc(v.purchaseDate||'')}"></div>
 <div><label>參考／原價</label><input id="evList" type="number" step="0.01" value="${esc(v.listPrice||'')}"></div><div><label>實際購入價</label><input id="evBuy" type="number" step="0.01" value="${esc(v.purchasePrice||'')}"></div>
 <div><label>折扣</label><input id="evDisc" type="number" step="0.01" value="${esc(v.discount||'')}"></div>
@@ -894,7 +1005,7 @@ function openShare(){
 </div>
 <hr style="border:0;border-top:1px solid var(--line);margin:20px 0">
 <h3>備份與還原</h3><div class="muted" style="margin-bottom:10px">不管有沒有開啟雲端同步，都建議偶爾手動備份一份，多一層保障。</div>
-<div class="row wrap"><button class="btn" onclick="exportData()">⬇︎ 匯出備份 JSON</button><button class="btn" onclick="document.getElementById('importFile').click()">⬆︎ 匯入備份 JSON</button></div>`)
+<div class="row wrap"><button class="btn" onclick="exportData()">⬇︎ 匯出備份 JSON</button><button class="btn" onclick="document.getElementById('importFile').click()">⬆︎ 匯入備份 JSON</button><button class="btn" onclick="exportCSV()">⬇︎ 匯出 CSV</button></div>`)
 }
 function chooseTheme(name){db.settings.theme=name;save();applyTheme(name);openShare()}
 function setCustomBase(dark){
@@ -958,8 +1069,13 @@ function openAccountSecurity(){
  if(!fbUser){showModal(`<h2>帳號安全</h2><div class="notice" style="margin-bottom:14px">${syncStatusHtml()}</div>`);return}
  let providers=(fbUser.providerData||[]).map(p=>providerLabel(p.providerId));
  let hasPasswordProvider=providers.includes('Email 密碼');
+ let localImgCount=countLocalImages();
  showModal(`<h2>帳號安全</h2>
  <div class="muted" style="margin-bottom:14px">登入方式：${esc(providers.join('、')||'未知')}</div>
+ <h3>雲端空間</h3>
+ <div class="muted" style="margin-bottom:10px">${localImgCount>0?`目前有 ${localImgCount} 張圖片還存在同步文件裡（不是獨立的雲端相簿），佔掉不少同步空間。搬移之後圖片會變成獨立網址，同步文件會瘦下來很多。`:'目前沒有需要搬移的圖片，圖片都已經是雲端網址了。'}</div>
+ ${localImgCount>0?`<button class="btn purple" style="width:100%;margin-bottom:8px" onclick="migrateImagesToCloud()">📤 搬移 ${localImgCount} 張圖片到雲端空間</button><div id="migrateMsg" class="muted"></div>`:''}
+ <hr style="border:0;border-top:1px solid var(--line);margin:18px 0">
  ${hasPasswordProvider?`<h3>修改密碼</h3>
  <input id="pwOld" type="password" placeholder="目前密碼" style="margin-bottom:6px">
  <input id="pwNew" type="password" placeholder="新密碼（至少 6 碼）" style="margin-bottom:8px">
@@ -967,6 +1083,37 @@ function openAccountSecurity(){
  <div id="pwMsg" class="muted" style="margin-top:6px"></div>`:`<div class="notice">你是用 ${esc(providers.join('、'))} 登入的，沒有密碼可以改。</div>`}
  <hr style="border:0;border-top:1px solid var(--line);margin:18px 0">
  <button class="btn red" style="width:100%" onclick="firebaseSignOut()">登出這個帳號</button>`)
+}
+function countLocalImages(){
+ let n=0;
+ db.series.forEach(s=>{
+  if(s.cover && s.cover.startsWith('data:'))n++;
+  (s.volumes||[]).forEach(v=>{if(v.cover && v.cover.startsWith('data:'))n++})
+ });
+ return n
+}
+async function migrateImagesToCloud(){
+ if(!fb || !fbUser){toast('請先登入才能搬移圖片到雲端');return}
+ let jobs=[];
+ db.series.forEach(s=>{
+  if(s.cover && s.cover.startsWith('data:'))jobs.push({obj:s,key:'cover'});
+  (s.volumes||[]).forEach(v=>{if(v.cover && v.cover.startsWith('data:'))jobs.push({obj:v,key:'cover'})})
+ });
+ if(!jobs.length){toast('沒有需要搬移的圖片');return}
+ let msg=document.getElementById('migrateMsg');
+ let ok=0,fail=0;
+ for(let i=0;i<jobs.length;i++){
+  if(msg)msg.textContent=`搬移中… ${i+1}/${jobs.length}`;
+  try{
+   let url=await fb.uploadCoverImage(fbUser.uid,jobs[i].obj[jobs[i].key]);
+   jobs[i].obj[jobs[i].key]=url;ok++
+  }catch(e){fail++}
+ }
+ localStorage.setItem(KEY,JSON.stringify(db));
+ scheduleCloudSave();
+ renderAll();
+ toast(`搬移完成：成功 ${ok} 張${fail?`，失敗 ${fail} 張`:''}`);
+ openAccountSecurity()
 }
 async function changePassword(){
  let oldPass=document.getElementById('pwOld').value,newPass=document.getElementById('pwNew').value;
@@ -1311,7 +1458,7 @@ async function drawProfileShareCard(canvas,ratio){
 }
 function renderPickListHtml(){
  if(!db.series.length)return '<div class="empty">還沒有收藏可以推薦。</div>'
- return db.series.map(s=>`<label style="display:flex;align-items:center;gap:10px;padding:6px 4px;border-bottom:1px solid var(--line)"><input type="checkbox" style="width:auto" ${profileCardPicks.has(s.id)?'checked':''} onchange="togglePick('${s.id}',this.checked)"><img src="${esc(s.cover||'')}" style="width:32px;height:44px;object-fit:cover;border-radius:6px;background:var(--line)" onerror="this.style.visibility='hidden'"><span style="font-size:13px;font-weight:700;flex:1">${esc(s.title)}</span></label>`).join('')
+ return db.series.map(s=>`<label style="display:flex;align-items:center;gap:10px;padding:6px 4px;border-bottom:1px solid var(--line)"><input type="checkbox" style="width:auto" ${profileCardPicks.has(s.id)?'checked':''} onchange="togglePick('${s.id}',this.checked)">${coverHtml(s.cover,s.title,'',`width:32px;height:44px;border-radius:6px;object-fit:cover;flex:none`)}<span style="font-size:13px;font-weight:700;flex:1">${esc(s.title)}</span></label>`).join('')
 }
 function togglePick(sid,checked){
  if(checked){
@@ -1337,6 +1484,112 @@ async function renderProfileCardPreview(ratio){
  let canvas=document.getElementById('shareCanvas');if(!canvas)return;
  await drawProfileShareCard(canvas,ratio)
 }
+function buildWantGroups(){
+ let groups=[];
+ db.series.forEach(s=>{
+  let wanted=(s.volumes||[]).filter(v=>!v.owned);
+  if(!wanted.length)return;
+  groups.push({id:s.id,title:s.title,type:s.type,cover:s.cover,items:wanted.map(v=>({no:v.volumeNo,priority:v.priority||'中'}))})
+ });
+ return groups
+}
+function buildWantText(){
+ let groups=buildWantGroups();
+ if(!groups.length)return '目前沒有待入手的項目。';
+ let lines=['🔍 徵求清單','（想收藏以下項目，如果你有要割愛或想交換的，歡迎跟我聯繫！）',''];
+ groups.forEach(g=>{
+  let nos=g.items.map(i=>i.no||'—').join('、');
+  let star=g.items.some(i=>i.priority==='高')?'⭐ ':'';
+  lines.push(`${star}${g.title}：${nos}`)
+ });
+ lines.push('','—— 由「我的收藏櫃」整理');
+ return lines.join('\n')
+}
+function openWantShareText(){
+ let text=buildWantText();
+ showModal(`<h2>徵求清單（文字版）</h2><div class="muted" style="margin-bottom:10px">可以直接複製貼到社群、交易社團徵求。</div><textarea id="wantTextArea" readonly style="min-height:240px;font-family:inherit;line-height:1.6">${esc(text)}</textarea><div class="row wrap" style="margin-top:12px"><button class="btn purple" onclick="copyWantText()">複製文字</button><button class="btn" onclick="downloadWantText()">下載 .txt</button></div>`)
+}
+function copyWantText(){
+ let ta=document.getElementById('wantTextArea');if(!ta)return;
+ ta.select();
+ if(navigator.clipboard && navigator.clipboard.writeText){
+  navigator.clipboard.writeText(ta.value).then(()=>toast('已複製到剪貼簿')).catch(()=>{try{document.execCommand('copy');toast('已複製到剪貼簿')}catch(e){toast('複製失敗，請手動選取文字')}})
+ } else {
+  try{document.execCommand('copy');toast('已複製到剪貼簿')}catch(e){toast('複製失敗，請手動選取文字')}
+ }
+}
+function downloadWantText(){
+ let ta=document.getElementById('wantTextArea');if(!ta)return;
+ let blob=new Blob([ta.value],{type:'text/plain;charset=utf-8'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='徵求清單.txt';a.click()
+}
+async function drawWantShareCard(canvas,ratio){
+ let w=ratio==='16:9'?1200:675,h=ratio==='16:9'?675:1200;
+ canvas.width=w;canvas.height=h;
+ let ctx=canvas.getContext('2d');
+ let cs=getComputedStyle(document.documentElement);
+ let bg=(cs.getPropertyValue('--bg')||'#f6f1e9').trim();
+ let accent=(cs.getPropertyValue('--accent')||'#a8522c').trim();
+ let accent2=(cs.getPropertyValue('--accent2')||'#f3e3d3').trim();
+ let text=(cs.getPropertyValue('--text')||'#3b332c').trim();
+ drawCardBackground(ctx,w,h,accent,accent2,bg);
+ let pad=w*0.07;
+ let groups=buildWantGroups();
+ ctx.textAlign='left';ctx.textBaseline='top';
+ ctx.font=`900 ${w*0.055}px ${cardFont()}`;ctx.fillStyle=text;
+ ctx.fillText('🔍 徵求清單',pad,pad);
+ let headerH=w*0.055*1.3;
+ ctx.font=`600 ${w*0.028}px ${cardFont()}`;ctx.fillStyle=text;ctx.globalAlpha=.6;
+ ctx.fillText('想收藏以下項目，歡迎割愛或交換',pad,pad+headerH);ctx.globalAlpha=1;
+ let listY=pad+headerH+w*0.028*1.8+w*0.02;
+ let listBottom=h-pad*1.8;
+ let availH=Math.max(1,listBottom-listY);
+ let maxShow=Math.min(groups.length,ratio==='16:9'?7:10);
+ let rowH=availH/Math.max(maxShow,1);
+ let fontMain=Math.min(rowH*0.34,w*0.034);
+ let fontSub=fontMain*0.72;
+ for(let i=0;i<maxShow;i++){
+  let g=groups[i];
+  let y=listY+i*rowH;
+  if(i>0){ctx.strokeStyle=hexA(text,.08);ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(pad,y);ctx.lineTo(w-pad,y);ctx.stroke()}
+  let rowPadTop=rowH*0.22;
+  let hasHigh=g.items.some(it=>it.priority==='高');
+  ctx.textAlign='left';ctx.textBaseline='top';
+  ctx.font=`800 ${fontMain}px ${cardFont()}`;ctx.fillStyle=text;
+  let titleText=(hasHigh?'⭐ ':'')+g.title;
+  wrapCJKText(ctx,titleText,pad,y+rowPadTop,w-pad*2,fontMain*1.2,1,'left');
+  let nos=g.items.map(it=>it.no||'—').join('、');
+  ctx.font=`600 ${fontSub}px ${cardFont()}`;ctx.fillStyle=accent;
+  wrapCJKText(ctx,nos,pad,y+rowPadTop+fontMain*1.3,w-pad*2,fontSub*1.3,1,'left');
+ }
+ if(groups.length>maxShow){
+  ctx.textAlign='center';ctx.textBaseline='middle';
+  ctx.font=`700 ${w*0.026}px ${cardFont()}`;ctx.fillStyle=text;ctx.globalAlpha=.55;
+  ctx.fillText(`...還有 ${groups.length-maxShow} 個系列，完整清單見文字版`,w/2,listBottom-w*0.02);ctx.globalAlpha=1
+ }
+ drawFooterBrand(ctx,w,h,pad,accent,text);
+ return groups.length
+}
+let lastWantRatio='16:9';
+function openWantShareCard(){
+ lastWantRatio='16:9';
+ showModal(`<h2>徵求清單圖卡</h2>
+<div class="notice">產生一張列出待入手項目的圖片，適合發到社群、交易社團徵求。項目較多時圖片只會顯示前幾項，完整清單建議搭配文字版一起發。</div>
+<div class="row wrap" style="margin:10px 0"><button class="btn small purple" onclick="renderWantCardPreview('16:9')">橫式 16:9</button><button class="btn small" onclick="renderWantCardPreview('9:16')">直式 9:16（限動）</button></div>
+<div style="display:flex;justify-content:center;background:linear-gradient(135deg,var(--accent2),var(--card));border:1px solid var(--line);border-radius:var(--radius-md);padding:14px;margin-top:10px"><canvas id="wantCanvas" style="max-width:100%;height:auto;border-radius:var(--radius-sm);box-shadow:var(--shadow-md)"></canvas></div>
+<button class="btn purple" style="width:100%;margin-top:12px" onclick="downloadWantCard()">下載圖片</button>
+<button class="btn" style="width:100%;margin-top:8px" onclick="openWantShareText()">改看文字版</button>`)
+ renderWantCardPreview('16:9')
+}
+async function renderWantCardPreview(ratio){
+ lastWantRatio=ratio;
+ let canvas=document.getElementById('wantCanvas');if(!canvas)return;
+ let n=await drawWantShareCard(canvas,ratio);
+ if(n===0)toast('目前沒有待入手的項目')
+}
+function downloadWantCard(){
+ let canvas=document.getElementById('wantCanvas');if(!canvas)return;
+ canvas.toBlob(blob=>{if(!blob){toast('產生圖片失敗');return}let a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='徵求清單.png';a.click()},'image/png')
+}
 function importData(inputEl){
  let f=inputEl.files&&inputEl.files[0];if(!f)return;
  let reader=new FileReader();
@@ -1354,6 +1607,17 @@ function importData(inputEl){
  inputEl.value=''
 }
 function exportData(){let blob=new Blob([JSON.stringify(db,null,2)],{type:'application/json'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='我的紙本書櫃_backup.json';a.click()}
+function csvEscape(v){v=String(v??'');return /[",\n]/.test(v)?'"'+v.replace(/"/g,'""')+'"':v}
+function exportCSV(){
+ let rows=[['系列名稱','類型','作者/IP','角色','狀態','卷次/項目','已購入','購入日期','購入價','原價','版本','地區限定','備註']];
+ db.series.forEach(s=>{
+  (s.volumes||[]).forEach(v=>{
+   rows.push([s.title,s.type||'',(s.authors||[]).join('、'),s.character||'',s.status||'',v.volumeNo||'',v.owned?'是':'否',v.purchaseDate||'',v.purchasePrice||'',v.listPrice||'',v.edition||'',v.region||'',v.notes||''])
+  })
+ });
+ let csv='\uFEFF'+rows.map(r=>r.map(csvEscape).join(',')).join('\r\n');
+ let blob=new Blob([csv],{type:'text/csv;charset=utf-8'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='我的收藏櫃_匯出.csv';a.click()
+}
 /* ---- 雲端同步：syncAdapter 是統一介面，背後可能是 Claude db 能力，也可能是 Firebase ----
    syncAdapter = { label:'claude'|'firebase', get: async()=>obj|null, set: async(obj)=>void } */
 let syncAdapter=null,cloudSaveTimer=null,cloudSyncing=false;
@@ -1363,7 +1627,7 @@ function scheduleCloudSave(){
  cloudSaveTimer=setTimeout(async()=>{
   try{
    let json=JSON.stringify(db);
-   if(json.length>(syncAdapter.cap||240*1024)){toast('雲端空間快滿了（可能是圖片太多），這次變更先只存在這台裝置');return}
+   if(json.length>(syncAdapter.cap||240*1024)){toast('雲端空間快滿了，去「帳號安全」搬移舊圖片到雲端空間就能解決，這次先只存在這台裝置');return}
    cloudSyncing=true;
    await syncAdapter.set(JSON.parse(json));
   }catch(e){/* 暫時離線或失敗，下次變更會再試一次 */}
