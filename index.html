@@ -1151,9 +1151,14 @@ async function cleanupUnusedCloudImages(){
 }
 async function manualSyncNow(){
  if(!syncAdapter){toast('目前沒有連接雲端，請先登入');return}
+ cloudWriteError='';
  let msg=document.getElementById('manualSyncMsg');if(msg)msg.textContent='上傳中…';
  let ok=await flushCloudSaveNow();
- if(msg)msg.textContent=ok?`已把 ${db.series.length} 個系列送上雲端`:'上傳逾時或失敗；資料仍保留在這台裝置，請先在另一台裝置確認，再決定是否重試'
+ if(msg){
+  if(ok){msg.dataset.cloudTimedOut='0';msg.textContent=`已把 ${db.series.length} 個系列送上雲端`}
+  else if(cloudWriteError==='cloud-timeout'){msg.dataset.cloudTimedOut='1';msg.textContent='20 秒內沒有收到雲端回覆；資料仍保留在這台裝置。請勿連續重試，稍後確認雲端狀態'}
+  else {msg.dataset.cloudTimedOut='0';msg.textContent=`上傳失敗（${cloudWriteError||'未知錯誤'}）；資料仍保留在這台裝置`}
+ }
 }
 async function manualPullNow(){
  if(!syncAdapter){toast('目前沒有連接雲端，請先登入');return}
@@ -1689,7 +1694,7 @@ function exportCSV(){
 }
 /* ---- 雲端同步：syncAdapter 是統一介面，背後可能是 Claude db 能力，也可能是 Firebase ----
    syncAdapter = { label:'claude'|'firebase', get: async()=>obj|null, set: async(obj)=>void } */
-let syncAdapter=null,cloudSaveTimer=null,cloudSyncing=false;
+let syncAdapter=null,cloudSaveTimer=null,cloudSyncing=false,cloudWriteError='';
 function scheduleCloudSave(){
  if(!syncAdapter)return;
  clearTimeout(cloudSaveTimer);
@@ -1710,8 +1715,14 @@ async function flushCloudSaveNow(){
 }
 function setCloudDataWithTimeout(data,timeoutMs){
  return new Promise((resolve,reject)=>{
-  let timer=setTimeout(()=>reject(new Error('cloud-timeout')),timeoutMs);
-  Promise.resolve().then(()=>syncAdapter.set(data)).then(value=>{clearTimeout(timer);resolve(value)},error=>{clearTimeout(timer);reject(error)})
+  let settled=false;
+  let timer=setTimeout(()=>{settled=true;cloudWriteError='cloud-timeout';reject(new Error('cloud-timeout'))},timeoutMs);
+  Promise.resolve().then(()=>syncAdapter.set(data)).then(value=>{clearTimeout(timer);if(!settled)resolve(value)},error=>{
+   cloudWriteError=String(error?.code||error?.message||'unknown').slice(0,120);
+   clearTimeout(timer);
+   if(!settled)reject(error);
+   else {let msg=document.getElementById('manualSyncMsg');if(msg&&msg.dataset.cloudTimedOut==='1')msg.textContent=`雲端回報錯誤（${cloudWriteError}）；資料仍保留在這台裝置`}
+  })
  })
 }
 function cloudDataWithoutLocalImages(data){
