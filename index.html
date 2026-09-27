@@ -1072,6 +1072,11 @@ function openAccountSecurity(){
  let localImgCount=countLocalImages();
  showModal(`<h2>帳號安全</h2>
  <div class="muted" style="margin-bottom:14px">登入方式：${esc(providers.join('、')||'未知')}</div>
+ <h3>手動同步</h3>
+ <div class="muted" style="margin-bottom:10px">如果換裝置後資料還沒出現，先按「從雲端讀取」看看是不是還沒抓到最新資料；如果這台裝置的資料才是最新的，按「上傳到雲端」把它送上去。</div>
+ <div class="row wrap" style="margin-bottom:6px"><button class="btn small purple" onclick="manualPullNow()">⬇︎ 從雲端讀取</button><button class="btn small" onclick="manualSyncNow()">⬆︎ 上傳到雲端</button></div>
+ <div id="manualSyncMsg" class="muted" style="margin-bottom:14px"></div>
+ <hr style="border:0;border-top:1px solid var(--line);margin:18px 0">
  <h3>雲端空間</h3>
  <div class="muted" style="margin-bottom:10px">${localImgCount>0?`目前有 ${localImgCount} 張圖片還存在同步文件裡（不是獨立的雲端相簿），佔掉不少同步空間。搬移之後圖片會變成獨立網址，同步文件會瘦下來很多。`:'目前沒有需要搬移的圖片，圖片都已經是雲端網址了。'}</div>
  ${localImgCount>0?`<button class="btn purple" style="width:100%;margin-bottom:8px" onclick="migrateImagesToCloud()">📤 搬移 ${localImgCount} 張圖片到雲端空間</button><div id="migrateMsg" class="muted"></div>`:''}
@@ -1091,6 +1096,18 @@ function countLocalImages(){
   (s.volumes||[]).forEach(v=>{if(v.cover && v.cover.startsWith('data:'))n++})
  });
  return n
+}
+async function manualSyncNow(){
+ if(!syncAdapter){toast('目前沒有連接雲端，請先登入');return}
+ let msg=document.getElementById('manualSyncMsg');if(msg)msg.textContent='上傳中…';
+ let ok=await flushCloudSaveNow();
+ if(msg)msg.textContent=ok?'已把這台裝置的資料送上雲端':'上傳失敗，請檢查網路連線後再試一次'
+}
+async function manualPullNow(){
+ if(!syncAdapter){toast('目前沒有連接雲端，請先登入');return}
+ let msg=document.getElementById('manualSyncMsg');if(msg)msg.textContent='讀取中…';
+ await loadFromCloud();
+ if(msg)msg.textContent='已從雲端讀取最新資料'
 }
 async function migrateImagesToCloud(){
  if(!fb || !fbUser){toast('請先登入才能搬移圖片到雲端');return}
@@ -1624,16 +1641,22 @@ let syncAdapter=null,cloudSaveTimer=null,cloudSyncing=false;
 function scheduleCloudSave(){
  if(!syncAdapter)return;
  clearTimeout(cloudSaveTimer);
- cloudSaveTimer=setTimeout(async()=>{
-  try{
-   let json=JSON.stringify(db);
-   if(json.length>(syncAdapter.cap||240*1024)){toast('雲端空間快滿了，去「帳號安全」搬移舊圖片到雲端空間就能解決，這次先只存在這台裝置');return}
-   cloudSyncing=true;
-   await syncAdapter.set(JSON.parse(json));
-  }catch(e){/* 暫時離線或失敗，下次變更會再試一次 */}
-  finally{cloudSyncing=false}
- },900)
+ cloudSaveTimer=setTimeout(()=>{flushCloudSaveNow()},450)
 }
+async function flushCloudSaveNow(){
+ if(!syncAdapter)return false;
+ clearTimeout(cloudSaveTimer);cloudSaveTimer=null;
+ try{
+  let json=JSON.stringify(db);
+  if(json.length>(syncAdapter.cap||240*1024)){toast('雲端空間快滿了，去「帳號安全」搬移舊圖片到雲端空間就能解決，這次先只存在這台裝置');return false}
+  cloudSyncing=true;
+  await syncAdapter.set(JSON.parse(json));
+  return true
+ }catch(e){return false}
+ finally{cloudSyncing=false}
+}
+document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='hidden' && cloudSaveTimer)flushCloudSaveNow()});
+window.addEventListener('pagehide',()=>{if(cloudSaveTimer)flushCloudSaveNow()});
 async function loadFromCloud(){
  try{
   let cloud=await syncAdapter.get();
