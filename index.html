@@ -1111,11 +1111,9 @@ function openAccountSecurity(){
  <div id="manualSyncMsg" class="muted" style="margin-bottom:14px"></div>
  <hr style="border:0;border-top:1px solid var(--line);margin:18px 0">
  <h3>雲端空間</h3>
- <div class="muted" style="margin-bottom:10px">${localImgCount>0?`目前有 ${localImgCount} 張圖片還存在同步文件裡（不是獨立的雲端相簿），佔掉不少同步空間。搬移之後圖片會變成獨立網址，同步文件會瘦下來很多。`:'目前沒有需要搬移的圖片，圖片都已經是雲端網址了。'}</div>
- ${localImgCount>0?`<button class="btn purple" style="width:100%;margin-bottom:8px" onclick="migrateImagesToCloud()">📤 搬移 ${localImgCount} 張圖片到雲端空間</button><div id="migrateMsg" class="muted"></div>`:''}
- <div class="muted" style="margin:10px 0">刪掉某張收藏的照片、或整筆刪除收藏時，新版本會自動清掉雲端上對應的舊圖片。如果之前已經留下一些用不到的檔案，可以按下面這顆掃一次、一次清掉。</div>
- <button class="btn" style="width:100%" onclick="cleanupUnusedCloudImages()">🧹 清理閒置的雲端圖片</button>
- <div id="cleanupMsg" class="muted" style="margin-top:6px"></div>
+ <div class="muted" style="margin-bottom:10px">${localImgCount>0?`這台裝置保留 ${localImgCount} 張內嵌封面；雲端同步會略過它們。清除後，這些封面會從本機收藏中移除。`:'這台裝置沒有內嵌封面；雲端同步只傳收藏資料，不需要搬移圖片到 Storage。'}</div>
+ ${localImgCount>0?`<button class="btn red" style="width:100%;margin-bottom:8px" onclick="clearLocalEmbeddedImages()">🗑 清除這台裝置的 ${localImgCount} 張封面</button>`:''}
+ <div class="muted" style="margin:10px 0">雲端 Storage 圖片清理與這些本機封面不同；若沒有曾搬移過圖片到 Storage，就不需要掃描雲端相簿。</div>
  <hr style="border:0;border-top:1px solid var(--line);margin:18px 0">
  ${hasPasswordProvider?`<h3>修改密碼</h3>
  <input id="pwOld" type="password" placeholder="目前密碼" style="margin-bottom:6px">
@@ -1128,10 +1126,22 @@ function openAccountSecurity(){
 function countLocalImages(){
  let n=0;
  db.series.forEach(s=>{
-  if(s.cover && s.cover.startsWith('data:'))n++;
-  (s.volumes||[]).forEach(v=>{if(v.cover && v.cover.startsWith('data:'))n++})
+  if(s.cover && s.cover.startsWith('data:image/'))n++;
+  (s.volumes||[]).forEach(v=>{if(v.cover && v.cover.startsWith('data:image/'))n++})
  });
  return n
+}
+function clearLocalEmbeddedImages(){
+ let removed=countLocalImages();
+ if(!removed){toast('沒有本機內嵌封面需要清除');return}
+ db.series.forEach(s=>{
+  if(typeof s.cover==='string'&&s.cover.startsWith('data:image/'))s.cover='';
+  (s.volumes||[]).forEach(v=>{if(typeof v.cover==='string'&&v.cover.startsWith('data:image/'))v.cover=''})
+ });
+ save();
+ openAccountSecurity();
+ toast(`已清除 ${removed} 張本機封面，收藏資料保留`);
+ manualSyncNow()
 }
 async function cleanupUnusedCloudImages(){
  if(!fb || !fbUser){toast('請先登入才能清理雲端圖片');return}
