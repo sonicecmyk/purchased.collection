@@ -1699,13 +1699,32 @@ async function flushCloudSaveNow(){
  if(!syncAdapter)return false;
  clearTimeout(cloudSaveTimer);cloudSaveTimer=null;
  try{
-  let json=JSON.stringify(db);
-  if(json.length>(syncAdapter.cap||240*1024)){toast('雲端空間快滿了，去「帳號安全」搬移舊圖片到雲端空間就能解決，這次先只存在這台裝置');return false}
+  let cloudData=cloudDataWithoutLocalImages(db);
+  let json=JSON.stringify(cloudData);
+  if(json.length>(syncAdapter.cap||240*1024)){toast('雲端資料仍超過容量上限；圖片保存在本機，請先匯出備份並減少雲端資料量');return false}
   cloudSyncing=true;
-  await syncAdapter.set(JSON.parse(json));
+  await syncAdapter.set(cloudData);
   return true
  }catch(e){return false}
  finally{cloudSyncing=false}
+}
+function cloudDataWithoutLocalImages(data){
+ let copy=JSON.parse(JSON.stringify(data));
+ copy.series.forEach(s=>{
+  if(typeof s.cover==='string' && s.cover.startsWith('data:image/'))s.cover='';
+  (s.volumes||[]).forEach(v=>{if(typeof v.cover==='string' && v.cover.startsWith('data:image/'))v.cover=''})
+ });
+ return copy
+}
+function mergeLocalImagesIntoCloudData(cloud){
+ let localSeries=new Map((db.series||[]).map(s=>[s.id,s]));
+ cloud.series.forEach(s=>{
+  let local=localSeries.get(s.id);if(!local)return;
+  if(!s.cover && local.cover && local.cover.startsWith('data:image/'))s.cover=local.cover;
+  let localVolumes=new Map((local.volumes||[]).map(v=>[v.id,v]));
+  (s.volumes||[]).forEach(v=>{let lv=localVolumes.get(v.id);if(!v.cover && lv?.cover && lv.cover.startsWith('data:image/'))v.cover=lv.cover})
+ });
+ return cloud
 }
 document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='hidden' && cloudSaveTimer)flushCloudSaveNow()});
 window.addEventListener('pagehide',()=>{if(cloudSaveTimer)flushCloudSaveNow()});
@@ -1713,7 +1732,7 @@ async function loadFromCloud(){
  try{
   let cloud=await syncAdapter.get();
   if(cloud && Array.isArray(cloud.series)){
-   db=cloud;
+   db=mergeLocalImagesIntoCloudData(cloud);
    db.settings=db.settings||{theme:'侘寂日系'};
    db.suggest=db.suggest||{};
    localStorage.setItem(KEY,JSON.stringify(db));
