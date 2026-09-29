@@ -156,6 +156,81 @@ label{font-size:var(--fs-sm);font-weight:800;color:var(--muted);display:block;ma
 .chip.active{background:var(--accent);color:#fff;border-color:var(--accent)}
 .shelfcard.batch-selected{outline:3px solid var(--accent);outline-offset:-3px}
 .batch-check{position:absolute;top:6px;left:6px;width:22px;height:22px;border-radius:50%;background:rgba(255,255,255,.92);border:2px solid var(--accent);color:var(--accent);font-weight:900;font-size:13px;display:flex;align-items:center;justify-content:center;z-index:2}
+/* ===== v3：首頁 / 圖卡 / 側邊欄 / 互動 ===== */
+.seg{display:flex;background:var(--line);padding:3px;border-radius:var(--radius-pill);gap:2px;margin:0 0 12px}
+.seg button{flex:1;padding:8px 6px;border-radius:var(--radius-pill);background:transparent;color:var(--muted);font-weight:800;font-size:12.5px}
+.seg button.on{background:var(--card);color:var(--accent);box-shadow:var(--shadow-sm)}
+.cardstage{position:relative;display:flex;justify-content:center;background:linear-gradient(135deg,var(--accent2),var(--card));border:1px solid var(--line);border-radius:var(--radius-md);padding:12px}
+.cardstage canvas{max-width:100%;max-height:60vh;width:auto;height:auto;border-radius:var(--radius-sm);box-shadow:var(--shadow-md);background:var(--line)}
+.cardbusy{position:absolute;inset:0;display:none;align-items:center;justify-content:center;background:color-mix(in srgb,var(--card) 72%,transparent);backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px);border-radius:var(--radius-md);font-weight:800;color:var(--accent);font-size:13px;z-index:2}
+.picklist{max-height:220px;overflow:auto;border:1px solid var(--line);border-radius:14px;padding:6px 8px}
+.coverfield{display:flex;gap:10px;align-items:center}
+.coverfield-prev{flex:none;width:50px;height:70px}
+.coverfield-prev img,.coverfield-prev .cover-ph{width:50px;height:70px;border-radius:8px;object-fit:cover;display:flex;box-shadow:var(--shadow-sm)}
+.coverfield input{flex:1;min-width:0}
+.home-hero{padding:18px 16px 14px}
+.hh-top{display:flex;justify-content:space-between;align-items:center;gap:10px;position:relative;z-index:1}
+.hh-hi{font-size:22px;font-weight:900;letter-spacing:-.01em}
+.hh-sub{font-size:12.5px;color:rgba(255,255,255,.82);margin-top:3px}
+.hh-avatar{width:46px;height:46px;border-radius:50%;background:rgba(255,255,255,.18);border:2px solid rgba(255,255,255,.55);font-size:22px;display:flex;align-items:center;justify-content:center;flex:none}
+.hh-lv{position:relative;z-index:1;display:flex;gap:12px;align-items:center;margin-top:16px;padding:12px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);border-radius:18px}
+.hh-lv.pop{animation:levelPop .7s var(--ease)}
+.hh-lvemoji{width:44px;height:44px;border-radius:14px;background:rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;font-size:24px;flex:none}
+.hh-lvbody{flex:1;min-width:0}
+.hh-lvtext{font-weight:900;font-size:14.5px}
+.home-hero .level-progress{margin-top:7px;max-width:none}
+.home-hero .level-progress-label{margin-top:5px}
+.hh-stats{position:relative;z-index:1;display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px}
+.hh-stats button{background:rgba(255,255,255,.14);color:#fff;border-radius:16px;padding:10px 4px;display:flex;flex-direction:column;align-items:center;gap:1px}
+.hh-stats b{font-size:24px;font-weight:900;line-height:1.1}
+.hh-stats span{font-size:11px;opacity:.85;font-weight:700}
+.quick{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:var(--sp-4)}
+.quick button{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:12px 4px 10px;display:flex;flex-direction:column;align-items:center;gap:6px;font-weight:800;font-size:12px;color:var(--text);box-shadow:var(--shadow-sm)}
+.qi{width:38px;height:38px;border-radius:13px;background:var(--accent2);display:flex;align-items:center;justify-content:center;font-size:18px}
+.qi-main{background:var(--accent);color:#fff;font-size:22px;font-weight:900;box-shadow:0 6px 14px color-mix(in srgb,var(--accent) 40%,transparent)}
+.near{display:flex;gap:12px;align-items:center;padding:10px 0;border-bottom:1px solid var(--line);cursor:pointer}
+.near:last-child{border-bottom:0;padding-bottom:0}
+.near .meta{flex:1;min-width:0}
+.near-pct{font-weight:900;color:var(--accent);font-size:15px}
+.hstrip{display:flex;gap:10px;overflow-x:auto;margin:10px -4px 0;padding:2px 4px 6px;scroll-snap-type:x proximity;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+.hstrip::-webkit-scrollbar{display:none}
+.hitem{flex:none;width:92px;scroll-snap-align:start;cursor:pointer}
+.hcover{position:relative;width:92px;aspect-ratio:3/4;border-radius:12px;overflow:hidden;box-shadow:var(--shadow-sm);background:var(--accent2)}
+.hcover .cwrap-img{width:100%;height:100%;object-fit:cover;display:block}
+.hcover .cover-ph{position:absolute;inset:0;font-size:24px}
+.hcover .pctdot{position:absolute;right:6px;bottom:6px;background:rgba(17,15,12,.68);color:#fff;font-size:11px;font-weight:800;padding:2px 7px;border-radius:999px}
+.hitem .ht{font-size:12px;font-weight:800;margin-top:6px;line-height:1.3;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.hitem .hs{font-size:11px;color:var(--muted)}
+.nextwant{display:flex;align-items:center;justify-content:space-between;gap:10px;cursor:pointer}
+.welcome{text-align:center;padding:34px 20px;background:var(--card);border:1.5px dashed var(--line);border-radius:var(--radius-lg)}
+.welcome-ic{font-size:54px;margin-bottom:6px;animation:bob 2.4s ease-in-out infinite}
+.welcome h2{margin:0 0 6px}
+@keyframes bob{50%{transform:translateY(-6px)}}
+.welcome p{color:var(--muted);line-height:1.7;margin:6px 0 18px;font-size:13.5px}
+.btn.big{padding:14px 22px;font-size:15px;border-radius:16px}
+.emptycta{text-align:center;padding:30px 16px;color:var(--muted);line-height:1.7;background:var(--card);border:1.5px dashed var(--line);border-radius:var(--radius-md);grid-column:1/-1}
+.emptycta b{display:block;color:var(--text);font-size:16px;margin-bottom:4px}
+.emptycta .btn{margin-top:12px}
+.drawer-lv{position:relative;display:inline-block;margin-top:8px;padding:4px 12px;border-radius:999px;background:rgba(255,255,255,.2);font-size:12px;font-weight:800;color:#fff}
+.drawer-label{font-size:11px;font-weight:800;color:var(--muted);letter-spacing:.08em;padding:12px 8px 4px}
+.drawer-label:empty{border-top:1px solid var(--line);margin-top:10px;padding:0}
+.drawer-nav .tx{flex:1;display:flex;flex-direction:column;line-height:1.25}
+.drawer-nav .tx small{font-size:11px;color:var(--muted);font-weight:600;margin-top:1px}
+.drawer-nav .chev{color:var(--muted);font-size:20px;opacity:.55;padding-right:2px}
+.themegrid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.tg{position:relative;background:var(--card);border:2px solid var(--line);border-radius:16px;padding:8px 6px;display:flex;flex-direction:column;align-items:center;gap:6px;color:var(--text)}
+.tg.on{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent2)}
+.tg-sw{width:100%;height:38px;border-radius:10px;display:block;border:1px solid rgba(0,0,0,.08)}
+.tg-n{font-size:12px;font-weight:800}
+.tg-ok{position:absolute;top:4px;right:4px;background:var(--accent);color:#fff;width:18px;height:18px;border-radius:50%;font-size:11px;display:flex;align-items:center;justify-content:center;font-weight:900}
+.confetti{position:fixed;inset:0;pointer-events:none;z-index:200;overflow:hidden}
+.confetti i{position:absolute;top:-20px;border-radius:2px;animation:confFall 2.2s ease-in forwards}
+@keyframes confFall{to{transform:translate(var(--dx),112vh) rotate(var(--rot));opacity:.85}}
+.modal.show .sheet{animation:sheetUp .3s var(--ease)}
+@keyframes sheetUp{from{transform:translateY(46px);opacity:.4}to{transform:none;opacity:1}}
+.shelfcard,.hitem,.near,.quick button,.hh-stats button{transition:transform .15s var(--ease)}
+.hitem:active,.near:active{transform:scale(.97)}
+.quick button:active,.hh-stats button:active{transform:scale(.94)}
 @media(min-width:700px){.grid{grid-template-columns:repeat(4,1fr)}.sheet{border-radius:var(--radius-lg);margin-bottom:20px}.modal{align-items:center}.formgrid.three{grid-template-columns:repeat(3,1fr)}}
 </style>
 </head>
@@ -171,28 +246,28 @@ label{font-size:var(--fs-sm);font-weight:800;color:var(--muted);display:block;ma
 
 <main>
 <section id="home" class="page active">
-  <div class="hero">
-    <h1 id="heroTitle">每一件收藏，都值得被好好記住</h1><p id="heroSub">書籍、專輯周邊、IP 公仔娃娃⋯依類型分櫃整理，價格、狀態、心得一次掌握。</p>
-    <div class="levelbadge"><span class="emoji" id="hLevelEmoji">📦</span><span id="hLevelText">尚未開始收藏</span></div>
-    <div class="level-progress"><div class="level-progress-bar" id="hLevelBar" style="width:0%"></div></div>
-    <div class="level-progress-label" id="hLevelNext"></div>
-  </div>
-  <div class="grid">
-    <div class="stat"><b id="sBooks">0</b><span>已收藏</span></div>
-    <div class="stat"><b id="sSeries">0</b><span>收藏系列</span></div>
-    <div class="stat"><b id="sSpend">$0</b><span>實際花費</span></div>
-    <div class="stat"><b id="sWant">0</b><span>待入手</span></div>
-  </div>
-  <div class="card">
-    <div class="row between"><h2>快速開始</h2><button class="btn purple" onclick="openEditor()">＋ 新增收藏</button></div>
-    <div class="row wrap">
-      <button class="btn" onclick="go('want')">待入手清單</button>
-      <button class="btn" onclick="go('stats')">收藏統計與排行</button>
-      <button class="btn" onclick="openProfileShareCard()">分享我的收藏</button>
+  <div class="hero home-hero">
+    <div class="hh-top">
+      <div><div class="hh-hi" id="heroTitle">你好</div><div class="hh-sub" id="heroSub"></div></div>
+      <button class="hh-avatar" id="hhAvatar" onclick="openDrawer()" aria-label="個人選單">🙂</button>
+    </div>
+    <div class="hh-lv"><span class="hh-lvemoji" id="hLevelEmoji">📦</span>
+      <div class="hh-lvbody"><div class="hh-lvtext" id="hLevelText">尚未開始收藏</div>
+        <div class="level-progress"><div class="level-progress-bar" id="hLevelBar" style="width:0%"></div></div>
+        <div class="level-progress-label" id="hLevelNext"></div></div></div>
+    <div class="hh-stats">
+      <button onclick="go('books')"><b id="sBooks">0</b><span>已收藏</span></button>
+      <button onclick="go('books')"><b id="sSeries">0</b><span>系列</span></button>
+      <button onclick="go('want')"><b id="sWant">0</b><span>待入手</span></button>
     </div>
   </div>
-  <div class="card"><h2>最近動態</h2><div id="homeRecent"></div></div>
-  <div class="card"><div class="row between"><h2>收藏進度</h2><button class="btn small" onclick="go('books')">查看全部</button></div><div id="homeSeries" class="shelfgrid" style="margin-top:10px"></div></div>
+  <div class="quick">
+    <button onclick="openEditor()"><span class="qi qi-main">＋</span>新增</button>
+    <button onclick="go('want')"><span class="qi">💗</span>待入手</button>
+    <button onclick="go('stats')"><span class="qi">📊</span>統計</button>
+    <button onclick="openProfileShareCard()"><span class="qi">📤</span>分享</button>
+  </div>
+  <div id="homeBody"></div>
 </section>
 
 <section id="books" class="page">
@@ -214,6 +289,7 @@ label{font-size:var(--fs-sm);font-weight:800;color:var(--muted);display:block;ma
       <button class="chip" data-val="unowned" onclick="setBookFilter('unowned')">待入手</button>
       <button class="chip" data-val="sell" onclick="setBookFilter('sell')">待出售</button>
       <button class="chip" data-val="ongoing" onclick="setBookFilter('ongoing')">連載中</button>
+      <button class="chip" data-val="done" onclick="setBookFilter('done')">已完結</button>
       <button class="chip" data-val="oop" onclick="setBookFilter('oop')">已絕版</button>
     </div>
     <div class="formgrid" style="margin-top:6px">
@@ -269,7 +345,6 @@ label{font-size:var(--fs-sm);font-weight:800;color:var(--muted);display:block;ma
 import{initializeApp}from"https://www.gstatic.com/firebasejs/10.13.0/firebase-app.js";
 import{getAuth,onAuthStateChanged,createUserWithEmailAndPassword,signInWithEmailAndPassword,signOut,GoogleAuthProvider,signInWithPopup,sendSignInLinkToEmail,isSignInWithEmailLink,signInWithEmailLink,updateProfile,sendPasswordResetEmail,EmailAuthProvider,reauthenticateWithCredential,updatePassword}from"https://www.gstatic.com/firebasejs/10.13.0/firebase-auth.js";
 import{getFirestore,doc,getDoc,setDoc}from"https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore.js";
-import{getStorage,ref,uploadString,getDownloadURL,deleteObject,listAll}from"https://www.gstatic.com/firebasejs/10.13.0/firebase-storage.js";
 
 const firebaseConfig={
   apiKey:"AIzaSyCzc3_2HWF1wx86_cuXy4Vj5O3Lo4J-nK4",
@@ -285,7 +360,6 @@ try{
     const app=initializeApp(firebaseConfig);
     const auth=getAuth(app);
     const fdb=getFirestore(app);
-    const fstorage=getStorage(app);
     window.__firebase={
       onAuthStateChanged:(cb)=>onAuthStateChanged(auth,cb),
       signUp:(email,pass)=>createUserWithEmailAndPassword(auth,email,pass),
@@ -302,23 +376,7 @@ try{
       changePassword:(newPass)=>updatePassword(auth.currentUser,newPass),
       docRef:(uid)=>doc(fdb,'users',uid,'library','main'),
       getDoc:(ref)=>getDoc(ref),
-      setDoc:(ref,data)=>setDoc(ref,data),
-      uploadCoverImage:async(uid,dataUrl)=>{
-        let path='users/'+uid+'/covers/'+Date.now()+'_'+Math.random().toString(36).slice(2)+'.jpg';
-        let sref=ref(fstorage,path);
-        await uploadString(sref,dataUrl,'data_url');
-        return await getDownloadURL(sref)
-      },
-      deleteCoverByUrl:(url)=>deleteObject(ref(fstorage,url)),
-      deleteCoverPath:(path)=>deleteObject(ref(fstorage,path)),
-      listCovers:async(uid)=>{
-        let listing=await listAll(ref(fstorage,'users/'+uid+'/covers'));
-        let out=[];
-        for(let item of listing.items){
-          try{out.push({path:item.fullPath,url:await getDownloadURL(item)})}catch(e){}
-        }
-        return out
-      }
+      setDoc:(ref,data)=>setDoc(ref,data)
     };
   } else {
     window.__firebase=null;
@@ -422,7 +480,7 @@ function coverHtml(src,title,cls,style){
  let ph=esc((String(title||'?').trim().charAt(0))||'?');
  let styleAttr=style?` style="${esc(style)}"`:'';
  if(!src)return `<span class="${cls||''} cover-ph"${styleAttr}>${ph}</span>`;
- return `<img class="${cls||''}" src="${esc(src)}" data-ph="${ph}"${styleAttr} onerror="var s=document.createElement('span');s.className=this.className+' cover-ph';s.textContent=this.dataset.ph;s.setAttribute('style',this.getAttribute('style')||'');this.replaceWith(s)">`
+ return `<img class="${cls||''}" src="${esc(src)}" data-ph="${ph}" loading="lazy" referrerpolicy="no-referrer"${styleAttr} onerror="var s=document.createElement('span');s.className=this.className+' cover-ph';s.textContent=this.dataset.ph;s.setAttribute('style',this.getAttribute('style')||'');this.replaceWith(s)">`
 }
 function langSelectHtml(id,current){
  let known=['繁體中文','簡體中文','日文','英文','韓文'];
@@ -523,56 +581,36 @@ function parseVolumeTokens(input){
  return out.length?out:['']
 }
 function money(v){if(v===null||v===undefined||v==='')return '—';return '$'+Number(v).toLocaleString('zh-TW',{maximumFractionDigits:2})}
-function resizeImageFile(file,maxW=500,quality=0.82){
- return new Promise((resolve,reject)=>{
-  let reader=new FileReader();
-  reader.onload=e=>{
-   let img=new Image();
-   img.onload=()=>{
-    let scale=Math.min(1,maxW/img.width);
-    let w=Math.max(1,Math.round(img.width*scale)),h=Math.max(1,Math.round(img.height*scale));
-    let canvas=document.createElement('canvas');canvas.width=w;canvas.height=h;
-    canvas.getContext('2d').drawImage(img,0,0,w,h);
-    resolve(canvas.toDataURL('image/jpeg',quality))
-   };
-   img.onerror=()=>reject(new Error('圖片讀取失敗'));
-   img.src=e.target.result
-  };
-  reader.onerror=()=>reject(new Error('圖片讀取失敗'));
-  reader.readAsDataURL(file)
- })
+function cleanUrl(v){v=String(v||'').trim();if(/^http:\/\//i.test(v))v='https://'+v.slice(7);if(v.startsWith('//'))v='https:'+v;return v}
+function coverFieldHtml(id,value,label){
+ return `<div class="full"><label>${label||'封面圖片網址'}</label>
+ <div class="coverfield"><div class="coverfield-prev" id="${id}Prev">${coverHtml(value,'?','')}</div>
+ <input id="${id}" value="${esc(value||'')}" placeholder="貼上圖片網址（https://…），沒有也沒關係" inputmode="url" oninput="updateCoverPreview('${id}')"></div>
+ <div class="muted" style="margin-top:4px">長按網頁上的圖片 →「複製圖片位址」，貼到這裡就會出現預覽。</div></div>`
 }
-function deleteCoverIfCloud(url){
- if(fb && fbUser && url && url.includes('firebasestorage')){fb.deleteCoverByUrl(url).catch(()=>{})}
-}
-async function handleCoverFile(inputEl,targetId){
- let f=inputEl.files&&inputEl.files[0];if(!f)return;
- let oldVal=(document.getElementById(targetId)||{}).value||'';
- try{
-  let dataUrl=await resizeImageFile(f);
-  if(fb && fbUser){
-   toast('圖片上傳到雲端中…');
-   try{
-    let url=await fb.uploadCoverImage(fbUser.uid,dataUrl);
-    document.getElementById(targetId).value=url;
-    toast('封面已上傳到雲端空間');
-    deleteCoverIfCloud(oldVal)
-   }catch(upErr){
-    document.getElementById(targetId).value=dataUrl;
-    toast('雲端上傳失敗，先存在這台裝置')
-   }
-  } else {
-   document.getElementById(targetId).value=dataUrl;
-   toast('封面已更新（來自相簿）')
-  }
- }catch(e){toast('圖片讀取失敗，請改用網址')}
- finally{inputEl.value=''}
+let _coverPrevTimer=null;
+function updateCoverPreview(id){
+ clearTimeout(_coverPrevTimer);
+ _coverPrevTimer=setTimeout(()=>{
+  let v=(document.getElementById(id)?.value||'').trim();
+  let box=document.getElementById(id+'Prev');
+  if(box)box.innerHTML=coverHtml(v,(document.getElementById('fTitle')?.value||document.getElementById('esTitle')?.value||'?'),'')
+ },250)
 }
 function toast(s){let t=document.getElementById('toast');t.textContent=s;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),1800)}
+function confetti(n=70){
+ let box=document.createElement('div');box.className='confetti';document.body.appendChild(box);
+ let cols=['#ff6b6b','#ffd93d','#6bcb77','#4d96ff','#c77dff','#ff9f1c'];
+ for(let i=0;i<n;i++){let p=document.createElement('i');p.style.left=Math.random()*100+'%';p.style.background=cols[i%cols.length];p.style.animationDelay=(Math.random()*.5)+'s';p.style.setProperty('--dx',(Math.random()*240-120)+'px');p.style.setProperty('--rot',(Math.random()*720-360)+'deg');p.style.width=(6+Math.random()*6)+'px';p.style.height=(8+Math.random()*10)+'px';box.appendChild(p)}
+ setTimeout(()=>box.remove(),3000);try{navigator.vibrate&&navigator.vibrate([20,40,20])}catch(e){}
+}
+function celebrate(msg){
+ confetti();let t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');clearTimeout(t._celTimer);t._celTimer=setTimeout(()=>t.classList.remove('show'),3200)
+}
 function celebrateLevelUp(lv){
- let badge=document.querySelector('#home .levelbadge');
+ let badge=document.querySelector('#home .hh-lv');
  if(badge){badge.classList.remove('pop');void badge.offsetWidth;badge.classList.add('pop')}
- let t=document.getElementById('toast');t.textContent=`🎉 升級了！你現在是「${lv.emoji} ${lv.title}」`;t.classList.add('show');clearTimeout(t._levelTimer);t._levelTimer=setTimeout(()=>t.classList.remove('show'),2800)
+ celebrate(`🎉 升級了！你現在是「${lv.emoji} ${lv.title}」`)
 }
 function go(p){document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));document.getElementById(p).classList.add('active');document.querySelectorAll('.nav').forEach(x=>x.classList.toggle('active',x.dataset.page===p));renderAll()}
 function closeModal(){document.getElementById('modal').classList.remove('show')}
@@ -589,40 +627,50 @@ function greetingWord(){
  let h=new Date().getHours();
  return h<5?'夜深了':h<11?'早安':h<14?'午安':h<18?'下午好':'晚安'
 }
+function seriesStats(s){let t=(s.volumes||[]).length,o=(s.volumes||[]).filter(v=>v.owned).length;return{t,o,pct:t?Math.round(o/t*100):0}}
 function renderHome(){
- let vols=db.series.flatMap(s=>s.volumes||[]), owned=vols.filter(v=>v.owned), spend=owned.reduce((a,v)=>a+Number(v.purchasePrice||0),0);
- document.getElementById('sBooks').textContent=owned.length;
- document.getElementById('sSeries').textContent=db.series.length;
- document.getElementById('sSpend').textContent=money(spend);
- document.getElementById('sWant').textContent=vols.filter(v=>!v.owned).length;
- let heroSub=document.getElementById('heroSub');
- if(heroSub)heroSub.textContent=owned.length?`${greetingWord()}，你已經收藏了 ${owned.length} 件寶物了`:`${greetingWord()}，開始記錄你的第一件收藏吧`;
+ let vols=db.series.flatMap(s=>s.volumes||[]),owned=vols.filter(v=>v.owned);
+ let nick=(typeof fbUser!=='undefined'&&fbUser&&fbUser.displayName)||'';
+ let avatar=(typeof fbUser!=='undefined'&&fbUser&&fbUser.photoURL&&String(fbUser.photoURL).startsWith('avatar:'))?fbUser.photoURL.slice(7):'🙂';
+ let $=id=>document.getElementById(id);
+ $('sBooks').textContent=owned.length;$('sSeries').textContent=db.series.length;$('sWant').textContent=vols.filter(v=>!v.owned).length;
+ $('heroTitle').textContent=`${greetingWord()}${nick?'，'+nick:''} 👋`;
+ $('hhAvatar').textContent=avatar;
  let lv=getCollectorLevel(owned.length);
- document.getElementById('hLevelEmoji').textContent=lv.emoji;
- document.getElementById('hLevelText').textContent=lv.level?`Lv.${lv.level}　${lv.title}`:lv.title;
- let tierSpan=Math.max(1,(lv.max||0)-(lv.min||0)+1);
- let tierProgress=lv.level>0?Math.min(100,Math.max(0,(owned.length-lv.min+1)/tierSpan*100)):0;
- let bar=document.getElementById('hLevelBar');if(bar)bar.style.width=tierProgress+'%';
- let nextLabel=document.getElementById('hLevelNext');
- if(nextLabel)nextLabel.textContent=lv.level===0?'收藏第一件，解鎖你的第一個等級':(lv.next!=null?`再收藏 ${Math.max(0,lv.next-owned.length)} 件就能升級`:'已經是最高等級了！');
- if(lv.level>0 && lv.level>(db.settings.lastSeenLevel||0)){
-  db.settings.lastSeenLevel=lv.level;
-  localStorage.setItem(KEY,JSON.stringify(db));
-  scheduleCloudSave();
-  celebrateLevelUp(lv)
+ $('heroSub').textContent=owned.length?`今天也一起把喜歡的東西收好吧`:`從新增第一件收藏開始吧`;
+ $('hLevelEmoji').textContent=lv.emoji;
+ $('hLevelText').textContent=lv.level?`Lv.${lv.level}　${lv.title}`:lv.title;
+ let span=Math.max(1,(lv.max||0)-(lv.min||0)+1),prog=lv.level>0?Math.min(100,Math.max(0,(owned.length-lv.min+1)/span*100)):0;
+ $('hLevelBar').style.width=prog+'%';
+ $('hLevelNext').textContent=lv.level===0?'收藏第一件，解鎖你的第一個等級':(lv.next!=null?`再收藏 ${Math.max(0,lv.next-owned.length)} 件就升級 ✨`:'已經是最高等級了！');
+ // ---- 慶祝：升級 / 收齊 ----
+ let changed=false;
+ if(lv.level>0&&lv.level>(db.settings.lastSeenLevel||0)){db.settings.lastSeenLevel=lv.level;changed=true;celebrateLevelUp(lv)}
+ let doneIds=db.series.filter(s=>{let t=seriesStats(s);return t.t>0&&t.o===t.t}).map(s=>s.id);
+ if(!Array.isArray(db.settings.completedSeen)){db.settings.completedSeen=doneIds;changed=true}
+ else{
+  let fresh=doneIds.filter(id=>!db.settings.completedSeen.includes(id));
+  if(fresh.length){let s=db.series.find(x=>x.id===fresh[0]);celebrate(`🎊 《${s.title}》全收藏達成！`)}
+  if(fresh.length||doneIds.length!==db.settings.completedSeen.length){db.settings.completedSeen=doneIds;changed=true}
  }
- let recent=[];
- db.series.forEach(s=>{(s.volumes||[]).forEach(v=>{if(v.owned && v.purchaseDate)recent.push({title:s.title,vol:v.volumeNo,date:v.purchaseDate,sid:s.id,cover:v.cover||s.cover})})});
- recent.sort((a,b)=>b.date.localeCompare(a.date));
- recent=recent.slice(0,5);
- document.getElementById('homeRecent').innerHTML=recent.length?recent.map(it=>`<div class="row" style="padding:8px 0;border-bottom:1px solid var(--line);cursor:pointer" onclick="openSeries('${it.sid}')">${coverHtml(it.cover,it.title,'cover','width:36px;height:50px')}<div class="meta"><div class="title" style="font-size:13px">${esc(it.title)}${it.vol?` · ${esc(it.vol)}`:''}</div><div class="muted">${esc(it.date)}</div></div></div>`).join(''):'<div class="empty">還沒有購入紀錄，新增第一項收藏開始追蹤吧。</div>';
- let preview=db.series.slice(0,8);
- document.getElementById('homeSeries').innerHTML=preview.length?preview.map(s=>{
-  let o=(s.volumes||[]).filter(v=>v.owned).length,total=(s.volumes||[]).length,pct=total?Math.round(o/total*100):0;
-  return `<div class="shelfcard" onclick="openSeries('${s.id}')"><div class="cwrap">${coverHtml(s.cover,s.title,'cwrap-img')}<span class="pctdot">${pct}%</span></div><div class="info"><div class="title">${esc(s.title)}</div></div></div>`
- }).join(''):'<div class="empty">還沒有收藏。按底部中央「＋ 新增」開始吧。</div>'
-}
-let reorderMode=false,curBookType='all',curBookFilter='all',seriesBatchMode=false,seriesBatchSelected=new Set();
+ if(changed){localStorage.setItem(KEY,JSON.stringify(db));scheduleCloudSave()}
+ // ---- 內容區 ----
+ let body=$('homeBody');
+ if(!db.series.length){
+  body.innerHTML=`<div class="welcome"><div class="welcome-ic">📚</div><h2>歡迎來到你的收藏櫃</h2><p>書籍、專輯周邊、公仔娃娃⋯<br>都可以在這裡分櫃整理，收到哪一集、花了多少一目了然。</p><button class="btn purple big" onclick="openEditor()">＋ 新增第一件收藏</button><div class="muted" style="margin-top:12px">💡 小提醒：封面用「圖片網址」就好，長按網頁圖片 → 複製圖片位址</div></div>`;return
+ }
+ let near=db.series.map(s=>({s,...seriesStats(s)})).filter(x=>x.t>1&&x.pct>=40&&x.pct<100).sort((a,b)=>b.pct-a.pct).slice(0,3);
+ let recent=[];db.series.forEach(s=>(s.volumes||[]).forEach(v=>{if(v.owned&&v.purchaseDate)recent.push({s,v})}));
+ recent.sort((a,b)=>b.v.purchaseDate.localeCompare(a.v.purchaseDate));
+ let seen=new Set(),rec=[];for(let r of recent){if(seen.has(r.s.id))continue;seen.add(r.s.id);rec.push(r);if(rec.length>=8)break}
+ if(!rec.length)db.series.slice(0,8).forEach(s=>rec.push({s,v:null}));
+ let nearHtml=near.length?`<div class="card"><div class="row between"><h2>🔥 快收齊了</h2></div>${near.map(x=>`<div class="near" onclick="openSeries('${x.s.id}')">${coverHtml(x.s.cover,x.s.title,'cover','width:44px;height:60px')}<div class="meta"><div class="title" style="font-size:14px">${esc(x.s.title)}</div><div class="progress" style="margin:6px 0 4px"><i style="width:${x.pct}%"></i></div><div class="muted">${x.o}/${x.t}　還差 ${x.t-x.o} 個就收齊</div></div><span class="near-pct">${x.pct}%</span></div>`).join('')}</div>`:'';
+ let recHtml=`<div class="card"><div class="row between"><h2>${recent.length?'🆕 最近入手':'📚 我的收藏'}</h2><button class="btn small" onclick="go('books')">全部 ›</button></div><div class="hstrip">${rec.map(({s,v})=>{let st=seriesStats(s);return `<div class="hitem" onclick="openSeries('${s.id}')"><div class="hcover">${coverHtml(s.cover,s.title,'cwrap-img')}<span class="pctdot">${st.pct}%</span></div><div class="ht">${esc(s.title)}</div>${v&&v.volumeNo?`<div class="hs">${esc(v.volumeNo)}</div>`:''}</div>`}).join('')}</div></div>`;
+ let nextHtml='';
+ let wantN=vols.filter(v=>!v.owned).length;
+ if(wantN)nextHtml=`<div class="card nextwant" onclick="go('want')"><div><h2 style="margin:0 0 4px">💗 待入手清單</h2><div class="muted">還有 ${wantN} 個項目在等你，想找人徵求嗎？</div></div><button class="btn small purple" onclick="event.stopPropagation();openWantShareCard()">徵求圖卡</button></div>`;
+ body.innerHTML=nearHtml+recHtml+nextHtml
+}let reorderMode=false,curBookType='all',curBookFilter='all',seriesBatchMode=false,seriesBatchSelected=new Set();
 function toggleSeriesBatchMode(){seriesBatchMode=!seriesBatchMode;seriesBatchSelected.clear();if(seriesBatchMode)reorderMode=false;renderBooks()}
 function toggleSeriesBatchSelect(sid){if(seriesBatchSelected.has(sid))seriesBatchSelected.delete(sid);else seriesBatchSelected.add(sid);renderBooks()}
 function openSeriesBatchActions(){
@@ -716,6 +764,7 @@ function renderBooks(){
   if(filter==='unowned')return (s.volumes||[]).some(v=>!v.owned);
   if(filter==='sell')return (s.volumes||[]).some(v=>v.sell);
   if(filter==='ongoing')return s.status==='連載中';
+  if(filter==='done')return s.status==='已完結';
   if(filter==='oop')return (s.volumes||[]).some(v=>v.outOfPrint);
   return true
  });
@@ -738,7 +787,7 @@ function renderBooks(){
   let selected=seriesBatchSelected.has(s.id);
   let clickAction=seriesBatchMode?`toggleSeriesBatchSelect('${s.id}')`:`openSeries('${s.id}')`;
   return `<div class="shelfcard ${selected?'batch-selected':''}" onclick="${clickAction}"><div class="cwrap">${coverHtml(s.cover,s.title,'cwrap-img')}<span class="pctdot">${pct}%</span>${ratingBadge}${seriesBatchMode?`<span class="batch-check">${selected?'✓':''}</span>`:''}</div><div class="info"><div class="title">${esc(s.title)}</div></div></div>`
- }).join(''):'<div class="empty">找不到符合的作品。</div>'
+ }).join(''):(db.series.length?'<div class="emptycta"><b>找不到符合的收藏 🔍</b>換個關鍵字，或把上面的篩選改回「全部」試試。</div>':'<div class="emptycta"><b>收藏櫃還是空的 📚</b>把你的第一件收藏放進來吧！<br><button class="btn purple" onclick="openEditor()">＋ 新增收藏</button></div>')
 }
 function renderWant(){
  let rows=[];db.series.forEach(s=>(s.volumes||[]).filter(v=>!v.owned).forEach(v=>rows.push({s,v})));
@@ -746,7 +795,7 @@ function renderWant(){
  rows.sort((a,b)=>(order[a.v.priority||'中']??1)-(order[b.v.priority||'中']??1));
  let budget=rows.reduce((a,{v})=>a+Number(v.listPrice||0),0);
  document.getElementById('wantBudget').textContent=rows.length?`待購預算合計（依參考價）：${money(budget)}`:'';
- document.getElementById('wantList').innerHTML=rows.length?rows.map(({s,v})=>`<div class="bookrow" style="cursor:pointer" onclick="openSeries('${s.id}')">${coverHtml(v.cover||s.cover,s.title,'cover')}<div class="meta"><div class="title">${esc(s.title)}${v.volumeNo?` · ${esc(v.volumeNo)}`:''}</div><div class="muted">${money(v.listPrice)}${v.priority==='高'?' · <b style="color:var(--accent)">優先</b>':''}</div></div><button class="btn green small" onclick="event.stopPropagation();buyVolume('${s.id}','${v.id}')">已購入</button></div>`).join(''):'<div class="empty">目前沒有待入手的項目。</div>'
+ document.getElementById('wantList').innerHTML=rows.length?rows.map(({s,v})=>`<div class="bookrow" style="cursor:pointer" onclick="openSeries('${s.id}')">${coverHtml(v.cover||s.cover,s.title,'cover')}<div class="meta"><div class="title">${esc(s.title)}${v.volumeNo?` · ${esc(v.volumeNo)}`:''}</div><div class="muted">${money(v.listPrice)}${v.priority==='高'?' · <b style="color:var(--accent)">優先</b>':''}</div></div><button class="btn green small" onclick="event.stopPropagation();buyVolume('${s.id}','${v.id}')">已購入</button></div>`).join(''):'<div class="emptycta"><b>沒有待入手的項目 🎉</b>要嘛全部收齊了，要嘛還沒新增。<br>新增收藏時把「已經到手」關掉，就會出現在這裡。<br><button class="btn purple" onclick="openEditor()">＋ 新增收藏</button></div>'
 }
 function renderStats(){
  let vols=db.series.flatMap(s=>s.volumes||[]),owned=vols.filter(v=>v.owned);
@@ -773,8 +822,7 @@ function openEditor(b={}){
  <div class="full"><label id="fVolLabel">第一批要建立的項目／集數（可輸入範圍，如 1-12，或直接輸入名稱）</label><input id="fVol" value="1"></div>
  <div><label>版本</label>${editionSelectHtml('fEdition','')}</div>
  <div><label>參考／原價</label><input id="fList" type="number" step="0.01" value="${esc(b.listPrice??'')}"></div>
- <div class="full"><label>封面 URL 或從相簿上傳</label><input id="fCover" value="${esc(b.cover||'')}" placeholder="沒有圖片也沒關係，之後可以再補">
- <input type="file" accept="image/*" style="margin-top:8px" onchange="handleCoverFile(this,'fCover')"></div>
+ ${coverFieldHtml('fCover',b.cover||'')}
  </div>
  <div class="switch"><span>這一集已經到手了</span><input id="fOwned" type="checkbox" checked></div>
  <details style="margin-top:12px"><summary style="cursor:pointer;font-weight:800;color:var(--muted)">更多欄位（出版社、狀態、地區限定、價格細節⋯）</summary>
@@ -798,11 +846,11 @@ function createSeries(b){
  let type=document.getElementById('fType').value;
  let cfg=TYPE_FORM_CONFIG[type]||TYPE_FORM_CONFIG['書籍'];
  let character=(document.getElementById('fCharacter')?.value||'').trim();
- let s={id:uid(),title:document.getElementById('fTitle').value.trim(),type,authors:document.getElementById('fAuthor').value.split(/[,、]/).map(x=>x.trim()).filter(Boolean),character,publisher:document.getElementById('fPublisher').value.trim(),language:readLang('fLang'),category:readCategory('fCat'),status:document.getElementById('fStatus').value,cover:document.getElementById('fCover').value.trim(),createdAt:new Date().toISOString(),volumes:[]};
+ let s={id:uid(),title:document.getElementById('fTitle').value.trim(),type,authors:document.getElementById('fAuthor').value.split(/[,、]/).map(x=>x.trim()).filter(Boolean),character,publisher:document.getElementById('fPublisher').value.trim(),language:readLang('fLang'),category:readCategory('fCat'),status:document.getElementById('fStatus').value,cover:cleanUrl(document.getElementById('fCover').value),createdAt:new Date().toISOString(),volumes:[]};
  if(!s.title){toast('先幫這筆收藏取個名字吧');return}
  let tokens=parseVolumeTokens(document.getElementById('fVol').value.trim()||'1');
  let owned=document.getElementById('fOwned').checked,sell=document.getElementById('fSell').checked,outOfPrint=document.getElementById('fOOP').checked,today=new Date().toISOString().slice(0,10);
- let listPrice=document.getElementById('fList').value,purchasePrice=document.getElementById('fBuy').value,discount=document.getElementById('fDiscount').value,priority=document.getElementById('fPriority').value,notes=document.getElementById('fNotes').value.trim(),cover=document.getElementById('fCover').value.trim(),language=s.language,edition=readEdition('fEdition'),isbn13=document.getElementById('fISBN13').value.trim(),publishedDate=document.getElementById('fDate').value.trim(),itemKind=(document.getElementById('fItemKind').value||'').trim(),region=(document.getElementById('fRegion').value||'').trim();
+ let listPrice=document.getElementById('fList').value,purchasePrice=document.getElementById('fBuy').value,discount=document.getElementById('fDiscount').value,priority=document.getElementById('fPriority').value,notes=document.getElementById('fNotes').value.trim(),cover=cleanUrl(document.getElementById('fCover').value),language=s.language,edition=readEdition('fEdition'),isbn13=document.getElementById('fISBN13').value.trim(),publishedDate=document.getElementById('fDate').value.trim(),itemKind=(document.getElementById('fItemKind').value||'').trim(),region=(document.getElementById('fRegion').value||'').trim();
  tokens.forEach((no,i)=>{
   s.volumes.push({id:uid(),volumeNo:no,title:tokens.length===1?(b.subtitle||''):'',isbn13:tokens.length===1?isbn13:'',publishedDate:tokens.length===1?publishedDate:'',cover,language,edition,itemKind,region,listPrice,purchasePrice,discount,priority,notes,owned,sell,outOfPrint,purchaseDate:owned?today:''})
  });
@@ -892,8 +940,7 @@ ${cfg.showISBN?'<div><label>ISBN-13（僅單一集數時使用）</label><input 
 <div><label>折扣</label><input id="nvDisc" type="number" step="0.01"></div>
 <div><label>優先順序（想買清單用）</label><select id="nvPriority"><option value="中">中</option><option value="高">高</option><option value="低">低</option></select></div>
 <div class="full"><label>備註（套用到每一集）</label><input id="nvNotes" placeholder="例如：特典附錄"></div>
-<div class="full"><label>封面 URL 或從相簿上傳（套用到每一集）</label><input id="nvCover" value="${esc(s.cover||'')}">
-<input type="file" accept="image/*" style="margin-top:8px" onchange="handleCoverFile(this,'nvCover')"></div></div>
+${coverFieldHtml('nvCover',s.cover||'','封面圖片網址（套用到每一集）')}
 <div class="switch"><span>標記為絕版（套用到每一集）</span><input id="nvOOP" type="checkbox"></div>
 </details>
 <button class="btn purple" style="width:100%;margin-top:12px" onclick="saveNewVolume('${sid}')">加入單集</button>`) }
@@ -902,7 +949,7 @@ function saveNewVolume(sid){
  let cfg=TYPE_FORM_CONFIG[s.type]||TYPE_FORM_CONFIG['書籍'];
  let tokens=parseVolumeTokens(document.getElementById('nvNo').value.trim());
  let owned=document.getElementById('nvOwned').checked,today=new Date().toISOString().slice(0,10);
- let listPrice=document.getElementById('nvList').value,purchasePrice=document.getElementById('nvBuy').value,discount=document.getElementById('nvDisc').value,priority=document.getElementById('nvPriority').value,notes=document.getElementById('nvNotes').value.trim(),cover=document.getElementById('nvCover').value,edition=readEdition('nvEdition'),isbn13=(document.getElementById('nvISBN')?.value||'').trim(),publishedDate=document.getElementById('nvDate').value.trim(),itemKind=(document.getElementById('nvItemKind')?.value||'').trim(),region=(document.getElementById('nvRegion')?.value||'').trim(),outOfPrint=document.getElementById('nvOOP').checked;
+ let listPrice=document.getElementById('nvList').value,purchasePrice=document.getElementById('nvBuy').value,discount=document.getElementById('nvDisc').value,priority=document.getElementById('nvPriority').value,notes=document.getElementById('nvNotes').value.trim(),cover=cleanUrl(document.getElementById('nvCover').value),edition=readEdition('nvEdition'),isbn13=(document.getElementById('nvISBN')?.value||'').trim(),publishedDate=document.getElementById('nvDate').value.trim(),itemKind=(document.getElementById('nvItemKind')?.value||'').trim(),region=(document.getElementById('nvRegion')?.value||'').trim(),outOfPrint=document.getElementById('nvOOP').checked;
  tokens.forEach((no,i)=>{
   s.volumes.push({id:uid(),volumeNo:no,isbn13:tokens.length===1?isbn13:'',publishedDate:tokens.length===1?publishedDate:'',listPrice,purchasePrice,discount,priority,notes,cover,edition,itemKind,region,outOfPrint,owned,sell:false,purchaseDate:owned?today:''})
  });
@@ -947,14 +994,12 @@ function deleteVolume(sid,vid){
  if(!confirm('確定刪除這一集？'))return;
  let s=db.series.find(x=>x.id===sid);
  let v=s.volumes.find(x=>x.id===vid);
- if(v)deleteCoverIfCloud(v.cover);
  s.volumes=s.volumes.filter(v=>v.id!==vid);
- if(!s.volumes.length){deleteCoverIfCloud(s.cover);db.series=db.series.filter(x=>x.id!==sid);save();closeModal()}else{save();openSeries(sid)}
+ if(!s.volumes.length){db.series=db.series.filter(x=>x.id!==sid);save();closeModal()}else{save();openSeries(sid)}
 }
 function deleteSeries(sid){
  if(!confirm('確定要刪除整個作品（含所有集數）嗎？此動作無法復原。'))return;
  let s=db.series.find(x=>x.id===sid);
- if(s){deleteCoverIfCloud(s.cover);(s.volumes||[]).forEach(v=>deleteCoverIfCloud(v.cover))}
  db.series=db.series.filter(x=>x.id!==sid);save();closeModal();toast('已刪除作品')
 }
 function editSeriesInfo(sid){
@@ -971,8 +1016,7 @@ function editSeriesInfo(sid){
  <div><label>分類</label><div id="esCatWrap">${categorySelectHtml('esCat',curType,s.category||'')}</div></div>
  <div id="esStatusWrap"><label>連載狀態</label><select id="esStatus"><option value="未知" ${!s.status||s.status==='未知'?'selected':''}>未知</option><option value="連載中" ${s.status==='連載中'?'selected':''}>連載中（還會繼續出）</option><option value="已完結" ${s.status==='已完結'?'selected':''}>已完結（不用再追）</option></select></div>
  <div><label>個人評分</label><div id="esRatingWrap" class="starpick">${starsHtml('es',s.rating||0)}</div><input type="hidden" id="esRating" value="${s.rating||0}"></div>
- <div class="full"><label>封面 URL 或從相簿上傳</label><input id="esCover" value="${esc(s.cover||'')}" placeholder="沒有圖片也沒關係，之後可以再補">
- <input type="file" accept="image/*" style="margin-top:8px" onchange="handleCoverFile(this,'esCover')"></div>
+ ${coverFieldHtml('esCover',s.cover||'')}
  </div>
  <button class="btn purple" style="width:100%;margin-top:12px" onclick="saveSeriesInfo('${sid}')">儲存變更</button>
  <button class="btn red" style="width:100%;margin-top:8px" onclick="deleteSeries('${sid}')">刪除整個作品</button>`)
@@ -990,7 +1034,7 @@ function saveSeriesInfo(sid){
  s.category=readCategory('esCat');
  s.status=document.getElementById('esStatus').value;
  s.rating=Number(document.getElementById('esRating').value)||0;
- s.cover=document.getElementById('esCover').value.trim();
+ s.cover=cleanUrl(document.getElementById('esCover').value);
  s.authors.forEach(a=>bumpSuggest(type,cfg.authorField,a));
  if(cfg.showCharacter && s.character)bumpSuggest(type,'character',s.character);
  save();openSeries(sid)
@@ -1017,28 +1061,35 @@ function syncStatusHtml(){
  }
  return `<div class="row" style="gap:10px"><span style="width:10px;height:10px;border-radius:50%;background:var(--muted);flex:none"></span><div><div style="font-weight:800">僅保存在這台裝置</div><div class="muted">目前是在瀏覽器本機模式，資料不會自動同步到其他裝置。用 Claude 開啟這個 App 的連結可自動啟用同步；建議也定期匯出備份保險。</div></div></div>`
 }
+function themeSwatch(t){return `background:linear-gradient(135deg,${t.bg} 0 34%,${t.accent} 34% 68%,${t.heroFrom} 68% 100%)`}
 function openShare(){
  closeDrawer();
  let names=Object.keys(THEMES),cur=db.settings.theme;
  let cc=db.settings.customTheme||{accent:'#a8522c',dark:false};
- showModal(`<h2>外觀與備份</h2>
-<h3>外觀主題</h3>
-<div class="row wrap" style="margin-bottom:14px">${names.map(n=>`<button class="btn ${n===cur?'purple':''}" onclick="chooseTheme('${n}')">${esc(n)}</button>`).join('')}</div>
-<div class="card" style="margin:0 0 16px;padding:14px">
- <div class="row between" style="margin-bottom:10px"><h3 style="margin:0">自訂配色</h3>${cur==='自訂'?'<span class="tag purple">使用中</span>':''}</div>
- <div class="row wrap" style="gap:14px;align-items:center;margin-bottom:12px">
+ showModal(`<h2>🎨 外觀主題</h2>
+<div class="muted" style="margin-bottom:12px">點一下就會立刻套用，整個 App 的顏色都會跟著變。</div>
+<div class="themegrid">${names.map(n=>`<button class="tg ${n===cur?'on':''}" onclick="chooseTheme('${n}')"><span class="tg-sw" style="${themeSwatch(THEMES[n])}"></span><span class="tg-n">${esc(n)}</span>${n===cur?'<span class="tg-ok">✓</span>':''}</button>`).join('')}</div>
+<div class="card" style="margin:16px 0 0;padding:14px">
+ <div class="row between" style="margin-bottom:10px"><h3 style="margin:0">✨ 自訂配色</h3>${cur==='自訂'?'<span class="tag purple">使用中</span>':''}</div>
+ <div class="row wrap" style="gap:14px;align-items:center;margin-bottom:10px">
   <input id="customAccent" type="color" value="${esc(cc.accent||'#a8522c')}" style="width:56px;height:42px;padding:2px;border-radius:10px;border:1px solid var(--line)">
-  <div class="row wrap" style="gap:6px">
-   <button class="btn small ${!cc.dark?'purple':''}" onclick="setCustomBase(false)">淺色底</button>
-   <button class="btn small ${cc.dark?'purple':''}" onclick="setCustomBase(true)">深色底</button>
-  </div>
+  <div class="seg" style="flex:1;margin:0"><button class="${!cc.dark?'on':''}" onclick="setCustomBase(false)">淺色底</button><button class="${cc.dark?'on':''}" onclick="setCustomBase(true)">深色底</button></div>
  </div>
- <div class="muted" style="margin-bottom:10px">選一個你喜歡的顏色當主色，其他配色會自動幫你搭好。</div>
+ <div class="muted" style="margin-bottom:10px">挑一個喜歡的主色，其他配色會自動幫你搭好。</div>
  <button class="btn purple" style="width:100%" onclick="applyCustomTheme()">套用自訂配色</button>
-</div>
-<hr style="border:0;border-top:1px solid var(--line);margin:20px 0">
-<h3>備份與還原</h3><div class="muted" style="margin-bottom:10px">不管有沒有開啟雲端同步，都建議偶爾手動備份一份，多一層保障。</div>
-<div class="row wrap"><button class="btn" onclick="exportData()">⬇︎ 匯出備份 JSON</button><button class="btn" onclick="document.getElementById('importFile').click()">⬆︎ 匯入備份 JSON</button><button class="btn" onclick="exportCSV()">⬇︎ 匯出 CSV</button></div>`)
+</div>`)
+}
+function openBackup(){
+ closeDrawer();
+ let n=db.series.length,v=db.series.reduce((a,s)=>a+(s.volumes||[]).length,0);
+ showModal(`<h2>💾 備份與匯出</h2>
+<div class="notice" style="margin-bottom:14px">目前有 ${n} 個系列、${v} 個項目。就算已經登入同步，也建議偶爾手動備份一份，多一層保障。</div>
+<h3>完整備份（JSON）</h3>
+<div class="muted" style="margin-bottom:8px">包含所有資料與設定，換裝置或救援時用「匯入」還原。</div>
+<div class="row" style="gap:8px;margin-bottom:18px"><button class="btn" style="flex:1" onclick="exportData()">⬇︎ 匯出備份</button><button class="btn" style="flex:1" onclick="document.getElementById('importFile').click()">⬆︎ 匯入還原</button></div>
+<h3>試算表（CSV）</h3>
+<div class="muted" style="margin-bottom:8px">整理成表格，可以用 Excel 或 Google 試算表開啟分析。</div>
+<button class="btn" style="width:100%" onclick="exportCSV()">⬇︎ 匯出 CSV</button>`)
 }
 function chooseTheme(name){db.settings.theme=name;save();applyTheme(name);openShare()}
 function setCustomBase(dark){
@@ -1058,20 +1109,28 @@ function drawerHtml(){
  let loggedIn=fb && fbUser;
  let avatarEmoji=loggedIn && fbUser.photoURL && fbUser.photoURL.startsWith('avatar:')?fbUser.photoURL.slice(7):'🙂';
  let name=claudeSync?'Claude 使用者':(loggedIn?(fbUser.displayName||(fbUser.email||'').split('@')[0]||'我的帳號'):'訪客');
- let status=claudeSync?'☁️ 已跨裝置同步（Claude 帳號）':(loggedIn?('☁️ 已登入：'+esc(fbUser.email||'')):'📱 僅本機保存，尚未登入');
- return `<div class="drawer-head"><div class="drawer-avatar">${claudeSync?'📚':avatarEmoji}</div><div class="drawer-name">${esc(name)}</div><div class="drawer-status">${status}</div></div>
+ let status=claudeSync?'☁️ 已跨裝置同步（Claude 帳號）':(loggedIn?('☁️ 已同步 · '+esc(fbUser.email||'')):'📱 僅存在這台裝置');
+ let owned=db.series.flatMap(s=>s.volumes||[]).filter(v=>v.owned).length,lv=getCollectorLevel(owned);
+ let item=(fn,ic,label,sub)=>`<button onclick="${fn}"><span class="ic">${ic}</span><span class="tx">${label}${sub?`<small>${sub}</small>`:''}</span><span class="chev">›</span></button>`;
+ return `<div class="drawer-head"><div class="drawer-avatar">${claudeSync?'📚':avatarEmoji}</div><div class="drawer-name">${esc(name)}</div><div class="drawer-status">${status}</div><div class="drawer-lv">${lv.emoji} ${lv.level?'Lv.'+lv.level+' ':''}${esc(lv.title)}</div></div>
  <nav class="drawer-nav">
-  <button onclick="openProfileModal()"><span class="ic">👤</span>個人檔案</button>
-  <button onclick="openAccountSecurity()"><span class="ic">🔒</span>帳號安全</button>
-  <button onclick="openShare()"><span class="ic">🎨</span>外觀與備份</button>
-  ${loggedIn?`<button class="danger" onclick="closeDrawer();firebaseSignOut()"><span class="ic">🚪</span>登出</button>`:''}
+  <div class="drawer-label">帳號</div>
+  ${loggedIn||claudeSync?item('openProfileModal()','👤','個人檔案','暱稱、頭像')+item('openAccountSecurity()','☁️','帳號與同步','同步、改密碼'):item('openAccountSecurity()','🔑','登入／註冊','跨裝置同步收藏')}
+  <div class="drawer-label">個人化</div>
+  ${item('openShare()','🎨','外觀主題','9 組配色＋自訂')}
+  <div class="drawer-label">資料</div>
+  ${item('openBackup()','💾','備份與匯出','JSON、CSV')}
+  <div class="drawer-label">分享</div>
+  ${item('closeDrawer();openProfileShareCard()','📤','收藏名片','產生分享圖卡')}
+  ${item('closeDrawer();openWantShareCard()','🔍','徵求圖卡','待入手清單海報')}
+  ${loggedIn?`<div class="drawer-label"></div><button class="danger" onclick="closeDrawer();firebaseSignOut()"><span class="ic">🚪</span><span class="tx">登出</span></button>`:''}
  </nav>`
 }
 function openDrawer(){document.getElementById('sideDrawer').innerHTML=drawerHtml();document.getElementById('sideDrawer').classList.add('show');document.getElementById('drawerOverlay').classList.add('show')}
 function closeDrawer(){document.getElementById('sideDrawer').classList.remove('show');document.getElementById('drawerOverlay').classList.remove('show')}
 function openProfileModal(){
  closeDrawer();
- if(!fb || !fbUser){showModal(`<h2>個人檔案</h2><div class="notice">登入帳號後才能設定暱稱與頭像，先去「帳號安全」登入吧。</div><button class="btn purple" style="width:100%;margin-top:12px" onclick="openAccountSecurity()">前往登入</button>`);return}
+ if(!fb || !fbUser){showModal(`<h2>個人檔案</h2><div class="notice">登入帳號後才能設定暱稱與頭像，先去「帳號與同步」登入吧。</div><button class="btn purple" style="width:100%;margin-top:12px" onclick="openAccountSecurity()">前往登入</button>`);return}
  let curAvatar=fbUser.photoURL && fbUser.photoURL.startsWith('avatar:')?fbUser.photoURL.slice(7):'🙂';
  let avatarOptions=['🙂','🦊','🐱','🐧','🐼','🦄','🐸','🐻','🌟','📚','🎮','🎨'];
  showModal(`<h2>個人檔案</h2>
@@ -1098,22 +1157,19 @@ function providerLabel(id){
 }
 function openAccountSecurity(){
  closeDrawer();
- if(!fb){showModal(`<h2>帳號安全</h2><div class="notice">目前沒有連接雲端帳號功能，這台裝置是本機模式。</div>`);return}
- if(!fbUser){showModal(`<h2>帳號安全</h2><div class="notice" style="margin-bottom:14px">${syncStatusHtml()}</div>`);return}
+ if(!fb){showModal(`<h2>帳號與同步</h2><div class="notice">目前沒有連接雲端帳號功能，這台裝置是本機模式，資料只會存在這個瀏覽器裡。</div>`);return}
+ if(!fbUser){showModal(`<h2>登入／註冊</h2><div class="notice" style="margin-bottom:14px">${syncStatusHtml()}</div>`);return}
  let providers=(fbUser.providerData||[]).map(p=>providerLabel(p.providerId));
  let hasPasswordProvider=providers.includes('Email 密碼');
  let localImgCount=countLocalImages();
- showModal(`<h2>帳號安全</h2>
+ showModal(`<h2>帳號與同步</h2>
  <div class="muted" style="margin-bottom:14px">登入方式：${esc(providers.join('、')||'未知')}</div>
  <h3>手動同步</h3>
  <div class="muted" style="margin-bottom:10px">如果換裝置後資料還沒出現，先按「從雲端讀取」看看是不是還沒抓到最新資料；如果這台裝置的資料才是最新的，按「上傳到雲端」把它送上去。</div>
  <div class="row wrap" style="margin-bottom:6px"><button class="btn small purple" onclick="manualPullNow()">⬇︎ 從雲端讀取</button><button class="btn small" onclick="manualSyncNow()">⬆︎ 上傳到雲端</button></div>
  <div id="manualSyncMsg" class="muted" style="margin-bottom:14px"></div>
  <hr style="border:0;border-top:1px solid var(--line);margin:18px 0">
- <h3>雲端空間</h3>
- <div class="muted" style="margin-bottom:10px">${localImgCount>0?`這台裝置保留 ${localImgCount} 張內嵌封面；雲端同步會略過它們。清除後，這些封面會從本機收藏中移除。`:'這台裝置沒有內嵌封面；雲端同步只傳收藏資料，不需要搬移圖片到 Storage。'}</div>
- ${localImgCount>0?`<button class="btn red" style="width:100%;margin-bottom:8px" onclick="clearLocalEmbeddedImages()">🗑 清除這台裝置的 ${localImgCount} 張封面</button>`:''}
- <div class="muted" style="margin:10px 0">雲端 Storage 圖片清理與這些本機封面不同；若沒有曾搬移過圖片到 Storage，就不需要掃描雲端相簿。</div>
+ ${localImgCount>0?`<h3>舊版內嵌圖片</h3><div class="muted" style="margin-bottom:10px">這台裝置還留有 ${localImgCount} 張舊版內嵌封面，雲端同步會略過它們。建議清除後，用「圖片網址」重新貼上。</div><button class="btn red" style="width:100%;margin-bottom:8px" onclick="clearLocalEmbeddedImages()">🗑 清除這 ${localImgCount} 張舊封面</button>`:`<div class="muted">封面現在都用圖片網址保存，同步資料很輕，不會再有容量問題 👍</div>`}
  <hr style="border:0;border-top:1px solid var(--line);margin:18px 0">
  ${hasPasswordProvider?`<h3>修改密碼</h3>
  <input id="pwOld" type="password" placeholder="目前密碼" style="margin-bottom:6px">
@@ -1143,22 +1199,6 @@ function clearLocalEmbeddedImages(){
  toast(`已清除 ${removed} 張本機封面，收藏資料保留`);
  manualSyncNow()
 }
-async function cleanupUnusedCloudImages(){
- if(!fb || !fbUser){toast('請先登入才能清理雲端圖片');return}
- let msg=document.getElementById('cleanupMsg');
- if(msg)msg.textContent='掃描雲端相簿中…';
- let referenced=new Set();
- db.series.forEach(s=>{if(s.cover)referenced.add(s.cover);(s.volumes||[]).forEach(v=>{if(v.cover)referenced.add(v.cover)})});
- try{
-  let files=await fb.listCovers(fbUser.uid);
-  let unused=files.filter(f=>!referenced.has(f.url));
-  if(!unused.length){if(msg)msg.textContent='沒有找到閒置的雲端圖片，很乾淨！';return}
-  if(msg)msg.textContent=`找到 ${unused.length} 張沒有在用的圖片，清理中…`;
-  let ok=0;
-  for(let f of unused){try{await fb.deleteCoverPath(f.path);ok++}catch(e){}}
-  if(msg)msg.textContent=`已清除 ${ok} 張閒置圖片`
- }catch(e){if(msg)msg.textContent='掃描失敗，請確認網路連線後再試一次'}
-}
 async function manualSyncNow(){
  if(!syncAdapter){toast('目前沒有連接雲端，請先登入');return}
  cloudWriteError='';
@@ -1175,29 +1215,6 @@ async function manualPullNow(){
  let msg=document.getElementById('manualSyncMsg');if(msg)msg.textContent='讀取中…';
  await loadFromCloud();
  if(msg)msg.textContent='已從雲端讀取最新資料'
-}
-async function migrateImagesToCloud(){
- if(!fb || !fbUser){toast('請先登入才能搬移圖片到雲端');return}
- let jobs=[];
- db.series.forEach(s=>{
-  if(s.cover && s.cover.startsWith('data:'))jobs.push({obj:s,key:'cover'});
-  (s.volumes||[]).forEach(v=>{if(v.cover && v.cover.startsWith('data:'))jobs.push({obj:v,key:'cover'})})
- });
- if(!jobs.length){toast('沒有需要搬移的圖片');return}
- let msg=document.getElementById('migrateMsg');
- let ok=0,fail=0;
- for(let i=0;i<jobs.length;i++){
-  if(msg)msg.textContent=`搬移中… ${i+1}/${jobs.length}`;
-  try{
-   let url=await fb.uploadCoverImage(fbUser.uid,jobs[i].obj[jobs[i].key]);
-   jobs[i].obj[jobs[i].key]=url;ok++
-  }catch(e){fail++}
- }
- localStorage.setItem(KEY,JSON.stringify(db));
- scheduleCloudSave();
- renderAll();
- toast(`搬移完成：成功 ${ok} 張${fail?`，失敗 ${fail} 張`:''}`);
- openAccountSecurity()
 }
 async function changePassword(){
  let oldPass=document.getElementById('pwOld').value,newPass=document.getElementById('pwNew').value;
@@ -1217,24 +1234,6 @@ async function firebaseForgotPassword(){
  if(!email){if(m)m.textContent='請先輸入 Email';return}
  try{await fb.sendPasswordReset(email);if(m){m.style.color='var(--green)';m.textContent='已寄出密碼重設信，去信箱收信'}}
  catch(e){if(m){m.style.color='var(--red)';m.textContent=friendlyFbError(e)}}
-}
-function loadImageSafe(src){
- return new Promise((resolve,reject)=>{
-  if(!src){reject(new Error('no src'));return}
-  let img=new Image();
-  if(!src.startsWith('data:'))img.crossOrigin='anonymous';
-  img.onload=()=>resolve(img);
-  img.onerror=()=>reject(new Error('封面載入失敗'));
-  img.src=src
- })
-}
-function roundRectPath(ctx,x,y,w,h,r){
- ctx.beginPath();ctx.moveTo(x+r,y);ctx.arcTo(x+w,y,x+w,y+h,r);ctx.arcTo(x+w,y+h,x,y+h,r);ctx.arcTo(x,y+h,x,y,r);ctx.arcTo(x,y,x+w,y,r);ctx.closePath()
-}
-function drawCoverContain(ctx,img,x,y,w,h){
- let ir=img.width/img.height,br=w/h,dw,dh,dx,dy;
- if(ir>br){dh=h;dw=h*ir;dx=x-(dw-w)/2;dy=y}else{dw=w;dh=w/ir;dx=x;dy=y-(dh-h)/2}
- ctx.drawImage(img,dx,dy,dw,dh)
 }
 function wrapCJKText(ctx,text,x,y,maxWidth,lineHeight,maxLines,align){
  let line='',lines=[];
@@ -1316,230 +1315,7 @@ function drawPlaceholderArt(ctx,x,y,w,h,title,type,accent,accent2,cardbg,text){
  ctx.font=`800 ${m*0.055}px ${cardFont()}`;ctx.fillStyle=accent;ctx.globalAlpha=.85;
  ctx.fillText(type||'收藏',cx,cy+r+m*0.12);ctx.globalAlpha=1
 }
-async function drawShareCard(canvas,s,ratio,useCover=true){
- let w=ratio==='16:9'?1200:675, h=ratio==='16:9'?675:1200;
- canvas.width=w;canvas.height=h;
- let ctx=canvas.getContext('2d');
- let cs=getComputedStyle(document.documentElement);
- let bg=(cs.getPropertyValue('--bg')||'#f6f1e9').trim();
- let accent=(cs.getPropertyValue('--accent')||'#a8522c').trim();
- let accent2=(cs.getPropertyValue('--accent2')||'#f3e3d3').trim();
- let text=(cs.getPropertyValue('--text')||'#3b332c').trim();
- let cardbg=(cs.getPropertyValue('--card')||'#fffaf3').trim();
- drawCardBackground(ctx,w,h,accent,accent2,bg);
- let total=(s.volumes||[]).length,owned=(s.volumes||[]).filter(v=>v.owned).length,pct=total?Math.round(owned/total*100):0;
- let pad=w*0.07,landscape=ratio==='16:9';
- let coverOk=false,img=null;
- if(useCover && s.cover){try{img=await loadImageSafe(s.cover);coverOk=true}catch(e){coverOk=false}}
- let font=()=>cardFont();
- let textX,textY,textW,coverX,coverY,coverW,coverH;
- if(landscape){coverW=h-pad*2;coverH=coverW;coverX=pad;coverY=pad}
- else{coverW=w-pad*2;coverH=w*0.62-pad;coverX=pad;coverY=pad}
- ctx.save();ctx.shadowColor=hexA(text,.3);ctx.shadowBlur=w*0.03;ctx.shadowOffsetY=w*0.014;
- roundRectPath(ctx,coverX,coverY,coverW,coverH,w*0.026);ctx.fillStyle=cardbg;ctx.fill();ctx.restore();
- ctx.save();roundRectPath(ctx,coverX,coverY,coverW,coverH,w*0.026);ctx.clip();
- if(coverOk){drawCoverContain(ctx,img,coverX,coverY,coverW,coverH)}
- else{drawPlaceholderArt(ctx,coverX,coverY,coverW,coverH,s.title,s.type,accent,accent2,cardbg,text)}
- let gloss=ctx.createLinearGradient(0,coverY,0,coverY+coverH*0.4);
- gloss.addColorStop(0,'rgba(255,255,255,.18)');gloss.addColorStop(1,'rgba(255,255,255,0)');
- ctx.fillStyle=gloss;ctx.fillRect(coverX,coverY,coverW,coverH*0.4);
- ctx.restore();
- if(landscape){textX=coverX+coverW+pad*0.9;textY=pad;textW=w-textX-pad}
- else{textX=pad;textY=coverY+coverH+pad*0.85;textW=w-pad*2}
- let cx=landscape?textX:textX+textW/2;
- let curY=textY;
- let chipTxt=[s.type,s.status&&s.status!=='未知'?s.status:null].filter(Boolean).join(' · ');
- if(chipTxt){
-  ctx.font=`800 ${textW*0.04}px ${font()}`;ctx.textAlign='left';ctx.textBaseline='middle';
-  let chipPadX=textW*0.032,chipH=textW*0.078,tw=ctx.measureText(chipTxt).width;
-  let chipX=landscape?textX:textX+textW/2-(tw+chipPadX*2)/2;
-  roundRectPath(ctx,chipX,curY,tw+chipPadX*2,chipH,chipH/2);ctx.fillStyle=hexA(accent,.15);ctx.fill();
-  ctx.fillStyle=accent;ctx.fillText(chipTxt,chipX+chipPadX,curY+chipH/2+1);
-  curY+=chipH+textW*0.035
- }
- ctx.textAlign=landscape?'left':'center';ctx.textBaseline='top';
- let titleSize=textW*(landscape?0.095:0.086);
- ctx.font=`900 ${titleSize}px ${font()}`;ctx.fillStyle=text;
- let linesUsed=wrapCJKText(ctx,s.title||'未命名作品',cx,curY,textW,titleSize*1.25,2,landscape?'left':'center');
- curY+=linesUsed*titleSize*1.25+titleSize*0.3;
- if((s.authors||[]).length){
-  ctx.font=`600 ${textW*0.044}px ${font()}`;ctx.globalAlpha=.62;
-  ctx.fillText((s.authors||[]).join('、'),cx,curY);ctx.globalAlpha=1;
-  curY+=textW*0.044*1.7
- }
- curY+=textW*0.04;
- ctx.strokeStyle=hexA(text,.13);ctx.lineWidth=Math.max(1,w*0.0018);
- ctx.beginPath();
- if(landscape){ctx.moveTo(textX,curY);ctx.lineTo(textX+textW*0.3,curY)}
- else{ctx.moveTo(textX+textW/2-textW*0.15,curY);ctx.lineTo(textX+textW/2+textW*0.15,curY)}
- ctx.stroke();
- curY+=textW*0.06;
- let ringR=textW*0.145,ringThick=Math.max(6,textW*0.02);
- let ringCx=landscape?textX+ringR:textX+textW/2,ringCy=curY+ringR;
- drawProgressRing(ctx,ringCx,ringCy,ringR,ringThick,pct,hexA(text,.1),accent);
- ctx.textAlign='center';ctx.textBaseline='middle';
- ctx.font=`900 ${ringR*0.48}px ${font()}`;ctx.fillStyle=accent;
- ctx.fillText(pct+'%',ringCx,ringCy-ringR*0.08);
- ctx.font=`700 ${ringR*0.19}px ${font()}`;ctx.fillStyle=text;ctx.globalAlpha=.55;
- ctx.fillText('已收藏',ringCx,ringCy+ringR*0.32);ctx.globalAlpha=1;
- if(landscape){
-  ctx.textAlign='left';ctx.textBaseline='middle';
-  ctx.font=`800 ${textW*0.058}px ${font()}`;ctx.fillStyle=text;
-  ctx.fillText(`${owned} / ${total}`,ringCx+ringR+textW*0.06,ringCy-textW*0.02);
-  ctx.font=`600 ${textW*0.032}px ${font()}`;ctx.globalAlpha=.58;
-  ctx.fillText('已收藏冊數',ringCx+ringR+textW*0.06,ringCy+textW*0.034);ctx.globalAlpha=1
- } else {
-  ctx.textAlign='center';ctx.textBaseline='top';
-  ctx.font=`800 ${textW*0.05}px ${font()}`;ctx.fillStyle=text;
-  ctx.fillText(`已收藏 ${owned} / ${total}`,ringCx,ringCy+ringR+textW*0.05)
- }
- drawFooterBrand(ctx,w,h,pad,accent,text);
- return coverOk
-}
-let lastShareRatio='16:9';
-function openShareCard(sid){
- let s=db.series.find(x=>x.id===sid);if(!s)return;
- lastShareRatio='16:9';
- showModal(`<h2>分享圖卡</h2>
-<div class="notice">產生一張可以下載、分享到限時動態或社群的收藏卡圖片。不想放實體封面也沒關係，可以關掉下面的開關，圖卡會換成質感佔位設計。</div>
-<div class="row wrap" style="margin:10px 0"><button class="btn small purple" onclick="renderShareCardPreview('${sid}','16:9')">橫式 16:9</button><button class="btn small" onclick="renderShareCardPreview('${sid}','9:16')">直式 9:16（限動）</button></div>
-<div class="switch"><span>圖卡中顯示作品封面</span><input id="scUseCover" type="checkbox" ${s.cover?'checked':''} ${s.cover?'':'disabled'} onchange="renderShareCardPreview('${sid}',lastShareRatio)"></div>
-<div style="display:flex;justify-content:center;background:linear-gradient(135deg,var(--accent2),var(--card));border:1px solid var(--line);border-radius:var(--radius-md);padding:14px;margin-top:10px"><canvas id="shareCanvas" style="max-width:100%;height:auto;border-radius:var(--radius-sm);box-shadow:var(--shadow-md)"></canvas></div>
-<button class="btn purple" style="width:100%;margin-top:12px" onclick="downloadShareCard('${esc(s.title).replace(/'/g,"\\'")}')">下載圖片</button>`)
- renderShareCardPreview(sid,'16:9')
-}
-async function renderShareCardPreview(sid,ratio){
- lastShareRatio=ratio;
- let s=db.series.find(x=>x.id===sid);if(!s)return;
- let canvas=document.getElementById('shareCanvas');if(!canvas)return;
- let useCoverEl=document.getElementById('scUseCover');
- let useCover=useCoverEl?useCoverEl.checked:true;
- let ok=await drawShareCard(canvas,s,ratio,useCover);
- if(useCover && !ok && s.cover)toast('封面圖片無法放入（外部網站限制），已改用佔位設計')
-}
-function downloadShareCard(title){
- let canvas=document.getElementById('shareCanvas');if(!canvas)return;
- canvas.toBlob(blob=>{
-  if(!blob){toast('產生圖片失敗');return}
-  let a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=`${title||'收藏卡'}.png`;a.click()
- },'image/png')
-}
-function cardFont(){return '-apple-system,BlinkMacSystemFont,"PingFang TC","Noto Sans TC",sans-serif'}
-function drawChipRow(ctx,items,x,y,maxWidth,fontSize,bg,fg){
- let gap=fontSize*0.5,padX=fontSize*0.6,chipH=fontSize+fontSize*0.9,lineGap=fontSize*0.45;
- let curX=x,curY=y;
- ctx.font=`700 ${fontSize}px ${cardFont()}`;ctx.textAlign='left';ctx.textBaseline='middle';
- items.forEach(txt=>{
-  let tw=ctx.measureText(txt).width,chipW=tw+padX*2;
-  if(curX+chipW>x+maxWidth && curX>x){curX=x;curY+=chipH+lineGap}
-  ctx.save();ctx.shadowColor='rgba(0,0,0,.08)';ctx.shadowBlur=fontSize*0.4;ctx.shadowOffsetY=fontSize*0.12;
-  roundRectPath(ctx,curX,curY,chipW,chipH,chipH/2);ctx.fillStyle=bg;ctx.fill();ctx.restore();
-  ctx.fillStyle=fg;ctx.fillText(txt,curX+padX,curY+chipH/2+1);
-  curX+=chipW+gap
- });
- return curY+chipH
-}
 let profileCardPicks=new Set(),lastProfileRatio='16:9';
-async function drawProfileShareCard(canvas,ratio){
- let w=ratio==='16:9'?1200:675, h=ratio==='16:9'?675:1200;
- canvas.width=w;canvas.height=h;
- let ctx=canvas.getContext('2d');
- let cs=getComputedStyle(document.documentElement);
- let bg=(cs.getPropertyValue('--bg')||'#f6f1e9').trim();
- let accent=(cs.getPropertyValue('--accent')||'#a8522c').trim();
- let accent2=(cs.getPropertyValue('--accent2')||'#f3e3d3').trim();
- let text=(cs.getPropertyValue('--text')||'#3b332c').trim();
- let cardbg=(cs.getPropertyValue('--card')||'#fffaf3').trim();
- drawCardBackground(ctx,w,h,accent,accent2,bg);
- let vols=db.series.flatMap(s=>s.volumes||[]);
- let owned=vols.filter(v=>v.owned);
- let lv=getCollectorLevel(owned.length);
- let byType={};
- db.series.forEach(s=>{let t=s.type||'書籍';let c=(s.volumes||[]).filter(v=>v.owned).length;if(c)byType[t]=(byType[t]||0)+c});
- let authorCount={};
- db.series.forEach(s=>{let c=(s.volumes||[]).filter(v=>v.owned).length;if(!c)return;(s.authors||[]).forEach(a=>{if(a)authorCount[a]=(authorCount[a]||0)+c})});
- let topAuthors=Object.entries(authorCount).sort((a,b)=>b[1]-a[1]).slice(0,4).map(([a])=>a);
- let picks=[...profileCardPicks].map(id=>db.series.find(s=>s.id===id)).filter(Boolean).slice(0,3);
- let pad=w*0.07,landscape=ratio==='16:9';
- let picksAreaH=picks.length?(landscape?h*0.32:w*0.46):0;
- let topAvailH=h-pad*2-(picksAreaH?picksAreaH+pad*0.7:0);
- let badgeSize=landscape?Math.min(topAvailH,h*0.6):Math.min(w-pad*2,topAvailH*0.55);
- let badgeX,badgeY,textX,textY,textW;
- if(landscape){badgeX=pad;badgeY=pad;textX=badgeX+badgeSize+pad*0.9;textY=pad;textW=w-textX-pad}
- else{badgeX=(w-badgeSize)/2;badgeY=pad;textX=pad;textY=badgeY+badgeSize+pad*0.6;textW=w-pad*2}
- let bcx=badgeX+badgeSize/2,bcy=badgeY+badgeSize/2,br=badgeSize/2;
- let glow=ctx.createRadialGradient(bcx,bcy,br*0.55,bcx,bcy,br*1.15);
- glow.addColorStop(0,hexA(accent,.22));glow.addColorStop(1,hexA(accent,0));
- ctx.fillStyle=glow;ctx.beginPath();ctx.arc(bcx,bcy,br*1.15,0,Math.PI*2);ctx.fill();
- ctx.save();ctx.lineWidth=Math.max(4,badgeSize*0.032);ctx.strokeStyle=accent;
- ctx.beginPath();ctx.arc(bcx,bcy,br-ctx.lineWidth/2,0,Math.PI*2);ctx.stroke();ctx.restore();
- ctx.save();ctx.shadowColor=hexA(text,.2);ctx.shadowBlur=badgeSize*0.05;
- ctx.beginPath();ctx.arc(bcx,bcy,br*0.86,0,Math.PI*2);ctx.fillStyle=cardbg;ctx.fill();ctx.restore();
- ctx.textAlign='center';ctx.textBaseline='middle';
- ctx.font=`${badgeSize*0.32}px ${cardFont()}`;ctx.fillStyle=text;
- ctx.fillText(lv.emoji,bcx,bcy-badgeSize*0.13);
- if(lv.level){ctx.font=`900 ${badgeSize*0.082}px ${cardFont()}`;ctx.fillStyle=accent;ctx.fillText(`LV.${lv.level}`,bcx,bcy+badgeSize*0.15)}
- ctx.font=`800 ${badgeSize*0.08}px ${cardFont()}`;ctx.fillStyle=text;ctx.globalAlpha=.85;
- ctx.fillText(lv.title,bcx,bcy+badgeSize*0.3);ctx.globalAlpha=1;
- ctx.textAlign=landscape?'left':'center';ctx.textBaseline='top';
- let cx=landscape?textX:textX+textW/2;
- let chipX=landscape?textX:textX;
- let curY=textY;
- ctx.font=`800 ${textW*0.03}px ${cardFont()}`;ctx.fillStyle=accent;ctx.globalAlpha=.9;
- ctx.fillText('COLLECTION STATS',cx,curY);ctx.globalAlpha=1;
- curY+=textW*0.03*1.9;
- ctx.font=`900 ${textW*0.09}px ${cardFont()}`;ctx.fillStyle=text;
- ctx.fillText(`已收藏 ${owned.length} 件`,cx,curY);
- curY+=textW*0.09*1.3+textW*0.012;
- ctx.font=`600 ${textW*0.04}px ${cardFont()}`;ctx.globalAlpha=.68;
- ctx.fillText(`${db.series.length} 個系列／作品`,cx,curY);ctx.globalAlpha=1;
- curY+=textW*0.04*1.6;
- ctx.strokeStyle=hexA(text,.12);ctx.lineWidth=Math.max(1,w*0.0018);
- ctx.beginPath();
- if(landscape){ctx.moveTo(chipX,curY);ctx.lineTo(chipX+textW*0.26,curY)}else{ctx.moveTo(cx-textW*0.13,curY);ctx.lineTo(cx+textW*0.13,curY)}
- ctx.stroke();
- curY+=textW*0.035;
- if(Object.keys(byType).length){
-  let chips=Object.entries(byType).map(([t,c])=>`${t} ${c}件`);
-  curY=drawChipRow(ctx,chips,chipX,curY,textW,textW*0.034,accent2,accent)+textW*0.03
- }
- if(topAuthors.length){
-  ctx.textAlign=landscape?'left':'center';ctx.textBaseline='top';
-  ctx.font=`800 ${textW*0.032}px ${cardFont()}`;ctx.fillStyle=text;ctx.globalAlpha=.65;
-  ctx.fillText('喜歡的作者／IP／品牌',cx,curY);ctx.globalAlpha=1;
-  curY+=textW*0.032*1.6;
-  curY=drawChipRow(ctx,topAuthors,chipX,curY,textW,textW*0.034,cardbg,text)
- }
- if(picks.length){
-  let picksY=h-pad-picksAreaH;
-  ctx.textAlign=landscape?'left':'center';ctx.textBaseline='top';
-  ctx.font=`800 ${w*0.028}px ${cardFont()}`;ctx.fillStyle=text;ctx.globalAlpha=.85;
-  ctx.fillText('推薦作品',landscape?pad:w/2,picksY);ctx.globalAlpha=1;
-  let labelH=w*0.028*1.7;
-  let n=picks.length,gap=w*0.03,totalW=w-pad*2;
-  let thumbW=(totalW-gap*(n-1))/n;
-  let thumbH=Math.max(40,picksAreaH-labelH-w*0.05);
-  let thumbY=picksY+labelH;
-  for(let i=0;i<n;i++){
-   let s=picks[i],x=pad+i*(thumbW+gap),img=null;
-   if(s.cover){try{img=await loadImageSafe(s.cover)}catch(e){img=null}}
-   ctx.save();ctx.shadowColor=hexA(text,.22);ctx.shadowBlur=w*0.012;ctx.shadowOffsetY=w*0.006;
-   roundRectPath(ctx,x,thumbY,thumbW,thumbH,14);ctx.fillStyle=cardbg;ctx.fill();ctx.restore();
-   ctx.save();roundRectPath(ctx,x,thumbY,thumbW,thumbH,14);ctx.clip();
-   if(img)drawCoverContain(ctx,img,x,thumbY,thumbW,thumbH);
-   else{drawPlaceholderArt(ctx,x,thumbY,thumbW,thumbH,s.title,s.type,accent,accent2,cardbg,text)}
-   ctx.restore();
-   let rankR=Math.max(11,w*0.016);
-   ctx.save();ctx.shadowColor='rgba(0,0,0,.25)';ctx.shadowBlur=rankR*0.5;
-   ctx.beginPath();ctx.arc(x+rankR*1.1,thumbY+rankR*1.1,rankR,0,Math.PI*2);ctx.fillStyle=accent;ctx.fill();ctx.restore();
-   ctx.fillStyle='#fff';ctx.font=`800 ${rankR*1.05}px ${cardFont()}`;ctx.textAlign='center';ctx.textBaseline='middle';
-   ctx.fillText(String(i+1),x+rankR*1.1,thumbY+rankR*1.1+1);
-   ctx.font=`700 ${w*0.022}px ${cardFont()}`;ctx.fillStyle=text;ctx.textAlign='center';ctx.textBaseline='top';
-   wrapCJKText(ctx,s.title,x+thumbW/2,thumbY+thumbH+6,thumbW,w*0.022*1.3,2)
-  }
- }
- drawFooterBrand(ctx,w,h,pad,accent,text)
-}
 function renderPickListHtml(){
  if(!db.series.length)return '<div class="empty">還沒有收藏可以推薦。</div>'
  return db.series.map(s=>`<label style="display:flex;align-items:center;gap:10px;padding:6px 4px;border-bottom:1px solid var(--line)"><input type="checkbox" style="width:auto" ${profileCardPicks.has(s.id)?'checked':''} onchange="togglePick('${s.id}',this.checked)">${coverHtml(s.cover,s.title,'',`width:32px;height:44px;border-radius:6px;object-fit:cover;flex:none`)}<span style="font-size:13px;font-weight:700;flex:1">${esc(s.title)}</span></label>`).join('')
@@ -1551,22 +1327,6 @@ function togglePick(sid,checked){
  } else profileCardPicks.delete(sid);
  document.getElementById('pickList').innerHTML=renderPickListHtml();
  renderProfileCardPreview(lastProfileRatio)
-}
-function openProfileShareCard(){
- profileCardPicks=new Set([...db.series].filter(s=>s.rating>=4).sort((a,b)=>(b.rating||0)-(a.rating||0)).slice(0,3).map(s=>s.id));
- showModal(`<h2>分享我的收藏</h2>
-<div class="notice">分享你的收藏等級、數量，還可以挑最多 3 個想推薦給朋友的作品一起放進圖卡。不會包含個別項目的購入價格等細節。</div>
-<div class="row wrap" style="margin:10px 0"><button class="btn small purple" onclick="renderProfileCardPreview('16:9')">橫式 16:9</button><button class="btn small" onclick="renderProfileCardPreview('9:16')">直式 9:16（限動）</button></div>
-<div style="display:flex;justify-content:center;background:var(--accent2);border-radius:16px;padding:12px"><canvas id="shareCanvas" style="max-width:100%;height:auto;border-radius:12px"></canvas></div>
-<h3 style="margin-top:16px">推薦作品（最多 3 個，預設帶入你評 4★ 以上的作品）</h3>
-<div id="pickList" style="max-height:220px;overflow:auto;border:1px solid var(--line);border-radius:14px;padding:8px">${renderPickListHtml()}</div>
-<button class="btn purple" style="width:100%;margin-top:12px" onclick="downloadShareCard('我的收藏')">下載圖片</button>`)
- renderProfileCardPreview('16:9')
-}
-async function renderProfileCardPreview(ratio){
- lastProfileRatio=ratio;
- let canvas=document.getElementById('shareCanvas');if(!canvas)return;
- await drawProfileShareCard(canvas,ratio)
 }
 function buildWantGroups(){
  let groups=[];
@@ -1606,74 +1366,356 @@ function downloadWantText(){
  let ta=document.getElementById('wantTextArea');if(!ta)return;
  let blob=new Blob([ta.value],{type:'text/plain;charset=utf-8'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='徵求清單.txt';a.click()
 }
+/* ================= 分享圖卡（新版） ================= */
+const CARD_SIZES={'1:1':[1080,1080],'9:16':[900,1600],'16:9':[1600,900]};
+let cardRatio='1:1',_cardToken=0;
+function cardSize(r){return CARD_SIZES[r]||CARD_SIZES['1:1']}
+function cardFont(){return '-apple-system,BlinkMacSystemFont,"PingFang TC","Noto Sans TC","Microsoft JhengHei",sans-serif'}
+function cardTheme(){
+ let cs=getComputedStyle(document.documentElement),g=k=>(cs.getPropertyValue('--'+k)||'').trim();
+ return{bg:g('bg')||'#f6f1e9',card:g('card')||'#fffaf3',text:g('text')||'#3b332c',accent:g('accent')||'#a8522c',accent2:g('accent2')||'#f3e3d3',from:g('heroFrom')||'#332a22',to:g('heroTo')||'#a8522c'}
+}
+function loadImgOnce(src,cors,ms){
+ return new Promise((res,rej)=>{
+  let i=new Image(),done=false,tm=setTimeout(()=>{if(!done){done=true;rej(new Error('timeout'))}},ms||8000);
+  if(cors)i.crossOrigin='anonymous';
+  i.referrerPolicy='no-referrer';
+  i.onload=()=>{if(!done){done=true;clearTimeout(tm);res(i)}};
+  i.onerror=()=>{if(!done){done=true;clearTimeout(tm);rej(new Error('load'))}};
+  i.src=src
+ })
+}
+const _imgCache=new Map();
+async function loadImageSafe(src){
+ if(!src)throw new Error('no src');
+ if(_imgCache.has(src))return _imgCache.get(src);
+ let bare=src.replace(/^https?:\/\//,'');
+ let cands=(src.startsWith('data:')||src.startsWith('blob:'))?[[src,false]]:[
+  [src,true],
+  ['https://wsrv.nl/?url='+encodeURIComponent(bare)+'&w=700&output=jpg',true],
+  ['https://images.weserv.nl/?url='+encodeURIComponent(bare)+'&w=700&output=jpg',true]
+ ];
+ let last;
+ for(let[u,c]of cands){try{let img=await loadImgOnce(u,c,u===src?6000:9000);_imgCache.set(src,img);return img}catch(e){last=e}}
+ throw last||new Error('封面載入失敗')
+}
+function roundRectPath(ctx,x,y,w,h,r){
+ r=Math.max(0,Math.min(r,w/2,h/2));
+ ctx.beginPath();ctx.moveTo(x+r,y);ctx.arcTo(x+w,y,x+w,y+h,r);ctx.arcTo(x+w,y+h,x,y+h,r);ctx.arcTo(x,y+h,x,y,r);ctx.arcTo(x,y,x+w,y,r);ctx.closePath()
+}
+function drawCoverContain(ctx,img,x,y,w,h){
+ let ir=img.width/img.height,br=w/h,dw,dh,dx,dy;
+ if(ir>br){dh=h;dw=h*ir;dx=x-(dw-w)/2;dy=y}else{dw=w;dh=w/ir;dx=x;dy=y-(dh-h)/2}
+ ctx.drawImage(img,dx,dy,dw,dh)
+}
+function drawBlurBackdrop(ctx,w,h,img,t){
+ let g=ctx.createLinearGradient(0,0,w,h);g.addColorStop(0,t.from);g.addColorStop(1,t.to);ctx.fillStyle=g;ctx.fillRect(0,0,w,h);
+ if(img){
+  let sw=28,sh=Math.max(8,Math.round(28*h/w)),sm=document.createElement('canvas');sm.width=sw;sm.height=sh;
+  let sc=sm.getContext('2d');sc.imageSmoothingQuality='high';drawCoverContain(sc,img,0,0,sw,sh);
+  ctx.save();ctx.imageSmoothingEnabled=true;ctx.imageSmoothingQuality='high';ctx.globalAlpha=.92;ctx.drawImage(sm,0,0,sw,sh,-w*.06,-h*.06,w*1.12,h*1.12);ctx.restore()
+ }
+ let v=ctx.createLinearGradient(0,0,0,h);v.addColorStop(0,'rgba(0,0,0,.30)');v.addColorStop(.5,'rgba(0,0,0,.40)');v.addColorStop(1,'rgba(0,0,0,.68)');ctx.fillStyle=v;ctx.fillRect(0,0,w,h);
+ let r1=ctx.createRadialGradient(w*.88,h*.04,0,w*.88,h*.04,w*.6);r1.addColorStop(0,hexA(t.accent,.38));r1.addColorStop(1,hexA(t.accent,0));ctx.fillStyle=r1;ctx.fillRect(0,0,w,h);
+ let r2=ctx.createRadialGradient(w*.05,h*.96,0,w*.05,h*.96,w*.5);r2.addColorStop(0,hexA(t.accent,.22));r2.addColorStop(1,hexA(t.accent,0));ctx.fillStyle=r2;ctx.fillRect(0,0,w,h);
+ ctx.save();ctx.fillStyle='rgba(255,255,255,.055)';for(let i=0;i<90;i++){ctx.beginPath();ctx.arc((i*97+13)%w,(i*211+29)%h,1.5+(i%3),0,7);ctx.fill()}ctx.restore()
+}
+function drawPlaceholderTile(ctx,w,h,t,title,type){
+ let g=ctx.createLinearGradient(0,0,w,h);g.addColorStop(0,t.accent2);g.addColorStop(1,t.card);ctx.fillStyle=g;ctx.fillRect(0,0,w,h);
+ ctx.fillStyle=hexA(t.accent,.14);ctx.beginPath();ctx.arc(w*.88,h*.1,w*.42,0,7);ctx.fill();ctx.beginPath();ctx.arc(w*.08,h*.96,w*.32,0,7);ctx.fill();
+ let ch=(String(title||'?').trim().charAt(0))||'?',rr=Math.min(w,h)*.24,m=Math.min(w,h);
+ ctx.fillStyle=t.accent;ctx.beginPath();ctx.arc(w/2,h*.44,rr,0,7);ctx.fill();
+ ctx.fillStyle='#fff';ctx.font=`900 ${rr*.95}px ${cardFont()}`;ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(ch,w/2,h*.44+rr*.05);
+ ctx.fillStyle=t.accent;ctx.font=`800 ${m*.06}px ${cardFont()}`;ctx.fillText(type||'收藏',w/2,h*.44+rr+m*.11)
+}
+function drawCoverTile(ctx,img,x,y,w,h,t,title,type,tilt){
+ ctx.save();ctx.translate(x+w/2,y+h/2);ctx.rotate((tilt||0)*Math.PI/180);ctx.translate(-w/2,-h/2);
+ let r=Math.min(w,h)*.06;
+ ctx.shadowColor='rgba(0,0,0,.55)';ctx.shadowBlur=w*.14;ctx.shadowOffsetY=w*.05;
+ roundRectPath(ctx,0,0,w,h,r);ctx.fillStyle='#fff';ctx.fill();ctx.shadowColor='transparent';ctx.shadowBlur=0;ctx.shadowOffsetY=0;
+ ctx.save();roundRectPath(ctx,0,0,w,h,r);ctx.clip();
+ if(img)drawCoverContain(ctx,img,0,0,w,h);else drawPlaceholderTile(ctx,w,h,t,title,type);
+ let gl=ctx.createLinearGradient(0,0,w,h);gl.addColorStop(0,'rgba(255,255,255,.24)');gl.addColorStop(.38,'rgba(255,255,255,0)');ctx.fillStyle=gl;ctx.fillRect(0,0,w,h);ctx.restore();
+ ctx.lineWidth=Math.max(3,w*.012);ctx.strokeStyle='rgba(255,255,255,.9)';roundRectPath(ctx,0,0,w,h,r);ctx.stroke();
+ ctx.restore()
+}
+function pillWidth(ctx,text,size){ctx.font=`800 ${size}px ${cardFont()}`;return ctx.measureText(text).width+size*1.4}
+function drawPill(ctx,x,y,text,size,fg,bg){
+ let w=pillWidth(ctx,text,size),h=size*1.9;
+ roundRectPath(ctx,x,y,w,h,h/2);ctx.fillStyle=bg;ctx.fill();
+ ctx.fillStyle=fg;ctx.textAlign='left';ctx.textBaseline='middle';ctx.fillText(text,x+size*.7,y+h/2+size*.04);return w
+}
+function drawPillRow(ctx,items,x,y,maxW,size,fg,bg,center){
+ let gap=size*.6,h=size*1.9,rows=[],cur=[],cw=0;
+ items.forEach(tx=>{let pw=pillWidth(ctx,tx,size);if(cur.length&&cw+gap+pw>maxW){rows.push({cur,cw});cur=[];cw=0}cur.push({tx,pw});cw+=(cur.length>1?gap:0)+pw});
+ if(cur.length)rows.push({cur,cw});
+ rows.forEach((r,ri)=>{let px=center?x+(maxW-r.cw)/2:x,py=y+ri*(h+gap);r.cur.forEach(p=>{drawPill(ctx,px,py,p.tx,size,fg,bg);px+=p.pw+gap})});
+ return y+rows.length*(h+gap)-gap
+}
+function drawBrandFooter(ctx,w,h,pad,t,u){
+ let ms=26*u,y=h-pad*.8;
+ ctx.save();ctx.fillStyle='#fff';ctx.globalAlpha=.95;
+ ctx.beginPath();let x=pad,r=ms*.24;ctx.moveTo(x,y+r);ctx.arcTo(x,y,x+r,y,r);ctx.lineTo(x+ms-r,y);ctx.arcTo(x+ms,y,x+ms,y+r,r);ctx.lineTo(x+ms,y+ms);ctx.lineTo(x+ms/2,y+ms*.78);ctx.lineTo(x,y+ms);ctx.closePath();ctx.fill();ctx.restore();
+ ctx.fillStyle='#fff';ctx.globalAlpha=.92;ctx.textAlign='left';ctx.textBaseline='middle';ctx.font=`800 ${24*u}px ${cardFont()}`;
+ ctx.fillText('我的收藏櫃',pad+ms+12*u,y+ms/2);
+ ctx.globalAlpha=.6;ctx.textAlign='right';ctx.font=`700 ${20*u}px ${cardFont()}`;
+ let d=new Date();ctx.fillText(`${d.getFullYear()}.${String(d.getMonth()+1).padStart(2,'0')}.${String(d.getDate()).padStart(2,'0')}`,w-pad,y+ms/2);ctx.globalAlpha=1
+}
+function goldGradient(ctx,x0,x1){let g=ctx.createLinearGradient(x0,0,x1,0);g.addColorStop(0,'#ffe29a');g.addColorStop(1,'#ffb347');return g}
+function drawSticker(ctx,cx,cy,r,text,sub,u){
+ ctx.save();ctx.shadowColor='rgba(0,0,0,.4)';ctx.shadowBlur=14*u;ctx.shadowOffsetY=4*u;
+ let g=ctx.createLinearGradient(cx-r,cy-r,cx+r,cy+r);g.addColorStop(0,'#ffe29a');g.addColorStop(1,'#ffb347');
+ ctx.fillStyle=g;ctx.beginPath();ctx.arc(cx,cy,r,0,7);ctx.fill();ctx.shadowColor='transparent';
+ ctx.lineWidth=3*u;ctx.strokeStyle='#fff';ctx.stroke();
+ ctx.fillStyle='#4a2a08';ctx.textAlign='center';ctx.textBaseline='middle';ctx.font=`900 ${r*.62}px ${cardFont()}`;ctx.fillText(text,cx,cy-(sub?r*.1:0));
+ if(sub){ctx.font=`800 ${r*.26}px ${cardFont()}`;ctx.fillText(sub,cx,cy+r*.42)}
+ ctx.restore()
+}
+/* ---- 作品圖卡 ---- */
+async function drawShareCard(canvas,s,ratio,useCover=true){
+ let tk=++_cardToken,[w,h]=cardSize(ratio),t=cardTheme();
+ let img=null;if(useCover&&s.cover){try{img=await loadImageSafe(s.cover)}catch(e){img=null}}
+ if(tk!==_cardToken)return null;
+ canvas.width=w;canvas.height=h;let ctx=canvas.getContext('2d');
+ let u=Math.min(w,h)/900*(w===h?1.15:1),pad=Math.round(Math.min(w,h)*.075),portrait=h>w*1.2,landscape=w>h*1.2,center=portrait;
+ drawBlurBackdrop(ctx,w,h,img,t);
+ let vols=s.volumes||[],total=vols.length,owned=vols.filter(v=>v.owned).length,pct=total?Math.round(owned/total*100):0;
+ let tileW,tileH,tx,ty,colX,colY,colW;
+ if(portrait){tileW=w*.5;tileH=tileW*1.36;tx=(w-tileW)/2;ty=pad*1.3;colX=pad;colY=ty+tileH+pad*1.0;colW=w-pad*2}
+ else if(landscape){tileH=h*.7;tileW=tileH*.74;tx=pad*1.5;ty=(h-tileH)/2-pad*.2;colX=tx+tileW+pad*1.4;colY=pad*1.2;colW=w-colX-pad*1.3}
+ else{tileH=h*.46;tileW=tileH*.74;tx=pad;ty=pad*1.2;colX=tx+tileW+pad;colY=pad*1.2;colW=w-colX-pad}
+ drawCoverTile(ctx,img,tx,ty,tileW,tileH,t,s.title,s.type,portrait?-2:-4);
+ drawSticker(ctx,tx+tileW*.93,ty+tileH*.95,tileW*.17,pct+'%','收藏',u);
+ if(pct===100&&total>0){
+  ctx.save();ctx.translate(tx+tileW*.1,ty+tileH*.08);ctx.rotate(-14*Math.PI/180);
+  roundRectPath(ctx,-10*u,-30*u,190*u,54*u,12*u);ctx.fillStyle='#e8524a';ctx.fill();ctx.lineWidth=3*u;ctx.strokeStyle='#fff';ctx.stroke();
+  ctx.fillStyle='#fff';ctx.font=`900 ${30*u}px ${cardFont()}`;ctx.textAlign='left';ctx.textBaseline='middle';ctx.fillText('🎉 全收藏！',6*u,-2*u);ctx.restore()
+ }
+ let ax=center?colX+colW/2:colX,y=colY;
+ let chip=[s.type||'書籍',s.status&&s.status!=='未知'?s.status:null].filter(Boolean).join(' · ');
+ let cz=26*u,cw=pillWidth(ctx,chip,cz);drawPill(ctx,center?ax-cw/2:colX,y,chip,cz,'#fff',hexA(t.accent,.92));y+=cz*1.9+22*u;
+ ctx.textAlign=center?'center':'left';ctx.textBaseline='top';
+ let ts=(landscape?64:portrait?68:58)*u;ctx.font=`900 ${ts}px ${cardFont()}`;ctx.fillStyle='#fff';
+ ctx.shadowColor='rgba(0,0,0,.45)';ctx.shadowBlur=12*u;ctx.shadowOffsetY=3*u;
+ let ln=wrapCJKText(ctx,s.title||'未命名作品',ax,y,colW,ts*1.22,2,'left');y+=ln*ts*1.22+12*u;
+ ctx.shadowColor='transparent';ctx.shadowBlur=0;ctx.shadowOffsetY=0;
+ let meta=[s.character?'♥ '+s.character:'',(s.authors||[]).join('、')].filter(Boolean).join('　');
+ if(meta){ctx.font=`700 ${30*u}px ${cardFont()}`;ctx.globalAlpha=.85;wrapCJKText(ctx,meta,ax,y,colW,36*u,1,'left');ctx.globalAlpha=1;y+=44*u}
+ y+=14*u;
+ if(total){
+  ctx.font=`800 ${28*u}px ${cardFont()}`;ctx.fillStyle='#fff';ctx.textBaseline='top';
+  ctx.textAlign='left';ctx.fillText(`已收藏 ${owned} / ${total}`,center?colX:colX,y);
+  ctx.textAlign='right';ctx.fillStyle=goldGradient(ctx,colX,colX+colW);ctx.fillText(`${pct}%`,colX+colW,y);y+=40*u;
+  let bh=16*u;roundRectPath(ctx,colX,y,colW,bh,bh/2);ctx.fillStyle='rgba(255,255,255,.22)';ctx.fill();
+  if(pct>0){roundRectPath(ctx,colX,y,Math.max(bh,colW*pct/100),bh,bh/2);ctx.fillStyle=goldGradient(ctx,colX,colX+colW);ctx.fill()}
+  y+=bh+22*u
+ }
+ if(s.rating){ctx.textAlign=center?'center':'left';ctx.textBaseline='top';ctx.font=`900 ${38*u}px ${cardFont()}`;ctx.fillStyle='#ffd27a';ctx.fillText('★'.repeat(s.rating)+'☆'.repeat(Math.max(0,5-s.rating)),ax,y);y+=52*u}
+ if(total>1){
+  let gx,gy,gw,gh;
+  if(landscape){gx=colX;gy=y+6*u;gw=colW;gh=h-pad*1.9-gy}
+  else if(portrait){gx=pad;gy=y+8*u;gw=w-pad*2;gh=h-pad*1.9-gy}
+  else{gx=pad;gy=Math.max(y,ty+tileH)+30*u;gw=w-pad*2;gh=h-pad*1.9-gy}
+  let gap=10*u,tile=Math.min(84*u,Math.max(40*u,gw/9)),cols,rows;
+  for(;;){cols=Math.max(1,Math.floor((gw+gap)/(tile+gap)));rows=Math.floor((gh+gap)/(tile+gap));if(cols*rows>=total||tile<=38*u)break;tile-=4*u}
+  if(rows>=1){
+   let cap=cols*rows,show=total>cap?cap-1:total,startX=center?gx+(gw-(Math.min(cols,show+(total>cap?1:0))*(tile+gap)-gap))/2:gx;
+   for(let i=0;i<show;i++){
+    let c=i%cols,r=Math.floor(i/cols),x=startX+c*(tile+gap),yy=gy+r*(tile+gap),v=vols[i];
+    roundRectPath(ctx,x,yy,tile,tile,tile*.22);
+    if(v.owned){ctx.fillStyle='rgba(255,255,255,.95)';ctx.fill()}else{ctx.setLineDash([6*u,6*u]);ctx.lineWidth=2.5*u;ctx.strokeStyle='rgba(255,255,255,.55)';ctx.stroke();ctx.setLineDash([])}
+    let lb=String(v.volumeNo||i+1).slice(0,3);ctx.font=`900 ${tile*(lb.length>2?.32:.42)}px ${cardFont()}`;ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillStyle=v.owned?t.accent:'rgba(255,255,255,.6)';ctx.fillText(lb,x+tile/2,yy+tile/2+tile*.03)
+   }
+   if(total>cap){let i=show,c=i%cols,r=Math.floor(i/cols),x=startX+c*(tile+gap),yy=gy+r*(tile+gap);ctx.fillStyle='rgba(255,255,255,.75)';ctx.font=`900 ${tile*.34}px ${cardFont()}`;ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(`+${total-show}`,x+tile/2,yy+tile/2)}
+  }
+ }
+ drawBrandFooter(ctx,w,h,pad,t,u);
+ return !!img
+}
+function workCaption(s){
+ let vols=s.volumes||[],total=vols.length,owned=vols.filter(v=>v.owned).length,pct=total?Math.round(owned/total*100):0;
+ return `📚 ${s.title}${s.character?'（'+s.character+'）':''}\n已收藏 ${owned}/${total}（${pct}%）${s.rating?' '+'★'.repeat(s.rating):''}\n${pct===100?'🎉 全收藏達成！\n':''}\n#我的收藏櫃 #收藏日常${s.type?' #'+s.type.replace(/[／\s]/g,''):''}`
+}
+/* ---- 通用圖卡視窗 ---- */
+function ratioBar(prefix){
+ return `<div class="seg" id="ratioBar">${[['1:1','方形 1:1'],['9:16','限動 9:16'],['16:9','橫式 16:9']].map(([r,l])=>`<button class="${r===cardRatio?'on':''}" onclick="${prefix}'${r}')">${l}</button>`).join('')}</div>`
+}
+function cardShell(title,notice,ratioPrefix,extraTop,bottomBtns){
+ return `<h2>${title}</h2>${notice?`<div class="notice" style="margin-bottom:10px">${notice}</div>`:''}
+${ratioBar(ratioPrefix)}${extraTop||''}
+<div class="cardstage"><canvas id="cardCanvas"></canvas><div id="cardBusy" class="cardbusy">圖卡產生中…</div></div>
+<div class="row" style="gap:8px;margin-top:12px"><button class="btn purple" style="flex:1" onclick="shareCardNow()">📤 分享</button><button class="btn" style="flex:1" onclick="downloadCardNow()">⬇︎ 下載</button></div>
+${bottomBtns||''}`
+}
+let _cardMeta={name:'收藏卡',caption:''};
+function setBusy(on){let b=document.getElementById('cardBusy');if(b)b.style.display=on?'flex':'none'}
+function markRatio(r){cardRatio=r;document.querySelectorAll('#ratioBar button').forEach((b,i)=>b.classList.toggle('on',['1:1','9:16','16:9'][i]===r))}
+function downloadCardNow(){
+ let c=document.getElementById('cardCanvas');if(!c)return;
+ c.toBlob(b=>{if(!b){toast('產生圖片失敗');return}let a=document.createElement('a');a.href=URL.createObjectURL(b);a.download=(_cardMeta.name||'收藏卡')+'.png';a.click();toast('圖片已下載')},'image/png')
+}
+function shareCardNow(){
+ let c=document.getElementById('cardCanvas');if(!c)return;
+ c.toBlob(async b=>{
+  if(!b){toast('產生圖片失敗');return}
+  let f=new File([b],(_cardMeta.name||'收藏卡')+'.png',{type:'image/png'});
+  try{if(navigator.canShare&&navigator.canShare({files:[f]})){await navigator.share({files:[f],text:_cardMeta.caption||'',title:_cardMeta.name});return}}
+  catch(e){if(e&&e.name==='AbortError')return}
+  let a=document.createElement('a');a.href=URL.createObjectURL(b);a.download=f.name;a.click();toast('這個瀏覽器不能直接分享，已幫你下載圖片')
+ },'image/png')
+}
+async function copyCaptionNow(){try{await navigator.clipboard.writeText(_cardMeta.caption||'');toast('貼文文字已複製，貼到社群就可以了')}catch(e){toast('複製失敗，請手動選取')}}
+function captionBtn(){return `<button class="btn" style="width:100%;margin-top:8px" onclick="copyCaptionNow()">📋 複製貼文文字</button>`}
+/* 作品 */
+function openShareCard(sid){
+ let s=db.series.find(x=>x.id===sid);if(!s)return;
+ _cardMeta={name:s.title,caption:workCaption(s)};
+ showModal(cardShell('分享這部收藏','背景會用封面自動做出模糊質感。圖卡右下角的徽章、格子會顯示你收齊到哪裡。',`renderShareCardPreview('${sid}',`,
+  `<div class="switch"><span>圖卡使用封面圖片</span><input id="scUseCover" type="checkbox" ${s.cover?'checked':''} ${s.cover?'':'disabled'} onchange="renderShareCardPreview('${sid}',cardRatio)"></div>`,captionBtn()));
+ renderShareCardPreview(sid,cardRatio)
+}
+async function renderShareCardPreview(sid,ratio){
+ markRatio(ratio);let s=db.series.find(x=>x.id===sid);if(!s)return;
+ let c=document.getElementById('cardCanvas');if(!c)return;
+ let ue=document.getElementById('scUseCover'),use=ue?ue.checked:true;
+ setBusy(true);let ok=await drawShareCard(c,s,ratio,use);if(ok!==null)setBusy(false);
+ if(ok===false&&use&&s.cover)toast('這個封面網址不允許被圖卡讀取，已改用佔位設計；換一個圖片網址通常就能解決')
+}
+/* ---- 收藏名片 ---- */
+async function drawProfileShareCard(canvas,ratio){
+ let tk=++_cardToken,[w,h]=cardSize(ratio),t=cardTheme();
+ let vols=db.series.flatMap(s=>s.volumes||[]),owned=vols.filter(v=>v.owned),lv=getCollectorLevel(owned.length);
+ let byType={};db.series.forEach(s=>{let c=(s.volumes||[]).filter(v=>v.owned).length;if(c){let k=s.type||'書籍';byType[k]=(byType[k]||0)+c}});
+ let ac={};db.series.forEach(s=>{let c=(s.volumes||[]).filter(v=>v.owned).length;if(!c)return;(s.authors||[]).forEach(a=>{if(a)ac[a]=(ac[a]||0)+c})});
+ let topAuthors=Object.entries(ac).sort((a,b)=>b[1]-a[1]).slice(0,3).map(x=>x[0]);
+ let picks=[...profileCardPicks].map(id=>db.series.find(s=>s.id===id)).filter(Boolean).slice(0,3);
+ let imgs=await Promise.all(picks.map(s=>s.cover?loadImageSafe(s.cover).catch(()=>null):null));
+ if(tk!==_cardToken)return null;
+ canvas.width=w;canvas.height=h;let ctx=canvas.getContext('2d');
+ let landscape=w>h*1.2,portrait=h>w*1.2,side=landscape,u=Math.min(w,h)/900*(w===h?1.1:1),pad=Math.round(Math.min(w,h)*.075);
+ drawBlurBackdrop(ctx,w,h,imgs.find(Boolean)||null,t);
+ let nick=(typeof fb!=='undefined'&&fb&&fbUser&&(fbUser.displayName||''))||'',avatar=(fbUser&&fbUser.photoURL&&String(fbUser.photoURL).startsWith('avatar:'))?fbUser.photoURL.slice(7):lv.emoji;
+ let colX=side?pad*1.5:pad,colW=side?w*.5-pad*1.5:w-pad*2,cx=side?colX:w/2,align=side?'left':'center';
+ let y=pad*(side?1.3:1.1);
+ // 標題
+ ctx.textBaseline='top';ctx.textAlign=align;ctx.fillStyle='rgba(255,255,255,.75)';ctx.font=`800 ${24*u}px ${cardFont()}`;
+ ctx.fillText('COLLECTOR CARD · 收藏名片',cx,y);y+=46*u;
+ // 頭像圈
+ let R=(side?62:portrait?78:60)*u,acx=side?colX+R:w/2,acy=y+R;
+ let gg=ctx.createRadialGradient(acx,acy,R*.5,acx,acy,R*1.7);gg.addColorStop(0,hexA(t.accent,.55));gg.addColorStop(1,hexA(t.accent,0));ctx.fillStyle=gg;ctx.beginPath();ctx.arc(acx,acy,R*1.7,0,7);ctx.fill();
+ ctx.fillStyle='rgba(255,255,255,.16)';ctx.beginPath();ctx.arc(acx,acy,R,0,7);ctx.fill();ctx.lineWidth=4*u;ctx.strokeStyle='#fff';ctx.stroke();
+ ctx.fillStyle='#fff';ctx.textAlign='center';ctx.textBaseline='middle';ctx.font=`${R*1.05}px ${cardFont()}`;ctx.fillText(avatar,acx,acy+R*.06);
+ let nameTxt=nick?`${nick} 的收藏`:'我的收藏';
+ if(side){ctx.textAlign='left';ctx.textBaseline='middle';ctx.font=`900 ${44*u}px ${cardFont()}`;ctx.fillText(nameTxt,acx+R+26*u,acy-14*u);
+  let lt=lv.level?`Lv.${lv.level} ${lv.emoji} ${lv.title}`:lv.title,lz=24*u;drawPill(ctx,acx+R+26*u,acy+14*u,lt,lz,'#4a2a08','#ffd27a');y=acy+R+34*u}
+ else{y=acy+R+24*u;ctx.textAlign='center';ctx.textBaseline='top';ctx.font=`900 ${50*u}px ${cardFont()}`;ctx.fillText(nameTxt,w/2,y);y+=64*u;
+  let lt=lv.level?`Lv.${lv.level} ${lv.emoji} ${lv.title}`:lv.title,lz=26*u,lw=pillWidth(ctx,lt,lz);drawPill(ctx,w/2-lw/2,y,lt,lz,'#4a2a08','#ffd27a');y+=lz*1.9+26*u}
+ // 大數字
+ ctx.textAlign=align;ctx.textBaseline='top';let ns=(side?170:portrait?190:150)*u;ctx.font=`900 ${ns}px ${cardFont()}`;
+ ctx.fillStyle=goldGradient(ctx,cx-(side?0:180*u),cx+(side?300*u:180*u));ctx.shadowColor='rgba(0,0,0,.35)';ctx.shadowBlur=18*u;ctx.shadowOffsetY=5*u;
+ ctx.fillText(String(owned.length),cx,y);ctx.shadowColor='transparent';ctx.shadowBlur=0;ctx.shadowOffsetY=0;y+=ns*1.02;
+ ctx.fillStyle='#fff';ctx.font=`800 ${34*u}px ${cardFont()}`;ctx.fillText(`件收藏　·　${db.series.length} 個系列`,cx,y);y+=56*u;
+ let tags=Object.entries(byType).map(([k,c])=>`${k} ${c}`);
+ if(tags.length){y=drawPillRow(ctx,tags,colX,y,colW,24*u,'#fff','rgba(255,255,255,.2)',!side)+22*u}
+ if(topAuthors.length){ctx.textAlign=align;ctx.textBaseline='top';ctx.fillStyle='rgba(255,255,255,.85)';ctx.font=`700 ${26*u}px ${cardFont()}`;wrapCJKText(ctx,'♥ 最愛：'+topAuthors.join('、'),cx,y,colW,32*u,1,'left');y+=42*u}
+ // 推薦作品扇形
+ let area=side?{x:w*.5,y:pad,w:w*.5-pad,h:h-pad*2.4}:{x:pad,y:y+10*u,w:w-pad*2,h:h-pad*2.2-(y+10*u)};
+ if(picks.length&&area.h>120){
+  let th=Math.min(area.h*.86,side?h*.6:w*.5),tw=th/1.36;if(tw*(picks.length>1?2:1)>area.w)tw=area.w/(picks.length>1?2:1),th=tw*1.36;
+  let mid=area.x+area.w/2,my=area.y+area.h/2,sp=tw*.62,order=picks.map((_,i)=>i).sort((a,b)=>Math.abs(a-(picks.length-1)/2)>Math.abs(b-(picks.length-1)/2)?-1:1);
+  order.forEach(i=>{
+   let off=(i-(picks.length-1)/2),x=mid+off*sp-tw/2,yy=my-th/2+Math.abs(off)*th*.05,tilt=off*7;
+   drawCoverTile(ctx,imgs[i],x,yy,tw,th,t,picks[i].title,picks[i].type,tilt);
+   let rr=26*u,bx=x+rr*.4,by=yy+rr*.4;ctx.save();ctx.shadowColor='rgba(0,0,0,.35)';ctx.shadowBlur=8*u;ctx.fillStyle='#e8524a';ctx.beginPath();ctx.arc(bx+rr,by+rr,rr,0,7);ctx.fill();ctx.restore();
+   ctx.fillStyle='#fff';ctx.font=`900 ${rr*1.1}px ${cardFont()}`;ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(String(i+1),bx+rr,by+rr+2*u)
+  });
+  ctx.textAlign='center';ctx.textBaseline='top';ctx.fillStyle='rgba(255,255,255,.9)';ctx.font=`800 ${24*u}px ${cardFont()}`;ctx.fillText('★ 推薦給你',mid,Math.min(my+th/2+22*u,h-pad*1.9))
+ } else if(area.h>120){
+  let er=Math.min(area.w,area.h)*.26,ex=side?area.x+area.w/2:w/2,ey=side?h/2:area.y+area.h/2;
+  let g2=ctx.createRadialGradient(ex,ey,er*.3,ex,ey,er*1.5);g2.addColorStop(0,hexA(t.accent,.5));g2.addColorStop(1,hexA(t.accent,0));ctx.fillStyle=g2;ctx.beginPath();ctx.arc(ex,ey,er*1.5,0,7);ctx.fill();
+  ctx.font=`${er*1.6}px ${cardFont()}`;ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillStyle='#fff';ctx.fillText(lv.emoji,ex,ey)
+ }
+ drawBrandFooter(ctx,w,h,pad,t,u);
+ return true
+}
+function profileCaption(){
+ let owned=db.series.flatMap(s=>s.volumes||[]).filter(v=>v.owned).length,lv=getCollectorLevel(owned);
+ return `${lv.emoji} 我的收藏名片\n${lv.level?'Lv.'+lv.level+' ':''}${lv.title}｜已收藏 ${owned} 件、${db.series.length} 個系列\n\n#我的收藏櫃 #收藏日常`
+}
+function openProfileShareCard(){
+ profileCardPicks=new Set([...db.series].filter(s=>s.rating>=4).sort((a,b)=>(b.rating||0)-(a.rating||0)).slice(0,3).map(s=>s.id));
+ _cardMeta={name:'我的收藏名片',caption:profileCaption()};
+ showModal(cardShell('分享我的收藏','會顯示你的等級與收藏數量，還能挑最多 3 個想推薦的作品。不會包含購入價格。',`renderProfileCardPreview(`,'',
+  `<h3 style="margin-top:16px">推薦作品（最多 3 個）</h3><div id="pickList" class="picklist">${renderPickListHtml()}</div>${captionBtn()}`));
+ renderProfileCardPreview(cardRatio)
+}
+async function renderProfileCardPreview(ratio){
+ lastProfileRatio=ratio;markRatio(ratio);let c=document.getElementById('cardCanvas');if(!c)return;
+ setBusy(true);let r=await drawProfileShareCard(c,ratio);if(r!==null)setBusy(false)
+}
+/* ---- 徵求圖卡 ---- */
 async function drawWantShareCard(canvas,ratio){
- let w=ratio==='16:9'?1200:675,h=ratio==='16:9'?675:1200;
- canvas.width=w;canvas.height=h;
- let ctx=canvas.getContext('2d');
- let cs=getComputedStyle(document.documentElement);
- let bg=(cs.getPropertyValue('--bg')||'#f6f1e9').trim();
- let accent=(cs.getPropertyValue('--accent')||'#a8522c').trim();
- let accent2=(cs.getPropertyValue('--accent2')||'#f3e3d3').trim();
- let text=(cs.getPropertyValue('--text')||'#3b332c').trim();
- drawCardBackground(ctx,w,h,accent,accent2,bg);
- let pad=w*0.07;
- let groups=buildWantGroups();
- ctx.textAlign='left';ctx.textBaseline='top';
- ctx.font=`900 ${w*0.055}px ${cardFont()}`;ctx.fillStyle=text;
- ctx.fillText('🔍 徵求清單',pad,pad);
- let headerH=w*0.055*1.3;
- ctx.font=`600 ${w*0.028}px ${cardFont()}`;ctx.fillStyle=text;ctx.globalAlpha=.6;
- ctx.fillText('想收藏以下項目，歡迎割愛或交換',pad,pad+headerH);ctx.globalAlpha=1;
- let listY=pad+headerH+w*0.028*1.8+w*0.02;
- let listBottom=h-pad*1.8;
- let availH=Math.max(1,listBottom-listY);
- let maxShow=Math.min(groups.length,ratio==='16:9'?7:10);
- let rowH=availH/Math.max(maxShow,1);
- let fontMain=Math.min(rowH*0.34,w*0.034);
- let fontSub=fontMain*0.72;
- for(let i=0;i<maxShow;i++){
-  let g=groups[i];
-  let y=listY+i*rowH;
-  if(i>0){ctx.strokeStyle=hexA(text,.08);ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(pad,y);ctx.lineTo(w-pad,y);ctx.stroke()}
-  let rowPadTop=rowH*0.22;
-  let hasHigh=g.items.some(it=>it.priority==='高');
-  ctx.textAlign='left';ctx.textBaseline='top';
-  ctx.font=`800 ${fontMain}px ${cardFont()}`;ctx.fillStyle=text;
-  let titleText=(hasHigh?'⭐ ':'')+g.title;
-  wrapCJKText(ctx,titleText,pad,y+rowPadTop,w-pad*2,fontMain*1.2,1,'left');
-  let nos=g.items.map(it=>it.no||'—').join('、');
-  ctx.font=`600 ${fontSub}px ${cardFont()}`;ctx.fillStyle=accent;
-  wrapCJKText(ctx,nos,pad,y+rowPadTop+fontMain*1.3,w-pad*2,fontSub*1.3,1,'left');
+ let tk=++_cardToken,[w,h]=cardSize(ratio),t=cardTheme();
+ let groups=buildWantGroups().sort((a,b)=>(b.items.some(i=>i.priority==='高')-a.items.some(i=>i.priority==='高'))||b.items.length-a.items.length);
+ let landscape=w>h*1.2,portrait=h>w*1.2,u=Math.min(w,h)/900*(w===h?1.1:1),pad=Math.round(Math.min(w,h)*.075);
+ let cols=landscape?2:(portrait?1:2),rowsN=landscape?3:(portrait?6:3),slots=cols*rowsN;
+ let shown=groups.length>slots?groups.slice(0,slots-1):groups.slice(0,slots),more=groups.length-shown.length;
+ let imgs=await Promise.all(shown.map(g=>g.cover?loadImageSafe(g.cover).catch(()=>null):null));
+ if(tk!==_cardToken)return null;
+ canvas.width=w;canvas.height=h;let ctx=canvas.getContext('2d');
+ drawBlurBackdrop(ctx,w,h,imgs.find(Boolean)||null,t);
+ let y=pad*1.1;ctx.textBaseline='top';ctx.textAlign='left';
+ ctx.fillStyle='#fff';ctx.font=`900 ${(portrait?92:landscape?84:88)*u}px ${cardFont()}`;ctx.shadowColor='rgba(0,0,0,.4)';ctx.shadowBlur=14*u;ctx.shadowOffsetY=4*u;
+ ctx.fillText('📢 徵求！',pad,y);ctx.shadowColor='transparent';ctx.shadowBlur=0;ctx.shadowOffsetY=0;
+ // WANTED 章
+ ctx.save();ctx.translate(w-pad-110*u,y+46*u);ctx.rotate(10*Math.PI/180);ctx.lineWidth=5*u;ctx.strokeStyle='#ffd27a';roundRectPath(ctx,-110*u,-34*u,220*u,68*u,14*u);ctx.stroke();
+ ctx.fillStyle='#ffd27a';ctx.font=`900 ${38*u}px ${cardFont()}`;ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText('WANTED',0,2*u);ctx.restore();
+ y+=(portrait?110:100)*u;
+ ctx.textAlign='left';ctx.textBaseline='top';ctx.fillStyle='rgba(255,255,255,.88)';ctx.font=`700 ${30*u}px ${cardFont()}`;
+ let totalMiss=groups.reduce((a,g)=>a+g.items.length,0);
+ ctx.fillText(`共 ${groups.length} 個系列、${totalMiss} 項想收藏，有的話請私訊我！`,pad,y);y+=58*u;
+ let top=y,bottom=h-pad*1.9,gap=18*u,cw=(w-pad*2-gap*(cols-1))/cols,rh=(bottom-top-gap*(rowsN-1))/rowsN;
+ for(let i=0;i<slots;i++){
+  let c=i%cols,r=Math.floor(i/cols)*(1)+0;r=Math.floor(i/cols);
+  let x=pad+c*(cw+gap),yy=top+r*(rh+gap);
+  if(i<shown.length){
+   let g=shown[i],hi=g.items.some(it=>it.priority==='高');
+   roundRectPath(ctx,x,yy,cw,rh,20*u);ctx.fillStyle='rgba(255,255,255,.95)';ctx.fill();
+   if(hi){roundRectPath(ctx,x,yy,cw,rh,20*u);ctx.lineWidth=4*u;ctx.strokeStyle='#ffb347';ctx.stroke()}
+   let tp=12*u,thh=rh-tp*2,tww=thh*.74;
+   ctx.save();roundRectPath(ctx,x+tp,yy+tp,tww,thh,12*u);ctx.clip();
+   if(imgs[i])drawCoverContain(ctx,imgs[i],x+tp,yy+tp,tww,thh);else{ctx.translate(x+tp,yy+tp);drawPlaceholderTile(ctx,tww,thh,t,g.title,g.type)}
+   ctx.restore();
+   let tx=x+tp*2+tww,tw=cw-(tx-x)-tp*1.2;
+   ctx.fillStyle='#2b211a';ctx.textAlign='left';ctx.textBaseline='top';ctx.font=`900 ${Math.min(34*u,rh*.2)}px ${cardFont()}`;
+   let n=wrapCJKText(ctx,(hi?'⭐ ':'')+g.title,tx,yy+tp+2*u,tw,Math.min(34*u,rh*.2)*1.22,2,'left');
+   let fy=yy+tp+n*Math.min(34*u,rh*.2)*1.22+10*u;
+   let nos=g.items.map(it=>it.no?String(it.no):'—'),chips=nos.slice(0,12);if(nos.length>12)chips.push('+'+(nos.length-12));
+   let pz=Math.min(22*u,rh*.13);let saved=ctx.textBaseline;
+   drawPillRow(ctx,chips.map(x=>x.length>6?x.slice(0,6)+'…':x),tx,fy,tw,pz,'#fff',t.accent,false)
+  } else if(more>0&&i===shown.length){
+   roundRectPath(ctx,x,yy,cw,rh,20*u);ctx.fillStyle='rgba(255,255,255,.18)';ctx.fill();ctx.setLineDash([8*u,8*u]);ctx.lineWidth=3*u;ctx.strokeStyle='rgba(255,255,255,.6)';ctx.stroke();ctx.setLineDash([]);
+   ctx.fillStyle='#fff';ctx.textAlign='center';ctx.textBaseline='middle';ctx.font=`900 ${38*u}px ${cardFont()}`;ctx.fillText(`還有 ${more} 個系列`,x+cw/2,yy+rh/2-10*u);
+   ctx.font=`700 ${24*u}px ${cardFont()}`;ctx.globalAlpha=.85;ctx.fillText('完整清單請看貼文文字',x+cw/2,yy+rh/2+30*u);ctx.globalAlpha=1
+  }
  }
- if(groups.length>maxShow){
-  ctx.textAlign='center';ctx.textBaseline='middle';
-  ctx.font=`700 ${w*0.026}px ${cardFont()}`;ctx.fillStyle=text;ctx.globalAlpha=.55;
-  ctx.fillText(`...還有 ${groups.length-maxShow} 個系列，完整清單見文字版`,w/2,listBottom-w*0.02);ctx.globalAlpha=1
- }
- drawFooterBrand(ctx,w,h,pad,accent,text);
+ if(!groups.length){ctx.fillStyle='#fff';ctx.textAlign='center';ctx.textBaseline='middle';ctx.font=`900 ${44*u}px ${cardFont()}`;ctx.fillText('目前沒有待入手的項目 🎉',w/2,h/2)}
+ drawBrandFooter(ctx,w,h,pad,t,u);
  return groups.length
 }
-let lastWantRatio='16:9';
+let lastWantRatio='1:1';
 function openWantShareCard(){
- lastWantRatio='16:9';
- showModal(`<h2>徵求清單圖卡</h2>
-<div class="notice">產生一張列出待入手項目的圖片，適合發到社群、交易社團徵求。項目較多時圖片只會顯示前幾項，完整清單建議搭配文字版一起發。</div>
-<div class="row wrap" style="margin:10px 0"><button class="btn small purple" onclick="renderWantCardPreview('16:9')">橫式 16:9</button><button class="btn small" onclick="renderWantCardPreview('9:16')">直式 9:16（限動）</button></div>
-<div style="display:flex;justify-content:center;background:linear-gradient(135deg,var(--accent2),var(--card));border:1px solid var(--line);border-radius:var(--radius-md);padding:14px;margin-top:10px"><canvas id="wantCanvas" style="max-width:100%;height:auto;border-radius:var(--radius-sm);box-shadow:var(--shadow-md)"></canvas></div>
-<button class="btn purple" style="width:100%;margin-top:12px" onclick="downloadWantCard()">下載圖片</button>
-<button class="btn" style="width:100%;margin-top:8px" onclick="openWantShareText()">改看文字版</button>`)
- renderWantCardPreview('16:9')
+ _cardMeta={name:'徵求清單',caption:buildWantText()};
+ showModal(cardShell('徵求圖卡','把還沒收到的項目做成一張海報，發到社群或交易社團徵求。項目太多時圖上只顯示前幾個，完整清單用「複製貼文文字」一起貼上。',`renderWantCardPreview(`,'',captionBtn()));
+ renderWantCardPreview(cardRatio)
 }
 async function renderWantCardPreview(ratio){
- lastWantRatio=ratio;
- let canvas=document.getElementById('wantCanvas');if(!canvas)return;
- let n=await drawWantShareCard(canvas,ratio);
+ lastWantRatio=ratio;markRatio(ratio);let c=document.getElementById('cardCanvas');if(!c)return;
+ setBusy(true);let n=await drawWantShareCard(c,ratio);if(n!==null)setBusy(false);
  if(n===0)toast('目前沒有待入手的項目')
 }
-function downloadWantCard(){
- let canvas=document.getElementById('wantCanvas');if(!canvas)return;
- canvas.toBlob(blob=>{if(!blob){toast('產生圖片失敗');return}let a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='徵求清單.png';a.click()},'image/png')
-}
+/* ================= /分享圖卡 ================= */
+
 function importData(inputEl){
  let f=inputEl.files&&inputEl.files[0];if(!f)return;
  let reader=new FileReader();
